@@ -1,0 +1,413 @@
+<html lang="zh">
+	<head>
+		<meta charset="UTF-8">
+<!--		表格拖动插件 -->
+		<link href="/static/css/bootstrap-table.min.css" rel="stylesheet">
+		<link href="/static/css/jquery.resizableColumns.css" rel="stylesheet">
+		<link href="/static/css/BeAlert.css" rel="stylesheet">
+		<style type="text/css">
+			td, th{
+				text-align: center;
+			}
+			.input-group{
+				padding-bottom: 5px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="col-md-12 text-right">
+			<div class="text-right" id="toolbar"></div>
+			<table class="table table-striped table-hover" id="table">
+			</table>
+		</div>
+		<div id="msg" style="width: 200px; height: 100px;z-index: 99; position: absolute; top: 10%;left: 40%; text-align: center"></div>
+		<!-- 新增模态框（Modal） -->
+		<div class="modal fade" id="addmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="#modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+								aria-hidden="true">×
+						</button>
+						<h4 class="modal-title" id="modal_title">
+							新增<[% year %]辅修招生时间计划
+						</h4>
+					</div>
+					<div class="modal-body">
+						<form class="bs-example bs-example-form" role="form" >
+							<div>
+								<h3 class="text-info">报名时间</h3>
+								<div class="col-md-6">
+									<div class="input-group">
+										<span class="input-group-addon">报名开始时间</span>
+										<input type="datetime-local" class="form-control" name="bmkssj" id="bmkssj">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="input-group" >
+										<span class="input-group-addon">报名截止时间</span>
+										<input type="text" class="form-control" name="bmsjjz" id="bmsjjz">
+									</div>
+								</div>
+							</div>
+							<div>
+								<h3 class="text-info">缴费时间</h3>
+								<div class="col-md-6">
+									<div class="input-group">
+										<span class="input-group-addon">一阶段缴费开始时间</span>
+										<input type="text" class="form-control" name="yjdks" id="yjdks">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="input-group">
+										<span class="input-group-addon">一阶段缴费截止时间</span>
+										<input type="text" class="form-control" name="yjdjz" id="yjdjz">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="input-group">
+										<span class="input-group-addon">二阶段缴费开始时间</span>
+										<input type="text" class="form-control" name="ejdks" id="ejdks">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="input-group">
+										<span class="input-group-addon">二阶段缴费截止时间</span>
+										<input type="text" class="form-control" name="ejdjz" id="ejdjz">
+									</div>
+								</div>
+							</div>
+							<div>
+								<h3 class="text-info">成绩相关</h3>
+								<div class="col-md-6">
+									<div class="input-group">
+										<span class="input-group-addon">成绩录入开始时间</span>
+										<input type="text" class="form-control" name="cjlrks" id="cjlrks">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="input-group">
+										<span class="input-group-addon">成绩录入截止时间</span>
+										<input type="text" class="form-control" name="cjlrjz" id="cjlrjz">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="input-group">
+										<span class="input-group-addon">成绩变更开始时间</span>
+										<input type="text" class="form-control" name="cjbgks" id="cjbgks">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="input-group">
+										<span class="input-group-addon">二阶段缴费截止时间</span>
+										<input type="text" class="form-control" name="cjbgjz" id="cjbgjz">
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default"
+								data-dismiss="modal">关闭
+						</button>
+						<button type="button" class="btn btn-primary" onclick="add_marjor()">
+							提交保存
+						</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+<!--		修改模态框-->
+		<div class="modal fade" id="editmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="#modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+								aria-hidden="true">×
+						</button>
+						<h4 class="modal-title" >
+							修改 <span style="color: red" id="edit_modal_title"></span> 信息
+						</h4>
+					</div>
+					<div class="modal-body">
+						<form class="bs-example bs-example-form" role="form">
+							<div class="input-group">
+								<span class="input-group-addon">专业代码</span>
+								<input type="text" class="form-control" name="edit_zydm" id="edit_zydm" disabled>
+							</div>
+							<div class="input-group">
+								<span class="input-group-addon">专业名称</span>
+								<input type="text" class="form-control" name="edit_zymc" id="edit_zymc">
+							</div>
+							<div class="input-group">
+								<span class="input-group-addon">专业英文名</span>
+								<input type="text" class="form-control" name="edit_zyywm" id="edit_zyywm">
+							</div>
+							<div class="input-group">
+								<span class="input-group-addon">学院</span>
+								<select type="text" class="form-control" name="edit_xydm" id="edit_xydm">
+
+								</select>
+							</div>
+							<div class="input-group">
+								<span class="input-group-addon">学科门类</span>
+								<select type="text" class="form-control" name="edit_xkmldm" id="edit_xkmldm">
+									<option value="1">计算机</option>
+								</select>
+							</div>
+							<div class="input-group">
+								<span class="input-group-addon">专业大类</span>
+								<select type="text" class="form-control" name="edit_zydldm" id="edit_zydldm">
+									<option value="1">理工科</option>
+								</select>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default"
+								data-dismiss="modal">关闭
+						</button>
+						<button type="button" class="btn btn-primary" onclick="post_edit()">
+							提交修改
+						</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+	</body>
+	<script src="/static/js/jquery-2.0.3.min.js"></script>
+	<script src="/static/js/bootstrap.min.js"></script>
+	<script src="/static/js/jquery.resizableColumns.min.js"></script>
+	<script src="/static/js/bootstrap-table.min.js"></script>
+	<script src="/static/js/bootstrap-table-resizable.min.js"></script>
+	<script src="/static/js/bootstrap-table-locale-all.min.js"></script>
+	<script src="/static/js/BeAlert.js"></script>
+	<script type="application/javascript">
+	$(function() {
+		[% IF flag == 1 %]
+		$('#addmodal').modal("show");
+		return;
+		[% END %]
+		$('#table').bootstrapTable({
+			method: 'get',
+			locale:'zh-CN',	//中文支持,
+			search: true,
+			contentType: "application/x-www-form-urlencoded",	//必须要有！！！！
+			url:"/2020/10/25/api/admissionstimelist",	//要请求数据的文件路径
+			// height:tableHeight(),	//高度调整
+			toolbar: '#toolbar',	//指定工具栏
+			striped: true, 	//是否显示行间隔色
+			dataField: "res",	//bootstrap table 可以前端分页也可以后端分页，这里
+			pageNumber: 1, 	//初始化加载第一页，默认第一页
+			pagination:true,	//是否分页
+			sidePagination:'client',	//指定前端分页
+			pageSize:10,	//单页记录数
+			showColumns: true,
+			clickToSelect: true,	//是否启用点击选中行
+			toolbarAlign: 'right', 	//工具栏对齐方式
+			buttonsAlign: 'right',	//按钮对齐方式
+			columns:[
+				{
+					title:'全选',
+					field:'select',
+					//复选框
+					checkbox:true,
+					width:25,
+					align:'center',
+					valign:'middle'
+				},
+				{
+					title:'辅修年级',
+					field:'FXNJ',
+				},
+				{
+					title:'报名起止时间',
+					field:'BMQZSJ',
+					visible:true
+				},
+				{
+					title:'一阶段缴费起止时间',
+					field:'YJDJFQZSJ',
+				},
+				{
+					title:'二阶段缴费起止时间',
+					field: 'EJDJFQZSJ',
+				},
+				{
+					title:'成绩录入起至时间',
+					field:'CJLRQZSJ',
+				},
+				{
+					title:'成绩变更起至时间',
+					field:'CJBGQZSJ',
+				},
+				{
+					title:'操作',
+					field:'CZ',
+				},
+			],
+			responseHandler:function(res){
+					//在ajax获取到数据，渲染表格之前，修改数据源
+					res = res.DATA;
+					if ( res.length !== 0 ){
+						for (let i = 0; i < res.length; i++) {
+							res[i].CZ = "<a onclick=\"edit_time(this, "+ res[i].FXNJ + ')\" ' +
+									'data-toggle=\"tooltip\" data-placement=\"top\" title=\"编辑\">' +
+									'<button type=\"button\" class=\"btn btn-sm btn-warning\" ><i class=\"glyphicon glyphicon-edit\" >' +
+									'</i></button></a>'
+						}
+					}
+					return res;
+				},
+		})
+		$("[data-toggle='tooltip']").tooltip();
+	})
+	
+	function edit_time(obj, fxnj) {
+	  let option = "";
+	  $.get("/2020/10/25/api/subjectcategory?search", function (res) {
+			res = JSON.parse(res).DATA;
+			let option = "";
+						debugger
+			for (let i = 0; i < res.length; i++) {
+				if (xkmldm == res[i].XKDM )
+					option += "<option value='" + res[i].XKDM + "' selected>" + res[i].XKMC + "</option>";
+				else
+					option += "<option value='" + res[i].XKDM + "'>" + res[i].XKMC + "</option>";
+			}
+			$("#edit_xkmldm").html(option);
+		})
+	  let ob = obj.parentNode.parentNode.childNodes;
+	  $("#edit_modal_title").text(ob[2].innerText);
+	  $("#edit_zydm").val(ob[1].innerText);
+	  $("#edit_zymc").val(ob[2].innerText);
+	  $("#edit_zyywm").val(ob[3].innerText);
+	  $("#edit_xkmldm").val(ob[5].innerText);
+	  $("#edit_zydldm").val(ob[6].innerText);
+	  $("#editmodal").modal('show');
+	}
+	
+	function add_marjor(){
+		let zydm = $("#zydm").val();
+		let zymc = $("#zymc").val();
+		let zyywm = $("#zyywm").val();
+		let xydm = $("#xydm").val();
+		let xkmldm= $("#xkmldm").val();
+		let zydldm = $("#zydldm").val();
+		if (! (zydm && zymc) ) {
+		  alert("专业代码和专业名称不能为空")
+		  return ;
+		}
+	  	$.ajax({
+		  url: "/2020/10/25/major/majoradd",
+		  type: "post",
+		  dataType:"json",
+		  data: {"zydm": zydm, "zymc": zymc, "zyywm": zyywm, "xydm": xydm, "xkmldm": xkmldm, "zydldm": zydldm},
+		  success: function (res) {
+			$("#msg").append(pop_msg("info", "保存成功", 2000));
+			refresh_data();
+			$("#addmodal").modal('hide');
+		  },
+		  error: function (xhr) {
+			xhr = JSON.parse(xhr.responseText);
+			console.log(xhr)
+			$("#msg").append(pop_msg("info", "<br>保存失败 " + xhr.RTN_MSG, 2000));
+		  }
+	  })
+	}
+	
+	function post_edit() {
+		let zydm = $("#edit_zydm").val();
+		let zymc = $("#edit_zymc").val();
+		let zyywm = $("#edit_zyywm").val();
+		let xydm = $("#edit_xydm").val();
+		let xkmldm= $("#edit_xkmldm").val();
+		let zydldm = $("#edit_zydldm").val();
+		confirm(null, "确认修改<span style='color:red'>" + $("#edit_modal_title").text() + "</span>?", function (isConfirm) {
+					  if (isConfirm) {
+						  $.ajax({
+							  url: "/2020/10/25/major/majoredit",
+							  type: "post",
+							  data: {"zydm": zydm, "zymc": zymc, "zyywm": zyywm, "xydm": xydm, "xkmldm": xkmldm, "zydldm": zydldm},
+							  success: function (res) {
+								  $("#msg").append(pop_msg("info", "修改成功"));
+								  $("#editmodal").modal("hide");
+								  refresh_data();
+							  },
+							  error: function (res) {
+								  res = JSON.parse(res.responseText);
+								  console.log(res)
+								  $("#msg").append(pop_msg("error", " <br>修改专业,可能" + res.RTN_MSG , 3000));
+							  }
+						  })
+					  }
+				  },
+			  {
+					  type: 'question',
+					  confirmButtonText: '确认'
+				  }
+			)
+	}
+	function delete_major( zydm ) {
+	  $.ajax({
+			  url: "/2020/10/25/major/majordel",
+			  type: "post",
+			  data: {"zydm": zydm},
+			  success: function (res) {
+				$("#msg").append(pop_msg("info", "删除成功", 2000));
+				refresh_data();
+				$("#addmodal").modal('hide');
+			  },
+			  error: function (res) {
+				res = JSON.parse(res.responseText);
+				$("#msg").append(pop_msg("info", "<br>删除失败," + res.RTN_MSG, 2000));
+			  }
+		  })
+	}
+
+	$("#addmodal").on('hidden.bs.modal', function () {
+	  $("#modal_title").text("新增学院信息");
+	  $("#xymc").val('');
+	  $("#xyywm").val('');
+	  $("#xydm").val('');
+	  $("#xylxr").val('');
+	  $("#xylxdh").val('');
+	});
+
+	function pop_msg ( level, msg, time=1500 ) {
+	let alert_class = "";
+	let tip_title = "";
+	if (level === 'info') {
+		alert_class = "alert-info";
+		tip_title = "消息<br>";
+	}
+	else if (level === 'warn') {
+		alert_class = "alert-warning";
+		tip_title = "警告<br>";
+	}
+	else if (level === "error") {
+		alert_class = "alert-danger";
+		tip_title = "错误<br>";
+	}
+	let randid = Math.ceil(Math.random()*10);
+	let div = "<div class=\"alert " + alert_class + "\" id='tip"+ randid +"'>\n" +
+			"\t<a href=\"#\" class=\"close\" data-dismiss=\"alert\">\n" +
+			"\t\t&times;\n" +
+			"\t</a>\n" +
+			"\t<strong>"+ tip_title + "</strong>"+ msg +"\n" +
+			"</div>"
+	setTimeout(function () {
+		$("#tip" + randid).remove();
+	}, time)
+	return div;
+	}
+
+	function refresh_data() {		// 刷新数据
+		let opt = {
+			url: "/2020/10/25/api/majorlist",
+			silent: true,
+		}
+		$("#table").bootstrapTable('refresh', opt);
+	};
+	</script>
+</html>

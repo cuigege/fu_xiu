@@ -1,0 +1,226 @@
+{
+  "database": {
+    "oracle": {
+        "xscs": {
+                "host": "192.168.120.31",
+                "port": "1521",
+                "db": "xscs",
+                "username": "usr_zsj",
+                "password": "Shuang00"
+        },
+      "usr_wfw": {
+                "host": "192.168.120.31",
+                "port": "1521",
+                "db": "xscs",
+                "username": "usr_wfw",
+                "password": "Wfw#753951"
+        }
+    },
+    "mysql": {
+      "mysql1": {
+            "host": "210.42.150.134",
+            "port": "3306",
+            "db": "do",
+            "username": "do",
+            "password": "Shuang00"
+      }
+    },
+    "sqlserver": {
+        "mssql51": {
+          "host": "192.168.120.51",
+          "port": "1433",
+          "db": "things",
+          "username": "sa",
+          "password": "reatgreen@2019"
+        }
+    }
+  },
+  "api": {
+    "lj": {
+      "name": "路径",
+      "driver": "oracle",
+      "connect_db": "wfw_usr",
+      "table": "usr_zsj.T_FX_LJ",
+      "type": "select",
+      "allow_method": [
+        "GET"
+      ],
+      "allow_field": [],
+      "PrepareSQL": "select t1.CDZWM, t2.ZWM, t2.LJDM from usr_wfw.T_FX_XTCD t1, usr_wfw.T_FX_LJ t2 where t1.CDDM=t2.SSCDDM"
+    },
+    "cd": {
+      "name": "菜单",
+      "driver": "oracle",
+      "connect_db": "wfw_usr",
+      "table": "usr_zsj.T_FX_XTCD",
+      "type": "select",
+      "allow_method": [
+        "GET"
+      ],
+      "allow_field": [],
+      "PrepareSQL": "select CDDM, CDZWM from usr_wfw.T_FX_XTCD"
+    },
+    "userprivileges": {
+      "name": "用户权限",
+      "driver": "oracle",
+      "connect_db": "wfw_usr",
+      "table": "usr_zsj.T_FX_XTCD",
+      "type": "select",
+      "allow_method": [
+        "GET"
+      ],
+      "allow_field": [],
+      "PrepareSQL": "select CDDM, CDZWM from usr_wfw.T_FX_XTCD"
+    },
+    "adminuserlist": {
+      "name": "管理员用户列表",
+      "driver": "oracle",
+      "connect_db": "wfw_usr",
+      "table": "usr_zsj.T_FX_GLY",
+      "type": "select",
+      "allow_method": [
+        "GET"
+      ],
+      "allow_field": [
+        "search"
+      ],
+      "PrepareSQL": "select t1.GLYDM, t1.YHXM, t1.ZCSJ, t1.ZHMC, t2.JSZWM  from USR_WFW.T_FX_GLY t1 left join USR_WFW.T_FX_JS t2 on t1.JSDM=t2.JSDM where t1.JSDM != '-1' "
+    },
+    "teacheruserlist": {
+      "name": "教师用户列表",
+      "driver": "oracle",
+      "connect_db": "wfw_usr",
+      "table": "usr_zsj.T_FX_JS",
+      "type": "select",
+      "allow_method": [
+        "GET"
+      ],
+      "allow_field": [
+        "search"
+      ],
+      "PrepareSQL": "select t1.ZGH, t1.JSXM, t1.LRSJ from USR_WFW.T_FX_LS t1 left join USR_WFW.T_FX_JS t2 on t1.JSDM=t2.JSDM where t1.JSDM != '-1' "
+    },
+    "collegeslist": {
+      "name": "学院列表",
+      "driver": "oracle",
+      "connect_db": "wfw_usr",
+      "table": "usr_zsj.T_FX_XY",
+      "type": "select",
+      "allow_method": [
+        "GET"
+      ],
+      "allow_field": [
+        "search"
+      ],
+      "PrepareSQL": "select * from usr_wfw.T_FX_XY"
+    },
+    "majorlist": {
+      "name": "专业列表",
+      "driver": "oracle",
+      "connect_db": "wfw_usr",
+      "table": "usr_zsj.T_FX_ZY",
+      "type": "select",
+      "allow_method": [
+        "GET"
+      ],
+      "allow_field": [
+        "search"
+      ],
+      "PrepareSQL": "select t5.*, t6.XKMC XKMLMC from ( select t3.*, t4.ZYDLMC from (  select t1.*, t2.ZWMC XYZWM from usr_wfw.T_FX_ZY t1 left join usr_wfw.T_FX_XY t2 on t1.XYDM=t2.XYDM ) t3 left join usr_wfw.T_FX_ZYDL t4 on t4.ZYDLDM = t3.ZYDLDM ) t5 left join usr_wfw.T_FX_XKML t6 on t5.XKMLDM=t6.XKDM"
+    },
+    "collegemajorlist": {
+      "name": "根据学院代码查专业",
+      "driver": "oracle",
+      "connect_db": "wfw_usr",
+      "table": "usr_zsj.T_FX_ZY",
+      "type": "select",
+      "allow_method": [
+        "GET"
+      ],
+      "allow_field": [
+        "search",
+        "xydm"
+      ],
+      "PrepareSQL": "select ZWMC, YWMC, ZYDM, XKMLDM, ZYDLDM from usr_wfw.T_FX_ZY where xydm=?"
+    },
+    "minormajorlistbyxy": {
+      "name": "根据学院代码查辅修专业",
+      "driver": "oracle",
+      "connect_db": "wfw_usr",
+      "table": "usr_zsj.T_FX_FXZY",
+      "type": "select",
+      "allow_method": [
+        "GET"
+      ],
+      "allow_field": [
+        "search",
+        "xydm"
+      ],
+      "PrepareSQL": "select ZWMC, YWMC, ZYDM, XKMLDM, ZYDLDM, SZSJ from usr_wfw.T_FX_FXZY where xydm=?"
+    },
+    "minormajorlist": {
+      "name": "某年辅修专业列表",
+      "driver": "oracle",
+      "connect_db": "wfw_usr",
+      "table": "usr_zsj.T_FX_FXZY",
+      "type": "select",
+      "allow_method": [
+        "GET"
+      ],
+      "allow_field": [
+        "search",
+        "year"
+      ],
+      "PrepareSQL": "select t1.*, substr(t1.SZSJ, 0, 4) FXNJ , t2.ZWMC XYMC from usr_wfw.T_FX_FXZY t1 left join usr_wfw.T_FX_XY t2 on t1.XYDM=t2.XYDM where to_char(sysdate, 'yyyy')=?"
+    },
+    "trainingprogram": {
+      "name": "某学年某专业的辅修培养方案",
+      "driver": "oracle",
+      "connect_db": "wfw_usr",
+      "table": "usr_zsj.T_FX_PYFA",
+      "type": "select",
+      "allow_method": [
+        "GET"
+      ],
+      "allow_field": [
+        "zydm",
+        "year"
+      ],
+      "PrepareSQL": "select * from usr_wfw.T_FX_PYFA where ZYDM=? and substr(XGSJ, 0, 4) = ?"
+    },
+    "bigcategory": {
+      "name": "专业大类列表",
+      "driver": "oracle",
+      "connect_db": "wfw_usr",
+      "table": "usr_zsj.T_FX_ZYDL",
+      "type": "select",
+      "allow_method": [
+        "GET"
+      ],
+      "allow_field": [
+        "search"
+      ],
+      "PrepareSQL": "select * from usr_wfw.T_FX_ZYDL"
+    },
+    "subjectcategory": {
+      "name": "学科门类",
+      "driver": "oracle",
+      "connect_db": "wfw_usr",
+      "table": "usr_zsj.T_FX_XKML",
+      "type": "select",
+      "allow_method": ["GET"],
+      "allow_field": ["search"],
+      "PrepareSQL": "select * from usr_wfw.T_FX_XKML"
+    },
+    "admissionstimelist": {
+      "name": "招生时间设置列表",
+      "driver": "oracle",
+      "connect_db": "wfw_usr",
+      "table": "usr_zsj.T_FX_XKML",
+      "type": "select",
+      "allow_method": ["GET"],
+      "allow_field": ["search"],
+      "PrepareSQL": "select * from usr_wfw.T_FX_ZSJH_SJ"
+    }
+  }
+}

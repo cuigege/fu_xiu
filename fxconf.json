@@ -1,0 +1,15 @@
+{
+  "database": {
+    "default": {
+      "host": "192.168.120.31",
+      "port": "1521",
+      "db": "xscs",
+      "username": "usr_zsj",
+      "password": "Shuang00"
+    }
+  },
+  "session": {
+    "time": 3600
+  },
+  "base_url": "2020/10/25"
+}
