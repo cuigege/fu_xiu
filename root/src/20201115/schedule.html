@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>民大辅修</title>
+    <!--强制让文档与设备的宽度保持1：1,对页面设置不能进行缩放-->
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <!--忽略页面中的数字识别为电话，忽略email识别-->
+    <meta name="format-detection" content="telphone=no, email=no"/>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.3/style/weui.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.1/css/jquery-weui.min.css">
+    <style>
+        ul,li{
+            list-style: none;
+        }
+        a:hover{
+            text-decoration: none;
+        }
+        .search-box{
+            font-size: .6rem;
+            padding-top: .5rem;
+            display: flex;
+            padding-left: 3px;
+        }
+        .search-box .search-div{
+            flex: 1;
+            line-height: 2;
+        }
+        .search-btn{
+            position: relative;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 14px;
+            padding-right: 14px;
+            box-sizing: border-box;
+            font-size: 12px;
+            text-align: center;
+            text-decoration: none;
+            color: #fff;
+            line-height: 2.55555556;
+            border-radius: 5px;
+            -webkit-tap-highlight-color: rgba(0,0,0,0);
+            overflow: hidden;
+            background-color: #00be67;
+            border: none;
+        }
+
+        input:-webkit-autofill,select:-webkit-autofill {
+            -webkit-box-shadow: 0 0 0px 1000px white  inset !important;
+        }
+        input {
+            outline-color: invert;
+            outline-style: none;
+            outline-width: 0px;
+            border: none;
+            border-style: none;
+            text-shadow: none;
+            -webkit-appearance: none;
+            -webkit-user-select: text;
+            outline-color: transparent;
+            box-shadow: none;
+            line-height: 2.5;
+        }
+        .toolbar .title {
+            line-height: .3rem;
+        }
+        .content-box{
+            margin-top: 1rem;
+            padding: .3rem;
+            overflow: hidden;
+            overflow-x: scroll;
+        }
+        .content-box table{
+            text-align: center;
+            min-width: 1000px;
+            margin-right: .3rem;
+        }
+        .content-box th,td{
+            text-align: center;
+            font-size: 15px;
+            padding: .5rem;
+        }
+    </style>
+</head>
+<body>
+<!-- 首页 -->
+<header style="border-bottom: solid 1px #ccc">
+    <div class="" style="text-align: center;height: 4rem;line-height: 4rem;font-size: 1rem;color: #33CCFF;">我的课表</div>
+</header>
+<!-- 搜索区域 -->
+<div class="search-box">
+    <div class="search-div" style="line-height: 2.5;padding-left: .3rem;">学年学期</div>
+    <div class="search-div" style="padding-left: .3rem;flex: 3;">
+        <input type="text" style="width: 50%" id="xn" placeholder="请选择学年">
+        <input type="text" style="width: 30%" id="xq" placeholder="请选择学期">
+    </div>
+    <div class="search-div" style="padding-right: .3rem">
+        <button class="search-btn">搜索</button>
+    </div>
+</div>
+
+<!-- 课表区域 -->
+<div class="content-box">
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>序号</th>
+                <th>辅修年级</th>
+                <th>班级</th>
+                <th>课程中文名</th>
+                <th>课程英文名</th>
+                <th>课程类别</th>
+                <th>学分</th>
+                <th>学时</th>
+                <th>上课时间</th>
+                <th>上课地点</th>
+                <th>上课教师</th>
+                <th>参考材料</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>2019级</td>
+                <td>-</td>
+                <td>数据结构</td>
+                <td>-</td>
+                <td>核心课程</td>
+                <td>3</td>
+                <td>50</td>
+                <td>周六1-4节</td>
+                <td>0204</td>
+                <td>杜晓</td>
+                <td>-</td>
+            </tr>
+        <tr>
+                <td>2</td>
+                <td>2019级</td>
+                <td>-</td>
+                <td>计算机基础</td>
+                <td>-</td>
+                <td>核心课程</td>
+                <td>3</td>
+                <td>50</td>
+                <td>周六5-7节</td>
+                <td>0204</td>
+                <td>杜晓</td>
+                <td>-</td>
+            </tr>
+        </tbody>
+
+    </table>
+</div>
+
+
+
+<script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
+<script>
+    $(function () {
+        $("#xn").picker({
+            title: "请选择学年",
+            cols: [
+                {
+                    textAlign: 'center',
+                    values: [
+                        '2019-2020学年',
+                        '2020-2021学年'
+                    ]
+                }
+            ]
+        });
+        $("#xq").picker({
+            title: "请选择学期",
+            cols: [
+                {
+                    textAlign: 'center',
+                    values: [
+                        '第一学期','第二学期'
+                    ]
+                }
+            ]
+        });
+    })
+</script>
+</body>
+</html>

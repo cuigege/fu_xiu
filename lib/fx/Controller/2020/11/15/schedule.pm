@@ -1,4 +1,4 @@
-package fx::Controller::2020::11::15;
+package fx::Controller::2020::11::15::schedule;
 use Moose;
 use namespace::autoclean;
 
@@ -6,7 +6,8 @@ BEGIN { extends 'Catalyst::Controller'; }
 
 =head1 NAME
 
-fx::Controller::2020::11::15 - Catalyst Controller
+我的课表控制器
+fx::Controller::2020::11::15::schedule - Catalyst Controller
 
 =head1 DESCRIPTION
 
@@ -17,17 +18,6 @@ Catalyst Controller.
 =cut
 
 
-=head2
-
-=cut
-
-sub auto : Private {
-
-    my ( $self, $c ) = @_;
-
-
-}
-
 =head2 index
 
 =cut
@@ -35,9 +25,7 @@ sub auto : Private {
 sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
 
-    $c->response->redirect(	# url重定向跳转到主页
-        $c->uri_for( $c->controller( '2020::11::15::main' )->action_for( 'index' ) ), 301
-    );
+    $c->stash->{template} = '20201115/schedule.html';
 }
 
 
