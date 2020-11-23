@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>民大辅修</title>
+    <!--强制让文档与设备的宽度保持1：1,对页面设置不能进行缩放-->
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <!--忽略页面中的数字识别为电话，忽略email识别-->
+    <meta name="format-detection" content="telphone=no, email=no"/>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.3/style/weui.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.1/css/jquery-weui.min.css">
+
+    <style>
+        .content{
+            min-height: 15rem;
+            padding: .5rem;
+        }
+        .toolbar .title {
+            line-height: .3rem;
+        }
+        a:hover{
+            text-decoration: none;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div class="content">
+<header>
+      <div class="" style="text-align: center;height: 4rem;line-height: 4rem;font-size: 1rem;color: #33CCFF;">辅修报名</div>
+</header>
+    <div class="weui-cells__title">学生信息</div>
+    <div class="weui-cells">
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>姓名</p>
+            </div>
+            <div class="weui-cell__ft xm"></div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>学号</p>
+            </div>
+            <div class="weui-cell__ft xh"></div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>考生号</p>
+            </div>
+            <div class="weui-cell__ft ksh"></div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>性别</p>
+            </div>
+            <div class="weui-cell__ft xbmc"></div>
+        </div>
+
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>身份证号</p>
+            </div>
+            <div class="weui-cell__ft sfzjh"></div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>民族</p>
+            </div>
+            <div class="weui-cell__ft mzmc"></div>
+        </div>
+
+    </div>
+    <div class="weui-cells__title">主修专业信息</div>
+    <div class="weui-cells">
+
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>主修学院</p>
+            </div>
+            <div class="weui-cell__ft xy"></div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>主修年级</p>
+            </div>
+            <div class="weui-cell__ft nj"></div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>主修入学日期</p>
+            </div>
+            <div class="weui-cell__ft rxrq"></div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>主修专业</p>
+            </div>
+            <div class="weui-cell__ft zy"></div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>主修专业所属学科门类</p>
+            </div>
+            <div class="weui-cell__ft xkml"></div>
+        </div>
+    </div>
+    <div class="weui-cells__title">辅修专业信息</div>
+    <div class="weui-cells ">
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>辅修学院</p>
+            </div>
+            <div class="weui-cell__ft">
+                <input type="text" class="weui-input" id="xy" style="text-align: right;">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>辅修专业</p>
+            </div>
+            <div class="weui-cell__ft">
+                <input type="text" class="weui-input" id="zy" style="text-align: right;">
+            </div>
+        </div>
+    </div>
+    <div style="height: 10rem;"></div>
+    <a href="javascript:;" class="weui-btn weui-btn_primary">确认</a>
+</div>
+<!-- body 最后 -->
+<script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
+<script>
+    $(function () {
+
+        $("#xy").picker({
+            title: "请选择辅修学院",
+            cols: [
+                {
+                    textAlign: 'center',
+                    values: [
+                        '法学院',
+                        '计算机科学学院', '电子信息工程学院'
+                    ]
+                }
+            ]
+        });
+
+        $("#zy").picker({
+            title: "请选择辅修专业",
+            cols: [
+                {
+                    textAlign: 'center',
+                    values: [
+                        '数学与应用数学',
+                        '信息与计算科学',
+                    ]
+                }
+            ]
+        });
+
+        $.get("/2020/10/25/api/getStudentInfo?xh=201821111999",{},function (res) {
+
+            let data = JSON.parse(res);
+            let info = data.DATA;
+            if(info.length>0){
+                info = info[0];
+                console.log(info)
+                // 学生信息填写
+                $('.xm').html(info.XM);
+                $('.xh').html(info.XH);
+                $('.ksh').html(info.KSH);
+                $('.xbmc').html(info.XBMC);
+                $('.sfzjh').html(info.SFZJH);
+                $('.mzmc').html(info.MZMC);
+
+                $('.xy').html(info.XYMC);
+                $('.nj').html(info.XZNJ);
+                $('.rxrq').html(info.RXRQ);
+                $('.zy').html(info.ZYMC);
+                $('.mzmc').html(info.MZMC);
+            }
+        })
+    })
+</script>
+</body>
+</html>
