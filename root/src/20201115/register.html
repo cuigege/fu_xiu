@@ -158,6 +158,8 @@
             ]
         });
 
+
+        // 获取用户数据
         $.get("/2020/10/25/api/getStudentInfo?xh=201821111999",{},function (res) {
 
             let data = JSON.parse(res);
@@ -180,6 +182,10 @@
                 $('.mzmc').html(info.MZMC);
             }
         })
+
+        // 获取辅修学院和专业
+
+
     })
 </script>
 </body>
