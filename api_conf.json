@@ -220,7 +220,7 @@
       "type": "select",
       "allow_method": ["GET"],
       "allow_field": ["search"],
-      "PrepareSQL": "select * from usr_wfw.T_FX_ZSJH_SJ"
+      "PrepareSQL": "select FXNJ, concat(concat(BMKSSJ, '-'), BMJZSJ) BMQZSJ, concat(concat(YJDJFKSSJ, '-'), EJDJFKSSJ) YJDJFQZSJ, concat(concat(EJDJFKSSJ,'-'),EJDJFJZSJ) EJDJFQZSJ, concat(concat(CJLRKSSJ, '-'), CJLRJZSJ) CJLRQZSJ, concat(concat(CJBGKSSJ,'-'),CJBGJZSJ) CJBGQZSJ from usr_wfw.T_FX_ZSJH_SJ order by FXNJ desc"
     }
   }
 }
