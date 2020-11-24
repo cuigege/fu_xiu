@@ -1,6 +1,8 @@
 package fx::Controller::2020::10::25::MinorEnrollmentManage;
 use Moose;
 use namespace::autoclean;
+use utf8;
+use Data::Dumper;
 
 BEGIN { extends 'Catalyst::Controller'; }
 
@@ -23,8 +25,9 @@ Catalyst Controller.
 
 sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
-
-    $c->response->body('Matched fx::Controller::2020::10::25::MinorEnrollmentManage in 2020::10::25::MinorEnrollmentManage.');
+    $c->stash({
+        template    => "20201019/minorenrollstudentlist.html",
+    });
 }
 
 

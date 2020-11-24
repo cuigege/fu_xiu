@@ -1,0 +1,210 @@
+<html lang="zh">
+	<head>
+		<meta charset="UTF-8">
+<!--		表格拖动插件 -->
+		<link href="/static/css/bootstrap-table.min.css" rel="stylesheet">
+		<link href="/static/css/jquery.resizableColumns.css" rel="stylesheet">
+		<link href="/static/css/bootstrap-switch.min.css" rel="stylesheet">
+		<style type="text/css">
+			td, th{
+				text-align: center;
+			}
+			.input-group{
+				padding-bottom: 5px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="col-md-12 text-right">
+			<div id="toolbar"></div>
+			<table class="table table-striped table-hover" id="table"></table>
+		</div>
+		<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title"><span id="jsLabel" class="text-info"></span> 角色权限</h4>
+					</div>
+					<div class="modal-body text-right">
+						<table class="table table-striped table-hover " id="privileges_table"
+							  data-show-columns="true"
+							  data-search="true"
+							  data-pagination="true"
+							  data-click-to-select="true"
+							  data-resizable="true">
+						  <thead>
+							<tr>
+							<th>路径ID</th>
+							<th>所属菜单</th>
+							<th>路径</th>
+							<th>说明</th>
+							<th data-width="200" data-switchable="false">授权状态</th>
+							</tr>
+						  </thead>
+						  <tbody id="privilege_tbody">
+						  </tbody>
+						</table>
+					</div>
+				</div><!-- /.modal-content -->
+		</div>
+		<div id="msg" style="width: 200px; height: 100px;z-index: 9999; position: absolute; top: 10%;left: 40%"></div>
+	</body>
+	<script src="/static/js/jquery-2.0.3.min.js"></script>
+	<script src="/static/js/bootstrap.min.js"></script>
+	<script src="/static/js/jquery.resizableColumns.min.js"></script>
+	<script src="/static/js/bootstrap-table.min.js"></script>
+	<script src="/static/js/bootstrap-table-resizable.min.js"></script>
+	<script src="/static/js/bootstrap-table-locale-all.min.js"></script>
+	<script src="/static/js/bootstrap-switch.min.js"></script>
+	<script type="application/javascript">
+	  $(function() {
+		$('#table').bootstrapTable({
+			method: 'get',
+			locale:'zh-CN',//中文支持,
+			contentType: "application/x-www-form-urlencoded",//必须要有！！！！
+			url:"/2020/10/25/api/enrollstudent",//要请求数据的文件路径
+			// height:tableHeight(),//高度调整
+			toolbar: '#toolbar',//指定工具栏
+			striped: true, //是否显示行间隔色
+			dataField: "res",//bootstrap table 可以前端分页也可以后端分页，这里
+			pageNumber: 1, //初始化加载第一页，默认第一页
+			pagination:true,//是否分页
+			sidePagination:'client',//指定前端分页
+			pageSize:10,//单页记录数
+			showColumns:true,
+			clickToSelect: true,//是否启用点击选中行
+			toolbarAlign:'right', //工具栏对齐方式
+			buttonsAlign:'right',//按钮对齐方式
+			columns:[
+				{
+					title:'全选',
+					field:'select',
+					//复选框
+					checkbox:true,
+					width:25,
+					align:'center',
+					valign:'middle'
+				},
+				{
+					title:'学号',
+					field:'SFRZH',
+					sortable:true,
+					visible:true
+				},
+				{
+					title:'姓名',
+					field:'XM',
+				},
+				{
+					title:'性别',
+					field:'XB',
+				},
+				{
+					title:'民族',
+					field:'MZ',
+				},
+				{
+					title:'联系电话',
+					field:'LXDH'
+				},
+		  		{
+					title:'主修年级',
+					field:'ZXNJ'
+				},
+		  		{
+					title:'主修学院',
+					field:'ZXXY'
+				},
+		  		{
+					title:'主修专业',
+					field:'ZXZY'
+				},
+				{
+					title:'辅修学院',
+					field:'FXFY'
+				},
+				{
+					title:'辅修专业',
+					field:'FXZY'
+				},
+				{
+					title:'操作',
+					field:'CZ'
+				},
+			],
+			responseHandler:function(res){
+				//在ajax获取到数据，渲染表格之前，修改数据源
+				res = res.DATA;
+				if (res.length > 0) {
+					for( let i = 0 ; i < res.length; i++ ){
+							if (res[i].SHZT == 1)
+								res[i].CZ = "<input type='checkbox' name='shzt_switch' checked value='"+ res[i].SFRZH +"'>";
+							else
+								res[i].CZ = "<input type='checkbox' name='shzt_switch' value='"+ res[i].SFRZH +"'>";
+						}
+				}
+				return res;
+			},
+			onAll: function(data){
+            	$('input[name="shzt_switch"]').bootstrapSwitch({
+			　　　　onText : "通过",      // 设置ON文本
+			　　　　offText : "拒绝",    // 设置OFF文本
+			　　　　onColor : "success",// 设置ON文本颜色(info/success/warning/danger/primary)
+			　　　　offColor : "danger",  // 设置OFF文本颜色 (info/success/warning/danger/primary)
+			　　　　size : "small",    // 设置控件大小,从小到大  (mini/small/normal/large)
+			　　　　onSwitchChange : function(event, state) {
+						let qx_arr = [];
+						$('input[name="shzt_switch"]').each(function (val, obj) {
+							if (obj.checked) {
+								qx_arr.push(obj.value)
+							}
+						})
+						$.ajax({
+							url: "/2020/10/25/role/privileges",
+							type: "post",
+							data: {"qx_arr": qx_arr.toLocaleString(), "jsdm": jsdm},
+							success: function (res) {
+								$("#msg").append(pop_msg ( "info", "操作成功", 1500 ));
+							},
+							error: function (res) {
+								console.log(res)
+								$("#msg").append(pop_msg ( "error", "操作失败，内容不会被保存", 1500 ));
+							}
+						})
+			　　　　}
+　　				})
+        	}
+		})
+		$("[data-toggle='tooltip']").tooltip();
+	  })
+
+	  function pop_msg ( level, msg, time=1500 ) {
+		  let alert_class = "";
+		  let tip_title = "";
+		  if (level === 'info') {
+			  alert_class = "alert-info";
+			  tip_title = "消息";
+		  } else if (level === 'warn') {
+			  alert_class = "alert-warning";
+			  tip_title = "警告！";
+		  } else if (level === "error") {
+			  alert_class = "alert-danger";
+			  tip_title = "错误！";
+		  }
+		  let randid = Math.ceil(Math.random() * 10);
+		  let div = "<div class=\"alert " + alert_class + "\" id='tip" + randid + "'>\n" +
+				  "\t<a href=\"#\" class=\"close\" data-dismiss=\"alert\">\n" +
+				  "\t\t&times;\n" +
+				  "\t</a>\n" +
+				  "\t<strong>" + tip_title + "</strong>" + msg + "\n" +
+				  "</div>"
+		  setTimeout(function () {
+			  $("#tip" + randid).remove();
+		  }, time)
+		  return div;
+	  }
+	  function show_privilege(jsdm) {
+	  	$("#jsLabel").text($("#jszwm"+jsdm).text());
+	  }
+	</script>
+</html>

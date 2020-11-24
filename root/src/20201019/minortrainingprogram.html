@@ -72,7 +72,7 @@
 	<script src="/static/js/bootstrap-switch.min.js"></script>
 	<script type="application/javascript">
 	let myeditor;
-	$(function() {
+	$( function() {
 		let myDate = new Date();
 		$('#table').bootstrapTable({
 			method: 'get',
@@ -129,7 +129,7 @@
 				//在ajax获取到数据，渲染表格之前，修改数据源
 				res = res.DATA;
 				for (let i = 0; i < res.length; i++) {
-					res[i].CZ = "<a onclick=\"fx_pyfa_set(this, " + res[i].ZYDM + ")\"><button type=\"button\" class=\"btn btn-info\" >培养方案设置</button></a>\n"
+					res[i].CZ = "<a onclick=\"fx_pyfa_set(this, '" + res[i].ZYDM + "')\"><button type=\"button\" class=\"btn btn-info\" >培养方案设置</button></a>\n"
 				}
 				return res;
 			},
@@ -138,6 +138,7 @@
 		ClassicEditor.create(document.querySelector('#editor'), {
 			toolbar: ['undo', 'redo',
 				'|', 'insertTable', 'tableColumn', 'tableRow', 'mergeTableCells'],
+			language: 'zh-cn'
 			}).then(editor => {
 					myeditor = editor;
 			}

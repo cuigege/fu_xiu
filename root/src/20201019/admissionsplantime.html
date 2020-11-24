@@ -21,6 +21,7 @@
 			</table>
 		</div>
 		<div id="msg" style="width: 200px; height: 100px;z-index: 99; position: absolute; top: 10%;left: 40%; text-align: center"></div>
+		[% IF flag == 1 %]
 		<!-- 新增模态框（Modal） -->
 		<div class="modal fade" id="addmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="#modal-dialog">
@@ -46,7 +47,7 @@
 								<div class="col-md-6">
 									<div class="input-group" >
 										<span class="input-group-addon">报名截止时间</span>
-										<input type="text" class="form-control" name="bmsjjz" id="bmsjjz">
+										<input type="datetime-local" class="form-control" name="bmjzsj" id="bmjzsj">
 									</div>
 								</div>
 							</div>
@@ -55,25 +56,25 @@
 								<div class="col-md-6">
 									<div class="input-group">
 										<span class="input-group-addon">一阶段缴费开始时间</span>
-										<input type="text" class="form-control" name="yjdks" id="yjdks">
+										<input type="datetime-local" class="form-control" name="yjdks" id="yjdks">
 									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="input-group">
 										<span class="input-group-addon">一阶段缴费截止时间</span>
-										<input type="text" class="form-control" name="yjdjz" id="yjdjz">
+										<input type="datetime-local" class="form-control" name="yjdjz" id="yjdjz">
 									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="input-group">
 										<span class="input-group-addon">二阶段缴费开始时间</span>
-										<input type="text" class="form-control" name="ejdks" id="ejdks">
+										<input type="datetime-local" class="form-control" name="ejdks" id="ejdks">
 									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="input-group">
 										<span class="input-group-addon">二阶段缴费截止时间</span>
-										<input type="text" class="form-control" name="ejdjz" id="ejdjz">
+										<input type="datetime-local" class="form-control" name="ejdjz" id="ejdjz">
 									</div>
 								</div>
 							</div>
@@ -82,25 +83,25 @@
 								<div class="col-md-6">
 									<div class="input-group">
 										<span class="input-group-addon">成绩录入开始时间</span>
-										<input type="text" class="form-control" name="cjlrks" id="cjlrks">
+										<input type="datetime-local" class="form-control" name="cjlrks" id="cjlrks">
 									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="input-group">
 										<span class="input-group-addon">成绩录入截止时间</span>
-										<input type="text" class="form-control" name="cjlrjz" id="cjlrjz">
+										<input type="datetime-local" class="form-control" name="cjlrjz" id="cjlrjz">
 									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="input-group">
 										<span class="input-group-addon">成绩变更开始时间</span>
-										<input type="text" class="form-control" name="cjbgks" id="cjbgks">
+										<input type="datetime-local" class="form-control" name="cjbgks" id="cjbgks">
 									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="input-group">
 										<span class="input-group-addon">二阶段缴费截止时间</span>
-										<input type="text" class="form-control" name="cjbgjz" id="cjbgjz">
+										<input type="datetime-local" class="form-control" name="cjbgjz" id="cjbgjz">
 									</div>
 								</div>
 							</div>
@@ -110,14 +111,15 @@
 						<button type="button" class="btn btn-default"
 								data-dismiss="modal">关闭
 						</button>
-						<button type="button" class="btn btn-primary" onclick="add_marjor()">
+						<button type="button" class="btn btn-primary" onclick="add_sj()">
 							提交保存
 						</button>
 					</div>
 				</div><!-- /.modal-content -->
 			</div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
-<!--		修改模态框-->
+		[% END %]
+		<!-- 修改模态框-->
 		<div class="modal fade" id="editmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="#modal-dialog">
 				<div class="modal-content">
@@ -125,42 +127,80 @@
 						<button type="button" class="close" data-dismiss="modal"
 								aria-hidden="true">×
 						</button>
-						<h4 class="modal-title" >
-							修改 <span style="color: red" id="edit_modal_title"></span> 信息
-						</h4>
+						<h4 class="modal-title" id="edit_modal_title"></h4>
 					</div>
 					<div class="modal-body">
-						<form class="bs-example bs-example-form" role="form">
-							<div class="input-group">
-								<span class="input-group-addon">专业代码</span>
-								<input type="text" class="form-control" name="edit_zydm" id="edit_zydm" disabled>
+						<form class="bs-example bs-example-form" role="form" >
+							<div>
+								<h3 class="text-info">报名时间</h3>
+								<div class="col-md-6">
+									<div class="input-group">
+										<span class="input-group-addon">报名开始时间</span>
+										<input type="datetime-local" class="form-control" name="bmkssj" id="bmkssj">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="input-group" >
+										<span class="input-group-addon">报名截止时间</span>
+										<input type="datetime-local" class="form-control" name="bmjzsj" id="bmjzsj">
+									</div>
+								</div>
 							</div>
-							<div class="input-group">
-								<span class="input-group-addon">专业名称</span>
-								<input type="text" class="form-control" name="edit_zymc" id="edit_zymc">
+							<div>
+								<h3 class="text-info">缴费时间</h3>
+								<div class="col-md-6">
+									<div class="input-group">
+										<span class="input-group-addon">一阶段缴费开始时间</span>
+										<input type="datetime-local" class="form-control" name="yjdks" id="yjdks">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="input-group">
+										<span class="input-group-addon">一阶段缴费截止时间</span>
+										<input type="datetime-local" class="form-control" name="yjdjz" id="yjdjz">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="input-group">
+										<span class="input-group-addon">二阶段缴费开始时间</span>
+										<input type="datetime-local" class="form-control" name="ejdks" id="ejdks">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="input-group">
+										<span class="input-group-addon">二阶段缴费截止时间</span>
+										<input type="datetime-local" class="form-control" name="ejdjz" id="ejdjz">
+									</div>
+								</div>
 							</div>
-							<div class="input-group">
-								<span class="input-group-addon">专业英文名</span>
-								<input type="text" class="form-control" name="edit_zyywm" id="edit_zyywm">
+							<div>
+								<h3 class="text-info">成绩相关</h3>
+								<div class="col-md-6">
+									<div class="input-group">
+										<span class="input-group-addon">成绩录入开始时间</span>
+										<input type="datetime-local" class="form-control" name="cjlrks" id="cjlrks">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="input-group">
+										<span class="input-group-addon">成绩录入截止时间</span>
+										<input type="datetime-local" class="form-control" name="cjlrjz" id="cjlrjz">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="input-group">
+										<span class="input-group-addon">成绩变更开始时间</span>
+										<input type="datetime-local" class="form-control" name="cjbgks" id="cjbgks">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="input-group">
+										<span class="input-group-addon">二阶段缴费截止时间</span>
+										<input type="datetime-local" class="form-control" name="cjbgjz" id="cjbgjz">
+									</div>
+								</div>
 							</div>
-							<div class="input-group">
-								<span class="input-group-addon">学院</span>
-								<select type="text" class="form-control" name="edit_xydm" id="edit_xydm">
-
-								</select>
-							</div>
-							<div class="input-group">
-								<span class="input-group-addon">学科门类</span>
-								<select type="text" class="form-control" name="edit_xkmldm" id="edit_xkmldm">
-									<option value="1">计算机</option>
-								</select>
-							</div>
-							<div class="input-group">
-								<span class="input-group-addon">专业大类</span>
-								<select type="text" class="form-control" name="edit_zydldm" id="edit_zydldm">
-									<option value="1">理工科</option>
-								</select>
-							</div>
+							<input hidden id="year">
 						</form>
 					</div>
 					<div class="modal-footer">
@@ -168,7 +208,7 @@
 								data-dismiss="modal">关闭
 						</button>
 						<button type="button" class="btn btn-primary" onclick="post_edit()">
-							提交修改
+							提交保存
 						</button>
 					</div>
 				</div><!-- /.modal-content -->
@@ -186,7 +226,7 @@
 	$(function() {
 		[% IF flag == 1 %]
 		$('#addmodal').modal("show");
-		return;
+			return;
 		[% END %]
 		$('#table').bootstrapTable({
 			method: 'get',
@@ -249,6 +289,7 @@
 			responseHandler:function(res){
 					//在ajax获取到数据，渲染表格之前，修改数据源
 					res = res.DATA;
+					console.log(res)
 					if ( res.length !== 0 ){
 						for (let i = 0; i < res.length; i++) {
 							res[i].CZ = "<a onclick=\"edit_time(this, "+ res[i].FXNJ + ')\" ' +
@@ -263,46 +304,56 @@
 		$("[data-toggle='tooltip']").tooltip();
 	})
 	
-	function edit_time(obj, fxnj) {
+	function edit_time(obj, year) {
 	  let option = "";
-	  $.get("/2020/10/25/api/subjectcategory?search", function (res) {
-			res = JSON.parse(res).DATA;
-			let option = "";
-						debugger
-			for (let i = 0; i < res.length; i++) {
-				if (xkmldm == res[i].XKDM )
-					option += "<option value='" + res[i].XKDM + "' selected>" + res[i].XKMC + "</option>";
-				else
-					option += "<option value='" + res[i].XKDM + "'>" + res[i].XKMC + "</option>";
-			}
-			$("#edit_xkmldm").html(option);
-		})
+	  $.get("/2020/10/25/api/admissionstimesearch?year=" + year, function (res) {
+			res = JSON.parse(res).DATA[0];
+		  	if (res.BMKSSJ != "")
+				$("#bmkssj").val(res.BMKSSJ.replace(' ', 'T'))
+			if (res.BMJZSJ != "")
+				$("#bmjzsj").val(res.BMJZSJ.replace(' ', 'T'))
+		  	if (res.YJDJFKSSJ != "")
+				$("#yjdks").val(res.YJDJFKSSJ.replace(' ', 'T'))
+		  	if (res.YJDJFJZSJ != "")
+				$("#yjdjz").val(res.YJDJFJZSJ.replace(' ', 'T'))
+		  	if (res.EJDJFKSSJ != "")
+				$("#ejdks").val(res.EJDJFKSSJ.replace(' ', 'T'))
+		  	if (res.EJDJFJZSJ != "")
+				$("#ejdjz").val(res.EJDJFJZSJ.replace(' ', 'T'))
+		  	if (res.CJLRKSSJ != "")
+				$("#cjlrks").val(res.CJLRKSSJ.replace(' ', 'T'))
+		  	if (res.CJLRJZSJ != "")
+				$("#cjlrjz").val(res.CJLRJZSJ.replace(' ', 'T'))
+		  	if (res.CJBGKSSJ != "")
+				$("#cjbgks").val(res.CJBGKSSJ.replace(' ', 'T'))
+		  	if (res.CJBGJZSJ != "")
+				$("#cjbgjz").val(res.CJBGJZSJ.replace(' ', 'T'))
+	  })
+	  $("#year").val(year);
 	  let ob = obj.parentNode.parentNode.childNodes;
-	  $("#edit_modal_title").text(ob[2].innerText);
-	  $("#edit_zydm").val(ob[1].innerText);
-	  $("#edit_zymc").val(ob[2].innerText);
-	  $("#edit_zyywm").val(ob[3].innerText);
-	  $("#edit_xkmldm").val(ob[5].innerText);
-	  $("#edit_zydldm").val(ob[6].innerText);
+	  $("#edit_modal_title").text("修改" + ob[1].innerText + "年辅修招生时间计划");
 	  $("#editmodal").modal('show');
 	}
-	
-	function add_marjor(){
-		let zydm = $("#zydm").val();
-		let zymc = $("#zymc").val();
-		let zyywm = $("#zyywm").val();
-		let xydm = $("#xydm").val();
-		let xkmldm= $("#xkmldm").val();
-		let zydldm = $("#zydldm").val();
-		if (! (zydm && zymc) ) {
-		  alert("专业代码和专业名称不能为空")
+
+	[% IF flag == 1 %]
+	function add_sj(){
+		let bmkssj = $("#bmkssj").val().replace('T', " ");
+		let bmjzsj = $("#bmjzsj").val().replace('T', " ");
+		let yjdks = $("#yjdks").val().replace('T', " ");
+		let yjdjz = $("#yjdjz").val().replace('T', " ");
+		let ejdks= $("#ejdks").val().replace('T', " ");
+		let ejdjz = $("#ejdjz").val().replace('T', " ");
+		let cjlrks = $("#cjlrks").val().replace('T', " ");
+		let cjlrjz = $("#cjlrjz").val().replace('T', " ");
+		if (! ( bmkssj  && bmjzsj ) ) {
+		  alert("必须有报名开始和截止时间")
 		  return ;
 		}
 	  	$.ajax({
-		  url: "/2020/10/25/major/majoradd",
+		  url: "/2020/10/25/admissionsplanmanagement/timesettings",
 		  type: "post",
 		  dataType:"json",
-		  data: {"zydm": zydm, "zymc": zymc, "zyywm": zyywm, "xydm": xydm, "xkmldm": xkmldm, "zydldm": zydldm},
+		  data: {"bmkssj": bmkssj, "bmsjjz": bmjzsj, "yjdks": yjdks, "yjdjz": yjdjz, "ejdks": ejdks, "ejdjz": ejdjz, "cjlrks":cjlrks, "cjlrjz":cjlrjz},
 		  success: function (res) {
 			$("#msg").append(pop_msg("info", "保存成功", 2000));
 			refresh_data();
@@ -315,20 +366,25 @@
 		  }
 	  })
 	}
+	[% END %]
 	
 	function post_edit() {
-		let zydm = $("#edit_zydm").val();
-		let zymc = $("#edit_zymc").val();
-		let zyywm = $("#edit_zyywm").val();
-		let xydm = $("#edit_xydm").val();
-		let xkmldm= $("#edit_xkmldm").val();
-		let zydldm = $("#edit_zydldm").val();
+		let bmkssj = $("#bmkssj").val().replace('T', " ");
+		let bmjzsj = $("#bmjzsj").val().replace('T', " ");
+		let yjdks = $("#yjdks").val().replace('T', " ");
+		let yjdjz = $("#yjdjz").val().replace('T', " ");
+		let ejdks= $("#ejdks").val().replace('T', " ");
+		let ejdjz = $("#ejdjz").val().replace('T', " ");
+		let cjlrks = $("#cjlrks").val().replace('T', " ");
+		let cjlrjz = $("#cjlrjz").val().replace('T', " ");
+		let cjbgks = $("#cjbgks").val().replace('T', " ");
+		let cjbgjz = $("#cjbgjz").val().replace('T', " ");
 		confirm(null, "确认修改<span style='color:red'>" + $("#edit_modal_title").text() + "</span>?", function (isConfirm) {
 					  if (isConfirm) {
 						  $.ajax({
-							  url: "/2020/10/25/major/majoredit",
+							  url: "/2020/10/25/admissionsplanmanagement/timeedit",
 							  type: "post",
-							  data: {"zydm": zydm, "zymc": zymc, "zyywm": zyywm, "xydm": xydm, "xkmldm": xkmldm, "zydldm": zydldm},
+							  data: {"bmkssj": bmkssj, "bmsjjz": bmjzsj, "yjdks": yjdks, "yjdjz": yjdjz, "ejdks": ejdks, "ejdjz": ejdjz, "cjlrks":cjlrks, "cjlrjz":cjlrjz, "cjbgks": cjbgks, "cjbgjz": cjbgjz, "year": $("#year").val()},
 							  success: function (res) {
 								  $("#msg").append(pop_msg("info", "修改成功"));
 								  $("#editmodal").modal("hide");
@@ -337,43 +393,17 @@
 							  error: function (res) {
 								  res = JSON.parse(res.responseText);
 								  console.log(res)
-								  $("#msg").append(pop_msg("error", " <br>修改专业,可能" + res.RTN_MSG , 3000));
+								  $("#msg").append(pop_msg("error", " <br>修改失败", 3000));
 							  }
 						  })
 					  }
 				  },
 			  {
-					  type: 'question',
-					  confirmButtonText: '确认'
-				  }
+				  type: 'question',
+				  confirmButtonText: '确认'
+			  }
 			)
 	}
-	function delete_major( zydm ) {
-	  $.ajax({
-			  url: "/2020/10/25/major/majordel",
-			  type: "post",
-			  data: {"zydm": zydm},
-			  success: function (res) {
-				$("#msg").append(pop_msg("info", "删除成功", 2000));
-				refresh_data();
-				$("#addmodal").modal('hide');
-			  },
-			  error: function (res) {
-				res = JSON.parse(res.responseText);
-				$("#msg").append(pop_msg("info", "<br>删除失败," + res.RTN_MSG, 2000));
-			  }
-		  })
-	}
-
-	$("#addmodal").on('hidden.bs.modal', function () {
-	  $("#modal_title").text("新增学院信息");
-	  $("#xymc").val('');
-	  $("#xyywm").val('');
-	  $("#xydm").val('');
-	  $("#xylxr").val('');
-	  $("#xylxdh").val('');
-	});
-
 	function pop_msg ( level, msg, time=1500 ) {
 	let alert_class = "";
 	let tip_title = "";
@@ -404,7 +434,7 @@
 
 	function refresh_data() {		// 刷新数据
 		let opt = {
-			url: "/2020/10/25/api/majorlist",
+			url: "/2020/10/25/api/admissionstimelist",
 			silent: true,
 		}
 		$("#table").bootstrapTable('refresh', opt);

@@ -216,11 +216,21 @@
       "name": "招生时间设置列表",
       "driver": "oracle",
       "connect_db": "wfw_usr",
-      "table": "usr_zsj.T_FX_XKML",
+      "table": "usr_zsj.T_FX_ZSJH_SJ",
       "type": "select",
       "allow_method": ["GET"],
       "allow_field": ["search"],
-      "PrepareSQL": "select FXNJ, concat(concat(BMKSSJ, '-'), BMJZSJ) BMQZSJ, concat(concat(YJDJFKSSJ, '-'), EJDJFKSSJ) YJDJFQZSJ, concat(concat(EJDJFKSSJ,'-'),EJDJFJZSJ) EJDJFQZSJ, concat(concat(CJLRKSSJ, '-'), CJLRJZSJ) CJLRQZSJ, concat(concat(CJBGKSSJ,'-'),CJBGJZSJ) CJBGQZSJ from usr_wfw.T_FX_ZSJH_SJ order by FXNJ desc"
+      "PrepareSQL": "select FXNJ, concat(concat(BMKSSJ, ' - '), BMJZSJ) BMQZSJ, concat(concat(YJDJFKSSJ, ' - '), YJDJFJZSJ) YJDJFQZSJ, concat(concat(EJDJFKSSJ,' - '),EJDJFJZSJ) EJDJFQZSJ, concat(concat(CJLRKSSJ, ' - '), CJLRJZSJ) CJLRQZSJ, concat(concat(CJBGKSSJ,' - '),CJBGJZSJ) CJBGQZSJ from usr_wfw.T_FX_ZSJH_SJ order by FXNJ desc"
+    },
+    "admissionstimesearch": {
+      "name": "获取某年的招生计划",
+      "driver": "oracle",
+      "connect_db": "wfw_usr",
+      "table": "usr_zsj.T_FX_ZSJH_SJ",
+      "type": "select",
+      "allow_method": ["GET"],
+      "allow_field": ["year"],
+      "PrepareSQL": "select FXNJ, BMKSSJ, BMJZSJ ,YJDJFKSSJ,YJDJFJZSJ, EJDJFKSSJ,EJDJFJZSJ, CJLRKSSJ,CJLRJZSJ,CJBGKSSJ,CJBGJZSJ from usr_wfw.T_FX_ZSJH_SJ where FXNJ = ?",
     },
     "getStudentInfo": {
       "name": "获取学生信息",
@@ -231,6 +241,36 @@
       "allow_method": ["GET"],
       "allow_field": ["xh"],
       "PrepareSQL": "select t.XH,t.KSH,t.XM,t.XBDM,t.MZDM,t.SFZJH,t.DWDM,t.ZYDM,t.RXRQ,t.RXNJ,t.XZNJ, mz.MC as MZMC, xb.MC as XBMC, xy.ZWMC as XYMC, zy.ZWMC as ZYMC from usr_zsj.T_BZKS t left join usr_zxbz.T_ZXBZ_MZ mz on t.MZDM=mz.DM left join usr_zxbz.T_ZXBZ_XB xb on t.XBDM=xb.DM left join usr_wfw.T_FX_XY xy on t.DWDM=xy.XYDM left join usr_wfw.T_FX_ZY zy on t.ZYDM=zy.ZYDM where t.XH=?"
+    },
+    "enrollstudent": {
+      "name": "辅修报名学生列表",
+      "driver": "oracle",
+      "connect_db": "wfw_usr",
+      "table": "usr_zsj.T_FX_BM",
+      "type": "select",
+      "allow_method": ["GET"],
+      "allow_field": [],
+      "PrepareSQL": "select SFRZH, XM, XB, MZ, LXDH,  ZXNJ,  FXXY, FXZY from usr_wfw.T_FX_BM"
+    },
+    "enrollstudentpassed": {
+      "name": "辅修报名已审核过学生列表",
+      "driver": "oracle",
+      "connect_db": "wfw_usr",
+      "table": "usr_zsj.T_FX_BM",
+      "type": "select",
+      "allow_method": ["GET"],
+      "allow_field": [],
+      "PrepareSQL": "select SFRZH, XM, XB, MZ, LXDH,  FXXY, FXZY from usr_wfw.T_FX_BM wehre SHZT='1'"
+    },
+    "enrollstudentreject": {
+      "name": "辅修报名已拒绝学生列表",
+      "driver": "oracle",
+      "connect_db": "wfw_usr",
+      "table": "usr_zsj.T_FX_BM",
+      "type": "select",
+      "allow_method": ["GET"],
+      "allow_field": [],
+      "PrepareSQL": "select SFRZH, XM, XB, MZ, LXDH, ZXXY, ZXZY, ZXNJ, ZXZY,  FXXY, FXZY from usr_wfw.T_FX_BM wehre SHZT='0'"
     }
   }
 }

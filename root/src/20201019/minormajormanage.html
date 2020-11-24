@@ -125,6 +125,7 @@
 	})
 
 	function college_fx_set(obj, xydm) {
+		$('#fx_set_table').bootstrapTable('destroy');
 		$('#fx_set_table').bootstrapTable({
 			method: 'get',
 			locale:'zh-CN',	//中文支持,
@@ -162,7 +163,7 @@
 					field:'CZ',
 				},
 			],
-			responseHandler:function(res){
+			responseHandler: function(res){
 					res = res.DATA;
 					let tr = '[';
 					$.ajaxSettings.async = false;
@@ -217,9 +218,9 @@
 				}
 　　			})
 		},
-		onSearch: function () {
-			refresh_data();
-		}
+			onSearch: function () {
+				refresh_data();
+			}
 		})
 		let ob = obj.parentNode.parentNode.childNodes;
 		$("#fx_set_modal_title").html("<span style='color: red'>" + ob[2].innerText + "</span>");

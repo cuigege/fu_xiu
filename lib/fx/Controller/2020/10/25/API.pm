@@ -132,7 +132,6 @@ sub index :Path :Args(0) {
         }
         $params .= $parameters->{$key}.'&&@@';
     }
-    $c->log->info($params);
     my $data;
     if ( $c->{api}->{type} eq 'select' ) {
         if ( $c->{ api }->{ driver } eq "oracle" ) {
