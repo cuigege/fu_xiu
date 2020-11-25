@@ -112,7 +112,7 @@
       "allow_field": [
         "search"
       ],
-      "PrepareSQL": "select * from usr_wfw.T_FX_XY"
+      "PrepareSQL": "select * from usr_wfw.T_FX_XY order by XYDM asc"
     },
     "majorlist": {
       "name": "专业列表",
@@ -240,7 +240,7 @@
       "type": "select",
       "allow_method": ["GET"],
       "allow_field": ["xh"],
-      "PrepareSQL": "select t.XH,t.KSH,t.XM,t.XBDM,t.MZDM,t.SFZJH,t.DWDM,t.ZYDM,t.RXRQ,t.RXNJ,t.XZNJ, mz.MC as MZMC, xb.MC as XBMC, xy.ZWMC as XYMC, zy.ZWMC as ZYMC from usr_zsj.T_BZKS t left join usr_zxbz.T_ZXBZ_MZ mz on t.MZDM=mz.DM left join usr_zxbz.T_ZXBZ_XB xb on t.XBDM=xb.DM left join usr_wfw.T_FX_XY xy on t.DWDM=xy.XYDM left join usr_wfw.T_FX_ZY zy on t.ZYDM=zy.ZYDM where t.XH=?"
+      "PrepareSQL": "select t.XH,t.KSH,t.XM,t.XBDM,t.MZDM,t.SFZJH,t.DWDM,t.ZYDM,t.RXRQ,t.RXNJ,t.XZNJ,t.ZZMMDM, mz.MC as MZMC, xb.MC as XBMC, xy.ZWMC as XYMC, zy.ZWMC as ZYMC,zzmm.MC as ZZMMMC from usr_zsj.T_BZKS t left join usr_zxbz.T_ZXBZ_MZ mz on t.MZDM=mz.DM left join usr_zxbz.T_ZXBZ_XB xb on t.XBDM=xb.DM left join usr_wfw.T_FX_XY xy on t.DWDM=xy.XYDM left join usr_wfw.T_FX_ZY zy on t.ZYDM=zy.ZYDM left join usr_zxbz.T_ZXBZ_ZZMM zzmm on zzmm.DM=t.ZZMMDM where t.XH=?"
     },
     "enrollstudent": {
       "name": "辅修报名学生列表",

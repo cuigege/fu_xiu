@@ -22,6 +22,12 @@
             text-decoration: none;
             color: white;
         }
+        .more{
+            display: none;
+        }
+        .less{
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -29,79 +35,120 @@
 <header>
       <div class="" style="text-align: center;height: 4rem;line-height: 4rem;font-size: 1rem;color: #33CCFF;">辅修报名</div>
 </header>
-    <div class="weui-cells__title">学生信息</div>
-    <div class="weui-cells">
+
+    <!--  折叠信息  -->
+    <div class="weui-cells__title less">学生信息</div>
+    <div class="weui-cells less">
         <div class="weui-cell">
             <div class="weui-cell__bd">
                 <p>姓名</p>
             </div>
-            <div class="weui-cell__ft xm"></div>
+            <div class="weui-cell__ft xm">[% c.student_userinfo.XM %]</div>
         </div>
         <div class="weui-cell">
             <div class="weui-cell__bd">
                 <p>学号</p>
             </div>
-            <div class="weui-cell__ft xh"></div>
+            <div class="weui-cell__ft xh">[% c.student_userinfo.XH %]</div>
+        </div>
+        <div class="">
+            <div id="show-more" style="text-align: center;border-top: solid 1px #eee;"><i class="glyphicon glyphicon-menu-down"></i></div>
+        </div>
+    </div>
+
+    <div class="weui-cells__title more">学生信息</div>
+    <div class="weui-cells more">
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>姓名</p>
+            </div>
+            <div class="weui-cell__ft xm">[% c.student_userinfo.XM %]</div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>学号</p>
+            </div>
+            <div class="weui-cell__ft xh">[% c.student_userinfo.XH %]</div>
         </div>
         <div class="weui-cell">
             <div class="weui-cell__bd">
                 <p>考生号</p>
             </div>
-            <div class="weui-cell__ft ksh"></div>
+            <div class="weui-cell__ft ksh">[% c.student_userinfo.KSH %]</div>
         </div>
         <div class="weui-cell">
             <div class="weui-cell__bd">
                 <p>性别</p>
             </div>
-            <div class="weui-cell__ft xbmc"></div>
+            <div class="weui-cell__ft xbmc">[% c.student_userinfo.XBMC %]</div>
         </div>
 
         <div class="weui-cell">
             <div class="weui-cell__bd">
                 <p>身份证号</p>
             </div>
-            <div class="weui-cell__ft sfzjh"></div>
+            <div class="weui-cell__ft sfzjh">[% c.student_userinfo.SFZJH %]</div>
         </div>
         <div class="weui-cell">
             <div class="weui-cell__bd">
                 <p>民族</p>
             </div>
-            <div class="weui-cell__ft mzmc"></div>
+            <div class="weui-cell__ft mzmc">[% c.student_userinfo.MZMC %]</div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>政治面貌</p>
+            </div>
+            <div class="weui-cell__ft zzmmmc">[% c.student_userinfo.ZZMMMC %]</div>
         </div>
 
     </div>
-    <div class="weui-cells__title">主修专业信息</div>
-    <div class="weui-cells">
+    <div class="weui-cells__title more">主修专业信息</div>
+    <div class="weui-cells more">
 
         <div class="weui-cell">
             <div class="weui-cell__bd">
                 <p>主修学院</p>
             </div>
-            <div class="weui-cell__ft xy"></div>
+            <div class="weui-cell__ft xy">[% c.student_userinfo.XYMC %]</div>
         </div>
         <div class="weui-cell">
             <div class="weui-cell__bd">
                 <p>主修年级</p>
             </div>
-            <div class="weui-cell__ft nj"></div>
+            <div class="weui-cell__ft nj">[% c.student_userinfo.XZNJ %]</div>
         </div>
         <div class="weui-cell">
             <div class="weui-cell__bd">
                 <p>主修入学日期</p>
             </div>
-            <div class="weui-cell__ft rxrq"></div>
+            <div class="weui-cell__ft rxrq">[% c.student_userinfo.RXRQ %]</div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>主修专业大类</p>
+            </div>
+            <div class="weui-cell__ft xkml">[% c.student_userinfo.ZXZYDL %]</div>
         </div>
         <div class="weui-cell">
             <div class="weui-cell__bd">
                 <p>主修专业</p>
             </div>
-            <div class="weui-cell__ft zy"></div>
+            <div class="weui-cell__ft zy">[% c.student_userinfo.ZXZY %]</div>
         </div>
+        <div class="">
+            <div id="show-less" style="text-align: center;border-top: solid 1px #eee;"><i class="glyphicon glyphicon-menu-up"></i></div>
+        </div>
+    </div>
+    <div class="weui-cells__title">个人信息</div>
+    <div class="weui-cells ">
         <div class="weui-cell">
             <div class="weui-cell__bd">
-                <p>主修专业所属学科门类</p>
+                <p>联系电话</p>
             </div>
-            <div class="weui-cell__ft xkml"></div>
+            <div class="weui-cell__ft">
+                <input type="text" class="weui-input" id="mobile" style="text-align: right;" placeholder="请输入联系电话">
+            </div>
         </div>
     </div>
     <div class="weui-cells__title">辅修专业信息</div>
@@ -111,15 +158,15 @@
                 <p>辅修学院</p>
             </div>
             <div class="weui-cell__ft">
-                <input type="text" class="weui-input" id="xy" style="text-align: right;">
+                <input type="text" class="weui-input" id="xy" style="text-align: right;" placeholder="请选择">
             </div>
         </div>
         <div class="weui-cell">
             <div class="weui-cell__bd">
                 <p>辅修专业</p>
             </div>
-            <div class="weui-cell__ft">
-                <input type="text" class="weui-input" id="zy" style="text-align: right;">
+            <div class="weui-cell__ft zy-input">
+                <input type="text" class="weui-input" id="zy" style="text-align: right;" placeholder="请选择">
             </div>
         </div>
     </div>
@@ -130,62 +177,139 @@
 <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
 <script>
+
     $(function () {
+        let fxzyArrList = [% fxzy_list %];
+        let fxxyDmList = [];
+        let fxxyInfoList = [];
+        let fxzyList = [];
+        // 遍历辅修专业 整理格式 获取学院代码
+        function fxzyEach() {
+            $.each(fxzyArrList,function (i,v) {
+                fxxyDmList.push(v.XYDM);
+            })
+            // 处理辅修学院
+            $.get("/2020/10/25/api/collegeslist",{search:''},function (res) {
+                let data = JSON.parse(res);
+                $.each(data.DATA,function (i,v) {
+                    if($.inArray(v.XYDM,fxxyDmList) !== -1){
+                        fxxyInfoList.push({
+                            title:v.ZWMC,
+                            value:v.XYDM
+                        })
+                    }
+                })
+                pickerList()
+            })
+        }
+        fxzyEach();
+        // 学院
+        function pickerList() {
 
-        $("#xy").picker({
-            title: "请选择辅修学院",
-            cols: [
-                {
-                    textAlign: 'center',
-                    values: [
-                        '法学院',
-                        '计算机科学学院', '电子信息工程学院'
-                    ]
+            console.log(fxxyInfoList)
+
+            $("#xy").select({
+                title: "选择辅修学院",
+                items: fxxyInfoList
+            });
+
+        }
+        $("#xy").change(function (e) {
+            let xydm = $(this).attr('data-values');
+            console.log(xydm);
+            // 重新整理专业
+            fxzyList = [];
+            $.each(fxzyArrList,function (i,v) {
+                if(xydm === v.XYDM){
+                    fxzyList.push({
+                        title:v.ZWMC,
+                        value:v.ZYDM
+                    })
                 }
-            ]
-        });
-
-        $("#zy").picker({
-            title: "请选择辅修专业",
-            cols: [
-                {
-                    textAlign: 'center',
-                    values: [
-                        '数学与应用数学',
-                        '信息与计算科学',
-                    ]
-                }
-            ]
-        });
-
-
-        // 获取用户数据
-        $.get("/2020/10/25/api/getStudentInfo?xh=201821111999",{},function (res) {
-
-            let data = JSON.parse(res);
-            let info = data.DATA;
-            if(info.length>0){
-                info = info[0];
-                console.log(info)
-                // 学生信息填写
-                $('.xm').html(info.XM);
-                $('.xh').html(info.XH);
-                $('.ksh').html(info.KSH);
-                $('.xbmc').html(info.XBMC);
-                $('.sfzjh').html(info.SFZJH);
-                $('.mzmc').html(info.MZMC);
-
-                $('.xy').html(info.XYMC);
-                $('.nj').html(info.XZNJ);
-                $('.rxrq').html(info.RXRQ);
-                $('.zy').html(info.ZYMC);
-                $('.mzmc').html(info.MZMC);
+            })
+            if(fxzyList.length === 0){
+                return false;
             }
+            $('.zy-input').find('#zy').remove();
+            $('.zy-input').html('<input type="text" class="weui-input" id="zy" style="text-align: right;" placeholder="请选择">');
+            $("#zy").select({
+                title: "选择辅修专业",
+                items: fxzyList
+            });
         })
 
-        // 获取辅修学院和专业
+        $('.weui-btn_primary').click(function () {
 
+            let FXXYDM = $('#xy').attr('data-values');
+            let FXZYDM = $('#zy').attr('data-values');
+            let mobile = $('#mobile').val().trim();
 
+            let reg =  /^1[3-9]+\d{9}$/;
+            if(!reg.test(mobile)){
+                $.toast('请输入正确手机号码','forbidden');
+                return false;
+            }
+            if(!FXXYDM){
+                $.toast('请选择辅修学院','forbidden');
+                return false;
+            }
+            if(!FXZYDM){
+                $.toast('请选择辅修专业','forbidden');
+                return false;
+            }
+
+            $.confirm("确定要提交辅修报名吗?", function() {
+              submitData()
+            });
+        });
+
+        /**
+         *  数据提交
+         */
+        function submitData() {
+
+            let XH = '[% c.student_userinfo.XH %]';
+            let FXXYDM = $('#xy').attr('data-values');
+            let FXZYDM = $('#zy').attr('data-values');
+            let mobile = $('#mobile').val().trim();
+            let param = {
+                XH : XH,
+                FXXYDM:FXXYDM,
+                FXXYMC:$('#xy').val(),
+                FXZYDM : FXZYDM,
+                FXZYMC: $('#zy').val(),
+                MOBILE:mobile
+            };
+            // 提取专业大类代码和学科代码
+            $.each(fxzyArrList,function (i,v) {
+                console.log(v)
+                if( FXZYDM === v.ZYDM ) {
+                    param.FXZYDLDM = v.ZYDLDM;
+                    param.FXZYXKDM = v.XKMLDM;
+                }
+            })
+            $.post("",param,function (data) {
+                let info = JSON.parse(data)
+                if(info.code == 1){
+                    $.toast(info.msg);
+                    setTimeout(function () {
+                        // 重定向到首页
+                        location.href = '/2020/11/15'
+                    },2000)
+                }else{
+                    $.toast(info.msg, "cancel");
+                }
+            })
+        }
+
+        $('#show-more').click(function () {
+            $('.less').hide();
+            $('.more').show();
+        })
+        $('#show-less').click(function () {
+            $('.less').show();
+            $('.more').hide();
+        })
     })
 </script>
 </body>
