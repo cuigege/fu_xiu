@@ -271,6 +271,16 @@
       "allow_method": ["GET"],
       "allow_field": [],
       "PrepareSQL": "select SFRZH, XM, XB, MZ, LXDH, ZXXY, ZXZY, ZXNJ, ZXZY,  FXXY, FXZY from usr_wfw.T_FX_BM wehre SHZT='0'"
+    },
+    "enrollplan": {
+      "name": "某年某专业招生计划",
+      "driver": "oracle",
+      "connect_db": "wfw_usr",
+      "table": "usr_zsj.T_FX_ZSJH",
+      "type": "select",
+      "allow_method": ["GET"],
+      "allow_field": ["zydm", "year"],
+      "PrepareSQL": "select * from usr_wfw.T_FX_ZSJH where zydm=? and fxnf=?"
     }
   }
 }

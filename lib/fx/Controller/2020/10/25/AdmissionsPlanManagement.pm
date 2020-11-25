@@ -1,7 +1,6 @@
 package fx::Controller::2020::10::25::AdmissionsPlanManagement;
 use Moose;
 use namespace::autoclean;
-use Data::Dumper;
 use utf8;
 use POSIX qw{strftime};
 
@@ -31,6 +30,45 @@ sub index :Path :Args(0) {
         template    => "20201019/admissionsplanmanage.html",
     });
 }
+
+=head1 planedit
+
+    招生计划修改
+=cut
+sub planedit : Local {
+    my ( $self, $c ) = @_;
+    if ( $c->req->{method} eq "POST" ) {
+        my $zydm = $c->req->parameters->{zydm};
+        my $zsrs = $c->req->parameters->{zsrs};
+        my $year = strftime "%Y", localtime;
+        my $sql = "select count(*) count from usr_wfw.T_FX_ZSJH where zydm=\'$zydm\' and FXNF=\'$year\'";
+        my $rtn = DB::get_row_list( $sql )->[0]->[0];
+        if ( $rtn eq 0 ) {      # 没有则新增
+            $sql = "insert into usr_wfw.T_FX_ZSJH ( zydm, zsrs, fxnf ) values (\'$zydm\', \'$zsrs\', \'$year\')";
+        }
+        else {      # 有就更新
+            $sql = "update usr_wfw.T_FX_ZSJH set zsrs=\'$zsrs\' where zydm=\'$zydm\' and fxnf=\'$year\'";
+        }
+        $c->log->info($sql);
+        $rtn = DB::execute($sql);
+        if ($rtn ne 0 && $rtn ne -1) {
+            $c->res->status(200);
+            $c->res->headers->{ "Content-Type" } = "application/json; charset=UTF-8";
+            $c->res->body('{"RTN_CODE": "01", "RTN_MSG": "执行成功" }');
+        }
+        else {
+            $c->response->status(400);
+            $c->res->headers->{ "Content-Type" } = "application/json; charset=UTF-8";
+            $c->res->body('{"RTN_CODE": "00", "RTN_MSG": "执行失败" }');
+        }
+    }
+    else {
+        $c->res->status(403);
+        $c->res->headers->{ "Content-Type" } = "application/json; charset=UTF-8;";
+        $c->res->body( '{"RTN_CODE": "00", "RTN_MSG": "调用方法不合法" }' );
+    }
+}
+
 
 =head1 timesettings
 
