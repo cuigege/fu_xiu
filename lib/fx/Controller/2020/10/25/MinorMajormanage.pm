@@ -43,12 +43,17 @@ sub minormajorset : Local {
         my $status = $c->req->parameters->{ status };
         my $rtn;
         my $sql;
+        my $year = strftime "%Y", localtime;
         if ( ! defined $zydm ) {
             $c->response->status(400);
             $c->res->body( '{"RTN_CODE": "00", "RTN_MSG": "无专业代码" }' );
         }
-        if ( $status eq 0 ) {     # 取消辅修设置
-            $sql = "delete from usr_wfw.T_FX_FXZY where zydm=\'$zydm\'";
+        if ( $status eq 0 ) {     # 取消辅修设置 同时删除该专业的今年辅修方案 和培养计划
+            $sql = "delete from usr_wfw.T_FX_PYFA where zydm=\'$zydm\' and fxnj=\'$year\'";
+            $rtn = DB::execute( $sql );
+            $sql = "delete from usr_wfw.T_FX_ZSJH where zydm=\'$zydm\' and fxnf=\'$year\'";
+            $rtn = DB::execute( $sql );
+            $sql = "delete from usr_wfw.T_FX_FXZY where zydm=\'$zydm\' and fxnf=\'$year\'";
             $rtn = DB::execute( $sql );
             if ( $rtn ne 0 && $rtn ne -1 ) {
                 $c->res->status(200);
@@ -64,7 +69,7 @@ sub minormajorset : Local {
         $sql = "select * from usr_wfw.T_FX_ZY where ZYDM = '$zydm'";
         my $res = DB::get_json( $sql );
         $res = from_json($res)->[0];
-        $sql = "insert into usr_wfw.T_FX_FXZY(ZWMC, YWMC, ZYDM, XYDM, XKMLDM, ZYDLDM, SZSJ) values (\'$res->{ZWMC}\', \'$res->{YWMC}\', \'$res->{ZYDM}\', \'$res->{XYDM}\', \'$res->{XKMLDM}\',\'$res->{ZYDLDM}\', \'$datestring\')";
+        $sql = "insert into usr_wfw.T_FX_FXZY(ZWMC, YWMC, ZYDM, XYDM, XKMLDM, ZYDLDM, SZSJ, FXNF) values (\'$res->{ZWMC}\', \'$res->{YWMC}\', \'$res->{ZYDM}\', \'$res->{XYDM}\', \'$res->{XKMLDM}\',\'$res->{ZYDLDM}\', \'$datestring\', \'$year\')";
         $rtn = DB::execute( $sql );
         if ( $rtn ne 0 && $rtn ne -1 ) {
             $c->res->status(200);

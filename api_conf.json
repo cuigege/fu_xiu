@@ -243,34 +243,34 @@
       "PrepareSQL": "select t.XH,t.KSH,t.XM,t.XBDM,t.MZDM,t.SFZJH,t.DWDM,t.ZYDM,t.RXRQ,t.RXNJ,t.XZNJ,t.ZZMMDM, mz.MC as MZMC, xb.MC as XBMC, xy.ZWMC as XYMC, zy.ZWMC as ZYMC,zzmm.MC as ZZMMMC from usr_zsj.T_BZKS t left join usr_zxbz.T_ZXBZ_MZ mz on t.MZDM=mz.DM left join usr_zxbz.T_ZXBZ_XB xb on t.XBDM=xb.DM left join usr_wfw.T_FX_XY xy on t.DWDM=xy.XYDM left join usr_wfw.T_FX_ZY zy on t.ZYDM=zy.ZYDM left join usr_zxbz.T_ZXBZ_ZZMM zzmm on zzmm.DM=t.ZZMMDM where t.XH=?"
     },
     "enrollstudent": {
-      "name": "辅修报名学生列表",
+      "name": "某年辅修报名未审核学生列表",
       "driver": "oracle",
       "connect_db": "wfw_usr",
       "table": "usr_zsj.T_FX_BM",
       "type": "select",
       "allow_method": ["GET"],
-      "allow_field": [],
-      "PrepareSQL": "select SFRZH, XM, XB, MZ, LXDH,  ZXNJ,  FXXY, FXZY from usr_wfw.T_FX_BM"
+      "allow_field": ["search", "year"],
+      "PrepareSQL": "select SFRZH, XM, XBMC, KSH, SFZH, MZ, LXFS, ZXXYMC, ZXZYMC, ZXZYDLMC, FXXYMC, FXZYMC, FXZYDLMC, FXZYXKMC from usr_wfw.T_FX_BM where SHZT = '0' and FXNF=?"
     },
     "enrollstudentpassed": {
-      "name": "辅修报名已审核过学生列表",
+      "name": "某年辅修报名已审核过学生列表",
       "driver": "oracle",
       "connect_db": "wfw_usr",
       "table": "usr_zsj.T_FX_BM",
       "type": "select",
       "allow_method": ["GET"],
-      "allow_field": [],
-      "PrepareSQL": "select SFRZH, XM, XB, MZ, LXDH,  FXXY, FXZY from usr_wfw.T_FX_BM wehre SHZT='1'"
+      "allow_field": ["search", "year"],
+      "PrepareSQL": "select SFRZH, XM, XBMC, KSH, SFZH, MZ, LXFS, ZXXYMC, ZXZYMC, ZXZYDLMC, FXXYMC, FXZYMC, FXZYDLMC, FXZYXKMC from usr_wfw.T_FX_BM where SHZT = '1' and FXNF=?"
     },
     "enrollstudentreject": {
-      "name": "辅修报名已拒绝学生列表",
+      "name": "某年辅修报名已拒绝学生列表",
       "driver": "oracle",
       "connect_db": "wfw_usr",
       "table": "usr_zsj.T_FX_BM",
       "type": "select",
       "allow_method": ["GET"],
-      "allow_field": [],
-      "PrepareSQL": "select SFRZH, XM, XB, MZ, LXDH, ZXXY, ZXZY, ZXNJ, ZXZY,  FXXY, FXZY from usr_wfw.T_FX_BM wehre SHZT='0'"
+      "allow_field": ["search", "year"],
+      "PrepareSQL": "select SFRZH, XM, XBMC, KSH, SFZH, MZ, LXFS, ZXXYMC, ZXZYMC, ZXZYDLMC, FXXYMC, FXZYMC, FXZYDLMC, FXZYXKMC from usr_wfw.T_FX_BM where SHZT = '-1' and FXNF=?"
     },
     "enrollplan": {
       "name": "某年某专业招生计划",

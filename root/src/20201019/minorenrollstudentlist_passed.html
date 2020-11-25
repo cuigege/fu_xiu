@@ -37,7 +37,8 @@
 			method: 'get',
 			locale:'zh-CN',//中文支持,
 			contentType: "application/x-www-form-urlencoded",//必须要有！！！！
-			url:"/2020/10/25/api/enrollstudent?year=" + myDate.getFullYear(),//要请求数据的文件路径
+			url:"/2020/10/25/api/enrollstudentpassed?year=" + myDate.getFullYear(),//要请求数据的文件路径
+			// height:tableHeight(),//高度调整
 			search: true,
 			toolbar: '#toolbar',//指定工具栏
 			striped: true, //是否显示行间隔色
@@ -59,13 +60,6 @@
 					width:25,
 					align:'center',
 					valign:'middle'
-				},
-				{
-					//field: 'Number',//可不加
-					title: '序号',//标题  可不加
-					formatter: function (value, row, index) {
-						return index+1;
-					}
 				},
 				{
 					title:'学号',
@@ -120,8 +114,7 @@
 				if (res.length > 0) {
 					for( let i = 0 ; i < res.length; i++ ){
 								res[i].CZ = "<a onclick=\"show_detail(this, '"+ res[i].SFRZH + "\')\"><button type=\"button\" class=\"btn  btn-info\" >查看</button></a>\n";
-								res[i].CZ += "<a onclick=\"pass_apply(this, '"+ res[i].SFRZH + "\')\"><button type=\"button\" class=\"btn  btn-success\" >通过</button></a>\n";
-								res[i].CZ += "<a onclick=\"reject_apply(this, '"+ res[i].SFRZH + "\')\"><button type=\"button\" class=\"btn btn-danger\" >拒绝</button></a>";
+								res[i].CZ += "<a onclick=\"reset_shzt(this, '"+ res[i].SFRZH + "\')\"><button type=\"button\" class=\"btn  btn-success\" >重置</button></a>\n";
 						}
 				}
 				return res;
@@ -130,13 +123,13 @@
 		$("[data-toggle='tooltip']").tooltip();
 	  })
 
-	  function pass_apply(obj, sfrzh) {
-		confirm(null, "确认通过?", function (isConfirm) {
-					  if (isConfirm) {
+	  function reset_shzt(obj, sfrzh) {
+		confirm(null, "确认重置?", function (isConfirm) {
+					  if ( isConfirm ) {
 						  $.ajax({
 							  url: "/2020/10/25/minorenrollmentmanage/review",
 							  type: "post",
-							  data: { "sfrzh": sfrzh, "shzt": '1' },
+							  data: { "sfrzh": sfrzh, "shzt": '0' },
 							  success: function (res) {
 								  $("#msg").append( pop_msg("info", "操作成功") );
 								  refresh_data();
@@ -149,32 +142,6 @@
 						  })
 					  }
 				  },
-			  {
-				  type: 'question',
-				  confirmButtonText: '确认'
-			  }
-			)
-	  }
-
-	  function reject_apply(obj, sfrzh) {
-		confirm(null, "确认通过?", function (isConfirm) {
-			  if ( isConfirm ) {
-					  $.ajax({
-						  url: "/2020/10/25/minorenrollmentmanage/review",
-						  type: "post",
-						  data: { "sfrzh": sfrzh, "shzt": '-1' },
-						  success: function (res) {
-							  $("#msg").append( pop_msg("info", "操作成功") );
-							  refresh_data();
-						  },
-						  error: function (res) {
-							  res = JSON.parse(res.responseText);
-							  console.log(res)
-							  $("#msg").append( pop_msg( "error", " <br>操作失败", 3000 ) );
-						  }
-					  })
-				  }
-			  },
 			  {
 				  type: 'question',
 				  confirmButtonText: '确认'
@@ -211,7 +178,7 @@
 	  function refresh_data() {		// 刷新数据
 		let myDate = new Date();
 		let opt = {
-			url: "/2020/10/25/api/enrollstudent?year=" + myDate.getFullYear(),
+			url: "/2020/10/25/api/enrollstudentpassed?year=" + myDate.getFullYear(),
 			silent: true,
 		}
 		$("#table").bootstrapTable('refresh', opt);
