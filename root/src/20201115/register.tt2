@@ -83,6 +83,14 @@
             <div class="weui-cell__ft xbmc">[% c.student_userinfo.XBMC %]</div>
         </div>
 
+        [% IF bminfo != 'false' %]
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>联系电话</p>
+            </div>
+            <div class="weui-cell__ft sfzjh">[% bminfo.LXFS %]</div>
+        </div>
+        [% END %]
         <div class="weui-cell">
             <div class="weui-cell__bd">
                 <p>身份证号</p>
@@ -140,6 +148,9 @@
             <div id="show-less" style="text-align: center;border-top: solid 1px #eee;"><i class="glyphicon glyphicon-menu-up"></i></div>
         </div>
     </div>
+
+    [% IF bminfo == "false" %]
+
     <div class="weui-cells__title">个人信息</div>
     <div class="weui-cells ">
         <div class="weui-cell">
@@ -147,7 +158,7 @@
                 <p>联系电话</p>
             </div>
             <div class="weui-cell__ft">
-                <input type="text" class="weui-input" id="mobile" style="text-align: right;" placeholder="请输入联系电话">
+                <input type="tel" class="weui-input" id="mobile" style="text-align: right;" placeholder="请输入联系电话">
             </div>
         </div>
     </div>
@@ -172,6 +183,66 @@
     </div>
     <div style="height: 10rem;"></div>
     <a href="javascript:;" class="weui-btn weui-btn_primary">确认</a>
+    [% ELSE %]
+        <div class="weui-cells__title">辅修专业信息</div>
+        <div class="weui-cells ">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <p>辅修学院</p>
+                </div>
+                <div class="weui-cell__ft sfzjh">[% bminfo.FXXYMC %]</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <p>辅修专业</p>
+                </div>
+                <div class="weui-cell__ft sfzjh">[% bminfo.FXZYMC %]</div>
+            </div>
+        </div>
+        <div class="weui-cells__title">报名状态</div>
+        <div class="weui-cells ">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <p>审核状态</p>
+                </div>
+                <div class="weui-cell__ft" style="font-weight: bold;">
+                    [% IF bminfo.SHZT == '0' %]
+                        <span style="color: #2a8bcc;">审核中</span>
+                    [% ELSIF bminfo.SHZT == '1' %]
+                        <span style="color: #00be67">审核通过</span>
+                    [% ELSIF bminfo.SHZT == '-1' %]
+                        <span style="color: #9C4B3D">审核未通过</span>
+                    [% END %]
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <p>一阶段缴费</p>
+                </div>
+                <div class="weui-cell__ft" style="font-weight: bold;">
+                    [% IF bminfo.JFZT1 == '0' %]
+                        <span style="color: #9C4B3D;">未缴费</span>
+                    [% ELSIF bminfo.SHZT == '1' %]
+                        <span style="color:#00be67;">已缴费</span>
+                    [% END %]
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <p>二阶段缴费</p>
+                </div>
+                <div class="weui-cell__ft" style="font-weight: bold;">
+                    [% IF bminfo.JFZT2 == '0' %]
+                        <span style="color: #9C4B3D;">未缴费</span>
+                    [% ELSIF bminfo.SHZ2 == '1' %]
+                        <span style="color:#00be67;">已缴费</span>
+                    [% END %]
+                </div>
+            </div>
+        </div>
+    [% END %]
+
+
 </div>
 <!-- body 最后 -->
 <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>

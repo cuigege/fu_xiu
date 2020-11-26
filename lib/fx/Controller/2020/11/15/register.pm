@@ -44,14 +44,6 @@ sub auto : Private {
     $c->{ student_userinfo }->{ ZXZY } = $zxzy;
     $c->{ student_userinfo }->{ ZXZYDL } = $zxzydl;
 
-    # 查询报名表是否有信息
-    my $bmInfo = DB::get_json("select * from usr_wfw.T_FX_BM where SFRZH=$c->{ username }");
-
-    if($bmInfo eq '[]'){
-        # $c->log->info('--------------------------------------');
-        # $c->detach('perfect');
-        #return 0;
-    }
     return 1;
 }
 
@@ -100,31 +92,43 @@ sub index :Path :Args(0) {
         return 1;
     }
 
-    # 查询报名起止时间
+    # 查询报名表是否有信息
+    my $bmInfo = DB::get_json("select * from usr_wfw.T_FX_BM where SFRZH=$c->{ username } and FXNF=$currentYear");
 
-    my $zsjhDate = from_json(DB::get_json("select * from usr_wfw.T_FX_ZSJH_SJ where FXNJ=$currentYear"))->[0];
-
-    my $zxzydl = $c->{ student_userinfo }->{ ZXZYDL };
-
-    # 查询当前专业大类代码
-    my $zydlInfo = from_json(DB::get_json("select * from usr_wfw.T_FX_ZYDL where ZYDLMC like \'%$zxzydl%\'"))->[0];
-
-    # 查询辅修专业 剔除当前学生的专业大类所属的专业
-    my $fxzyList = DB::get_json("select * from usr_wfw.T_FX_FXZY where ZYDLDM not in (\'$zydlInfo->{ZYDLDM}\')");
-
-    $c->stash->{ fxzy_list } = $fxzyList;
-
-    # 判断当前时间是否在计划内
-    my $bmkssj = str2time($zsjhDate->{ BMKSSJ });
-    my $bmjzsj = str2time($zsjhDate->{ BMJZSJ });
-    if( $bmkssj < time() && time() < $bmjzsj  ) {
-        $c->stash->{template} = '20201115/register.html';
+    $c->stash->{ bminfo } = 'false';
+    $c->stash->{ fxzy_list } = '[]';
+    if( $bmInfo ne '[]' ){
+        $c->stash->{ bminfo } = from_json($bmInfo)->[0];
+        $c->stash->{template} = '20201115/register.tt2';
     }
-    elsif ( $bmkssj > time() ) {
-        $c->res->body('报名未开始');
-    }
-    elsif( $bmjzsj < time() ) {
-        $c->res->body('报名已结束');
+    else {
+
+        # 查询报名起止时间
+
+        my $zsjhDate = from_json(DB::get_json("select * from usr_wfw.T_FX_ZSJH_SJ where FXNJ=$currentYear"))->[0];
+
+        my $zxzydl = $c->{ student_userinfo }->{ ZXZYDL };
+
+        # 查询当前专业大类代码
+        my $zydlInfo = from_json(DB::get_json("select * from usr_wfw.T_FX_ZYDL where ZYDLMC like \'%$zxzydl%\'"))->[0];
+
+        # 查询辅修专业 剔除当前学生的专业大类所属的专业
+        my $fxzyList = DB::get_json("select * from usr_wfw.T_FX_FXZY where ZYDLDM not in (\'$zydlInfo->{ZYDLDM}\')");
+
+        $c->stash->{ fxzy_list } = $fxzyList;
+
+        # 判断当前时间是否在计划内
+        my $bmkssj = str2time($zsjhDate->{ BMKSSJ });
+        my $bmjzsj = str2time($zsjhDate->{ BMJZSJ });
+        if( $bmkssj < time() && time() < $bmjzsj  ) {
+            $c->stash->{template} = '20201115/register.tt2';
+        }
+        elsif ( $bmkssj > time() ) {
+            $c->detach('2020::11::15::main','information',['报名开始时间:'.$zsjhDate->{ BMKSSJ }.'<br>报名截止时间:'.$zsjhDate->{ BMJZSJ }]);
+        }
+        elsif( $bmjzsj < time() ) {
+            $c->detach('2020::11::15::main','information',['报名开始时间:'.$zsjhDate->{ BMKSSJ }.'<br>报名截止时间:'.$zsjhDate->{ BMJZSJ }]);
+        }
     }
 
     return 1;
@@ -144,7 +148,7 @@ sub perfect : Local {
 
 
 
-    $c->stash->{template} = '20201115/perfect.html';
+    $c->stash->{template} = '20201115/perfect.tt2';
 }
 
 
