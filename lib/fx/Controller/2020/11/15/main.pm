@@ -85,6 +85,14 @@ sub testUploads : Local {
 
     my ( $self, $c, $param ) = @_;
 
+    if( $c->req->method eq 'POST' ) {
+
+        my %res = ToolFunc::upload_func($c,'usr_wfw.T_FX_TEST',qw/XH XM XB KSH MZ NJ ZXXY ZXZY/);
+
+        $c->log->info(Dumper \%res);
+        $c->res->body(123);
+        return 0;
+    }
 
     $c->stash->{template} = '20201115/test.html';
 }
