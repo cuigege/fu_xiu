@@ -43,6 +43,14 @@
 								<span class="input-group-addon">用户姓名</span>
 								<input type="text" class="form-control" name="yhxm" id="yhxm" autocomplete="off">
 							</div>
+							<div class="input-group">
+								<span class="input-group-addon">有效期开始时间</span>
+								<input type="datetime-local" class="form-control" name="yxqkssj" id="yxqkssj" autocomplete="off">
+							</div>
+							<div class="input-group">
+								<span class="input-group-addon">有效期截止时间</span>
+								<input type="datetime-local" class="form-control" name="yxqjzsj" id="yxqjzsj" autocomplete="off">
+							</div>
 						</form>
 					</div>
 					<div class="modal-footer">
@@ -76,6 +84,14 @@
 							<div class="input-group">
 								<span class="input-group-addon">职工账号</span>
 								<input type="text" class="form-control" name="edit_zgh" id="edit_zgh" autocomplete="off">
+							</div>
+							<div class="input-group">
+								<span class="input-group-addon">有效期开始时间</span>
+								<input type="datetime-local" class="form-control" name="edit_yxqkssj" id="edit_yxqkssj" autocomplete="off">
+							</div>
+							<div class="input-group">
+								<span class="input-group-addon">有效期截止时间</span>
+								<input type="datetime-local" class="form-control" name="edit_yxqjzsj" id="edit_yxqjzsj" autocomplete="off">
 							</div>
 							<input id="edit_id" hidden>
 						</form>
@@ -170,6 +186,7 @@
 							res[i].QYZT = "<input type='checkbox' name='qyzt_switch' checked value='"+ res[i].ZHMC +"'>";
 						else
 							res[i].QYZT = "<input type='checkbox' name='qyzt_switch' value='"+ res[i].ZHMC +"'>";
+						res[i].YXQ = res[i].YXQKSSJ + " - " + res[i].YXQJZSJ;
 					}
 					return res;
 				},
@@ -209,6 +226,14 @@
 		  $("#edit_zgh").val( ob[2].innerText );
 		  $("#edit_yhxm").val( ob[3].innerText );
 		  $("#edit_id").val( val );
+		  if ( ob[5].innerText !== "-") {
+		  	$("#edit_yxqkssj").val(ob[5].innerText.split(' - ')[0].replace(" ", "T"));
+			$("#edit_yxqjzsj").val(ob[5].innerText.split(' - ')[1].replace(" ", "T"));
+		  }
+		  else {
+		  	$("#edit_yxqkssj").val('');
+			$("#edit_yxqjzsj").val('');
+		  }
 		  $("#edit_modal").modal( 'show' );
 		}
 
@@ -216,12 +241,14 @@
 			let edit_glydm = $("#edit_id").val();
 			let edit_yhxm = $("#edit_yhxm").val();
 		  	let edit_zgh = $("#edit_zgh").val();
+		  	let edit_yxqkssj = $("#edit_yxqkssj").val().replace("T", " ");
+		  	let edit_yxqjzsj = $("#edit_yxqjzsj").val().replace("T", " ");
 			confirm(null, "确认修改管理员<span style='color:red'>" + $("#edit_modal_title").text() + "</span> ?", function (isConfirm) {
 					  if (isConfirm) {
 						  $.ajax({
 							  url: "/2020/10/25/adminuser/useredit",
 							  type: "post",
-							  data: {"edit_glydm": edit_glydm, "edit_yhxm": edit_yhxm, "edit_zgh": edit_zgh},
+							  data: {"edit_glydm": edit_glydm, "edit_yhxm": edit_yhxm, "edit_zgh": edit_zgh, "edit_yxqkssj": edit_yxqkssj, "edit_yxqjzsj": edit_yxqjzsj},
 							  success: function (res) {
 								  $("#msg").append(pop_msg("info", "修改成功"));
 								  $("#edit_modal").modal("hide");
@@ -299,13 +326,15 @@
 		function add_user() {
 				  let yhxm = $("#yhxm").val();
 				  let zgh = $("#zgh").val();
+				  let yxqkssj = $("#yxqkssj").val().replace("T", " ");
+		  		  let yxqjzsj = $("#yxqjzsj").val().replace("T", " ");
 				  if (yhxm && zgh) {
 					  confirm(null, "确认添加添加管理员<span style='color:red'>" + yhxm + "</span>?", function (isConfirm) {
 								  if (isConfirm) {
 									  $.ajax({
 										  url: "/2020/10/25/adminuser/useradd",
 										  type: "post",
-										  data: {"yhxm": yhxm, "zgh": zgh},
+										  data: {"yhxm": yhxm, "zgh": zgh, "yxqkssj": yxqkssj, "yuxqjzsj": yxqjzsj},
 										  success: function (res) {
 											  $("#msg").append(pop_msg("info", "新增用户成功"));
 											  $("#addmodal").modal("hide");

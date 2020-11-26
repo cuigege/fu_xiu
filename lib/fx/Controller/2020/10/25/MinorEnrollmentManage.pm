@@ -3,6 +3,7 @@ use Moose;
 use namespace::autoclean;
 use utf8;
 use POSIX qw{strftime};
+use JSON;
 use Data::Dumper;
 
 BEGIN { extends 'Catalyst::Controller'; }
@@ -44,9 +45,20 @@ sub review : Local {
         my $shyj = $c->req->parameters->{ shyj } || '无';   # 审核意见
         my $username = $c->{username};      # 审核人
         my $year = strftime("%Y", localtime);
+        my $currentdate = strftime("%F %H:%M:%S", localtime);
         my $sql = "update usr_wfw.T_FX_BM set shzt=\'$shzt\', shyj=\'$shyj\', shr=\'$username\' where sfrzh=\'$sfrzh\' and fxnf=\'$year\'";
         $c->log->info($sql);
         my $rtn = DB::execute( $sql );
+        if ( $shzt eq 1 ) {
+            $sql = "select * from usr_wfw.T_FX_BM where SFRZH=\'$sfrzh\' and fxnf=$year";
+            my $res = from_json( DB::get_json( $sql ) )->[0];
+            $sql = "insert into usr_wfw.T_FX_XSXX(SFRZH, TJSJ, FXNF, FXZYDM ) values (\'$sfrzh\', \'$currentdate\', \'$res->{FXNF}\', \'$res->{FXZYDM}\')";
+            $rtn = DB::execute( $sql );
+        }
+        elsif ( $shzt eq 0 ) {
+            $sql = "delete from usr_wfw.T_FX_XSXX where  SFRZH=\'$sfrzh\' and fxnf=$year";
+            $rtn = DB::execute( $sql );
+        }
         if ( $rtn ne 0 && $rtn ne -1 ) {
             $c->res->status(200);
             $c->res->body('{"RTN_CODE": "01", "RTN_MSG": "执行成功" }');

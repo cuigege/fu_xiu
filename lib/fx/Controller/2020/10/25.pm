@@ -8,7 +8,6 @@ use utf8;
 use JSON;
 use Data::Dumper;
 our $syslog = Log::Mini->new(file => 'syserror.log', synced => 1, level => 'warn');
-
 BEGIN { extends 'Catalyst::Controller'; }
 
 =head1 NAME

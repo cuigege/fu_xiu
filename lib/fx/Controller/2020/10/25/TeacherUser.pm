@@ -36,8 +36,10 @@ sub useradd : Local {
         my $jsdm = 2;       # 老师角色
         my $jsxm = $c->req->parameters->{ jsxm };
         my $zgh = $c->req->parameters->{ zgh };
+        my $yxqkssj = $c->req->parameters->{ yxqkssj };
+        my $yxqjzsj = $c->req->parameters->{ yxqjzsj };
         my $datestring = strftime "%Y-%m-%d %H:%M", localtime;
-        my $sql = "insert into usr_wfw.T_FX_LS(ZGH, JSDM, JSXM, LRSJ) values (\'$zgh\', \'$jsdm\', \'$jsxm\', \'$datestring\')";
+        my $sql = "insert into usr_wfw.T_FX_LS(ZGH, JSDM, JSXM, LRSJ, YXQKSSJ, YXQJZSJ) values (\'$zgh\', \'$jsdm\', \'$jsxm\', \'$datestring\', \'$yxqkssj\', \'$yxqjzsj\')";
         my $rtn = DB::execute( $sql );
         if ( $rtn ne 0 && $rtn ne -1 ) {
             $c->res->status(200);
@@ -62,8 +64,10 @@ sub useredit : Local {
     if ( $c->req->{"method"} eq "POST" ) {
         my $zgh = $c->req->parameters->{ edit_zgh };       # 教师工号
         my $jsxm = $c->req->parameters->{ jsxm };
+        my $yxqkssj = $c->req->parameters->{ edit_yxqkssj };
+        my $yxqjzsj = $c->req->parameters->{ edit_yxqjzsj };
         my $datestring = strftime "%Y-%m-%d %H:%M", localtime;
-        my $sql = "update usr_wfw.T_FX_LS set JSXM=\'$jsxm\', LRSJ=\'$datestring\' where zgh=\'$zgh\'";
+        my $sql = "update usr_wfw.T_FX_LS set JSXM=\'$jsxm\', LRSJ=\'$datestring\', YXQKSSJ=\'$yxqkssj\', YXQJZSJ=\'$yxqjzsj\' where zgh=\'$zgh\'";
         my $rtn = DB::execute( $sql );
         if ( $rtn ne 0 && $rtn ne -1 ) {
             $c->res->status(200);

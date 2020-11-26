@@ -39,8 +39,10 @@ sub useradd : Local {
         my $jsdm = 1;       # 普通管理员
         my $yhxm = $c->req->parameters->{ yhxm };
         my $zgh = $c->req->parameters->{ zgh };
+        my $yxqkssj = $c->req->parameters->{ yxqkssj };
+        my $yxqjzsj = $c->req->parameters->{ yxqjzsj };
         my $datestring = strftime "%Y-%m-%d %H:%M", localtime;
-        my $sql = "insert into usr_wfw.T_FX_GLY(GLYDM, JSDM, YHXM, ZHMC, ZCSJ) values (usr_wfw.T_FX_GLY_GLYDM.nextval, \'$jsdm\', \'$yhxm\', \'$zgh\', \'$datestring\')";
+        my $sql = "insert into usr_wfw.T_FX_GLY(GLYDM, JSDM, YHXM, ZHMC, ZCSJ, YXQKSSJ, YXQJZSJ) values (usr_wfw.T_FX_GLY_GLYDM.nextval, \'$jsdm\', \'$yhxm\', \'$zgh\', \'$datestring\', \'$yxqkssj\', \'$yxqjzsj\')";
         my $rtn = DB::execute( $sql );
         if ( $rtn ne 0 && $rtn ne -1 ) {
             $c->res->status(200);
@@ -66,8 +68,10 @@ sub useredit : Local {
         my $glydm = $c->req->parameters->{ edit_glydm };       # 普通管理员
         my $yhxm = $c->req->parameters->{ edit_yhxm };
         my $zgh = $c->req->parameters->{ edit_zgh };
+        my $yxqkssj = $c->req->parameters->{ edit_yxqkssj };
+        my $yxqjzsj = $c->req->parameters->{ edit_yxqjzsj };
         my $datestring = strftime "%Y-%m-%d %H:%M", localtime;
-        my $sql = "update usr_wfw.T_FX_GLY set YHXM=\'$yhxm\', ZHMC=\'$zgh\', ZCSJ=\'$datestring\' where glydm=\'$glydm\'";
+        my $sql = "update usr_wfw.T_FX_GLY set YHXM=\'$yhxm\', ZHMC=\'$zgh\', ZCSJ=\'$datestring\', YXQKSSJ=\'$yxqkssj\', YXQJZSJ=\'$yxqjzsj\' where glydm=\'$glydm\'";
         my $rtn = DB::execute( $sql );
         if ( $rtn ne 0 && $rtn ne -1 ) {
             $c->res->status(200);

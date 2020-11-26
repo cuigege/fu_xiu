@@ -123,6 +123,8 @@
 	<script src="/static/js/bootstrap-table-resizable.min.js"></script>
 	<script src="/static/js/bootstrap-table-locale-all.min.js"></script>
 	<script src="/static/js/BeAlert.js"></script>
+	<script src="/static/js/tableExport.min.js"></script>
+	<script src="/static/js/bootstrap-table-export.min.js"></script>
 	<script type="application/javascript">
 	$(function() {
 		$('#table').bootstrapTable({
@@ -144,6 +146,12 @@
 			clickToSelect: true,	//是否启用点击选中行
 			toolbarAlign: 'right', 	//工具栏对齐方式
 			buttonsAlign: 'right',	//按钮对齐方式
+			showExport: true,
+			exportTypes: ['csv'],
+			exportOptions: {
+				ignoreColumn: [7, 8],
+				fileName: "学院名单",
+			},
 			columns:[
 				{
 					title:'全选',

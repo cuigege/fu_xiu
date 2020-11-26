@@ -9,32 +9,20 @@
 
 		<!-- basic styles -->
 		<link href="/static/css/bootstrap.min.css" rel="stylesheet" />
-		<link rel="stylesheet" href="/static/css/font-awesome.min.css" />
-
-		<!--[if IE 7]>
-		  <link rel="stylesheet" href="assets/css/font-awesome-ie7.min.css" />
-		<![endif]-->
-		<!-- page specific plugin styles -->
-		<!-- fonts -->
+		<link rel="stylesheet" href="/static/css/fontawesome.min.css" />
 
 		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
-
 		<!-- ace styles -->
-
 		<link rel="stylesheet" href="/static/css/ace.min.css" />
 		<link rel="stylesheet" href="/static/css/ace-rtl.min.css" />
 		<link rel="stylesheet" href="/static/css/ace-skins.min.css" />
-
 		<!--[if lte IE 8]>
 		  <link rel="stylesheet" href="assets/css/ace-ie.min.css" />
 		<![endif]-->
-
 		<!-- inline styles related to this page -->
 		<!-- ace settings handler -->
 		<script src="/static/js/ace-extra.min.js"></script>
-
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-
 		<!--[if lt IE 9]>
 		<script src="assets/js/html5shiv.js"></script>
 		<script src="assets/js/respond.min.js"></script>
@@ -117,7 +105,7 @@
 								<a href="javascript:void(0)" class="dropdown-toggle">
 									<i class="[% var.icon %]"></i>
 									<span class="menu-text"> [% var.name %] </span>
-									<b class="arrow icon-angle-down"></b>
+<!--									<b class="glyphicon glyphicon-chevron-down"></b>-->
 								</a>
 								<ul class="submenu">
 									[% IF var.links.0 %]
@@ -143,7 +131,7 @@
 					</ul><!-- /.nav-list -->
 
 					<div class="sidebar-collapse" id="sidebar-collapse">
-						<i class="icon-double-angle-left" data-icon1="icon-double-angle-left" data-icon2="icon-double-angle-right"></i>
+						<i class="	glyphicon glyphicon-chevron-left" data-icon1="glyphicon glyphicon-chevron-left" data-icon2="glyphicon glyphicon-chevron-right"></i>
 					</div>
 
 					<script type="text/javascript">
@@ -158,8 +146,8 @@
 						</script>
 
 						<ul class="breadcrumb">
-							<li>
-								<i class="icon-home home-icon"></i>
+							<li style="font-size: 20px; margin-top: 20px">
+								<i class="glyphicon glyphicon-home"></i>
 							</li>
 							<li></li>
 						</ul><!-- .breadcrumb -->
@@ -169,7 +157,7 @@
 
 				<div class="ace-settings-container" id="ace-settings-container">
 					<div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
-						<i class="icon-cog bigger-150"></i>
+						<i class="fa fa-cog bigger-150"></i>
 					</div>
 
 					<div class="ace-settings-box" id="ace-settings-box">
