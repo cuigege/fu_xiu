@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试文件上传</title>
+</head>
+<body>
+<form action="" method="post">
+    <!--  只允许上传 xlsx/xls 文件  -->
+    <input type="file" id="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
+    <input type="text" name="txt" value="">
+    <button type="button" id="submit">提交</button>
+</form>
+
+
+<script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+<script>
+    $(function () {
+
+        // 构建 ajax 文件上传
+        $('#submit').click(function (){
+            
+        })
+        
+        $('#file').change(function (e) {
+
+            let file = this.files[0];
+            // 可以根据 file.type 判断上传文件格式
+            console.log(file);
+
+
+        })
+        
+        
+    })
+</script>
+</body>
+</html>

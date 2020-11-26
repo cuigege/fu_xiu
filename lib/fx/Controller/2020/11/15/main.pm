@@ -76,6 +76,18 @@ sub information : Local {
     $c->stash->{template} = '20201115/information.tt2';
 }
 
+=head2 heading
+
+测试文件上传
+=cut
+
+sub testUploads : Local {
+
+    my ( $self, $c, $param ) = @_;
+
+
+    $c->stash->{template} = '20201115/test.html';
+}
 
 
 =encoding utf8

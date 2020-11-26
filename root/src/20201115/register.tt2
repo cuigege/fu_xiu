@@ -182,7 +182,7 @@
             </div>
         </div>
         <div class="weui-cells__tips zy-tips"></div>
-        <div style="height: 5rem;"></div>
+        <div style="height: 3rem;"></div>
         <a href="javascript:;" class="weui-btn weui-btn_primary">确认</a>
     [% ELSE %]
         <div class="weui-cells__title">辅修专业信息</div>
@@ -303,6 +303,7 @@
             if(fxzyList.length === 0){
                 return false;
             }
+            $('.zy-tips').html('');
             $('.zy-input').find('#zy').remove();
             $('.zy-input').html('<input type="text" class="weui-input" id="zy" style="text-align: right;" placeholder="请选择">');
             $("#zy").select({
@@ -313,28 +314,19 @@
 
 
         $(document).on('change','#zy',function (e) {
-
             // 获取专业代码
             let dm = $(this).attr('data-values');
             let val = $(this).val();
-
             if(dm && dm !== selectedZY){
-
                 // 查询已报名人数
                 var date = new Date();
 	            let year = date.getFullYear();
-	            console.log(dm)
-
-                $.get('/2020/10/25/api/getFXZYCount',{fxzydm:dm,fxnf:year},function (data) {
-                    console.log(data)
-                })
-
-
                 $('.zy-tips').html('');
+                $.get('/2020/10/25/api/getFXZYCount',{fxzydm:dm,fxnf:year},function (data) {
+                    let dataJson = JSON.parse(data);
+                    $('.zy-tips').html(val+': '+dataJson.DATA[0].TOTAL+'人报名');
+                })
             }
-
-
-
         });
 
         $('.weui-btn_primary').click(function () {
