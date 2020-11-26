@@ -1,6 +1,7 @@
 package fx::Controller::2020::10::25::CourseManage;
 use Moose;
 use namespace::autoclean;
+use utf8;
 
 BEGIN { extends 'Catalyst::Controller'; }
 
@@ -23,8 +24,7 @@ Catalyst Controller.
 
 sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
-
-    $c->response->body('Matched fx::Controller::2020::10::25::CourseManage in 2020::10::25::CourseManage.');
+    $c->res->body("<h1 style='text-align:center;color:red'>该功能还在开发中, 请耐心等待</h1>");
 }
 
 

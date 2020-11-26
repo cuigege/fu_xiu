@@ -84,7 +84,7 @@
       "allow_field": [
         "search"
       ],
-      "PrepareSQL": "select t1.GLYDM, t1.YHXM, t1.ZCSJ, t1.ZHMC, t2.JSZWM  from USR_WFW.T_FX_GLY t1 left join USR_WFW.T_FX_JS t2 on t1.JSDM=t2.JSDM where t1.JSDM != '-1' "
+      "PrepareSQL": "select t1.GLYDM, t1.YHXM, t1.ZCSJ, t1.ZHMC, t2.JSZWM, t1.QYZT, t1.YXQKSSJ, t1.YXQJZSJ  from USR_WFW.T_FX_GLY t1 left join USR_WFW.T_FX_JS t2 on t1.JSDM=t2.JSDM where t1.JSDM != '-1' "
     },
     "teacheruserlist": {
       "name": "教师用户列表",
@@ -98,7 +98,7 @@
       "allow_field": [
         "search"
       ],
-      "PrepareSQL": "select t1.ZGH, t1.JSXM, t1.LRSJ from USR_WFW.T_FX_LS t1 left join USR_WFW.T_FX_JS t2 on t1.JSDM=t2.JSDM where t1.JSDM != '-1' "
+      "PrepareSQL": "select t1.ZGH, t1.JSXM, t1.LRSJ, t1.QYZT, t1.YXQKSSJ, t1.YXQJZSJ from USR_WFW.T_FX_LS t1 left join USR_WFW.T_FX_JS t2 on t1.JSDM=t2.JSDM where t1.JSDM != '-1' "
     },
     "collegeslist": {
       "name": "学院列表",

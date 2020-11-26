@@ -62,6 +62,13 @@
 					valign:'middle'
 				},
 				{
+					//field: 'Number',//可不加
+					title: '序号',//标题  可不加
+					formatter: function (value, row, index) {
+						return index+1;
+					}
+				},
+				{
 					title:'学号',
 					field:'SFRZH',
 					sortable:true,

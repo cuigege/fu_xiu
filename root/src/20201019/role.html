@@ -166,7 +166,18 @@
 					title:'路径ID',
 					field:'LJDM',
 					sortable:true,
-					visible:true
+					visible:false,
+				},
+				{
+					//field: 'Number',//可不加
+					title: '序号',//标题  可不加
+					formatter: function (value, row, index) {
+						return index+1;
+					}
+				},
+				{
+					title:'功能菜单',
+					field:'ZWM',
 				},
 				{
 					title:'所属菜单',
@@ -175,10 +186,7 @@
 				{
 					title:'路径',
 					field:'LJ',
-				},
-				{
-					title:'说明',
-					field:'ZWM',
+					visible: false
 				},
 				{
 					title:'授权状态',

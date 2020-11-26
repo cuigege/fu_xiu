@@ -109,6 +109,42 @@ sub userdel : Local {
 }
 
 
+
+=head1 status
+
+    启用禁用设置
+=cut
+
+sub status : Local {
+    my ($self, $c) = @_;
+    if ( $c->req->{"method"} eq "POST" ) {
+        my $zgh = $c->req->parameters->{ zgh };
+        my $state = $c->req->parameters->{ state };
+        if ( $state eq 'true' ) {
+            $state = 1;
+        }
+        else {
+            $state = 0;
+        }
+        my $sql = "update usr_wfw.T_FX_LS set QYZT='$state' where ZGH='$zgh'";
+        my $rtn = DB::execute($sql);
+        if ($rtn ne 0 && $rtn ne -1) {
+            $c->res->status(200);
+            $c->res->headers->{ "Content-Type" } = "text/plain; charset=UTF-8";
+            $c->res->body('{"RTN_CODE": "01", "RTN_MSG": "执行成功" }');
+        }
+        else {
+            $c->response->status(400);
+            $c->res->headers->{ "Content-Type" } = "text/plain; charset=UTF-8";
+            $c->res->body('{"RTN_CODE": "00", "RTN_MSG": "用户名不存在，可能已经被删除" }');
+        }
+    }
+    else {
+        $c->res->status(403);
+        $c->res->headers->{ "Content-Type" } = "text/plain; charset=UTF-8";
+        $c->res->body( '{"RTN_CODE": "00", "RTN_MSG": "调用方法不合法" }' );
+    }
+}
 =encoding utf8
 
 =head1 AUTHOR

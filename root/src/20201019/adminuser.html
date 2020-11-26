@@ -5,6 +5,7 @@
 		<link href="/static/css/bootstrap-table.min.css" rel="stylesheet">
 		<link href="/static/css/jquery.resizableColumns.css" rel="stylesheet">
 		<link href="/static/css/BeAlert.css" rel="stylesheet">
+		<link href="/static/css/bootstrap-switch.min.css" rel="stylesheet">
 		<style type="text/css">
 			td, th{
 				text-align: center;
@@ -98,6 +99,7 @@
 	<script src="/static/js/bootstrap-table.min.js"></script>
 	<script src="/static/js/bootstrap-table-resizable.min.js"></script>
 	<script src="/static/js/bootstrap-table-locale-all.min.js"></script>
+	<script src="/static/js/bootstrap-switch.min.js"></script>
 	<script type="application/javascript">
 		$(function() {
 		$('#user_table').bootstrapTable({
@@ -146,6 +148,14 @@
 					field:'ZCSJ',
 				},
 				{
+					title:'有效期',
+					field:'YXQ',
+				},
+				{
+					title:'启用状态',
+					field:'QYZT',
+				},
+				{
 					title:'操作',
 					field:'CZ',
 				},
@@ -156,21 +166,50 @@
 					for (let i = 0; i < res.length; i++) {
 						res[i].CZ = "<a onclick=\"edit_user(this, "+ res[i].GLYDM +")\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"编辑\"><button type=\"button\" class=\"btn btn-sm btn-warning\" ><i class=\"glyphicon glyphicon-edit\" ></i></button></a>\n" +
 								"<a onclick=\"delete_user("+ res[i].GLYDM +")\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"删除\"><button type=\"button\" class=\"btn btn-sm btn-danger\"><i class=\"glyphicon glyphicon-trash\"></i></button></a>"
+						if ( res[i].QYZT == 1 )
+							res[i].QYZT = "<input type='checkbox' name='qyzt_switch' checked value='"+ res[i].ZHMC +"'>";
+						else
+							res[i].QYZT = "<input type='checkbox' name='qyzt_switch' value='"+ res[i].ZHMC +"'>";
 					}
 					return res;
 				},
+			onAll: function () {
+				$('input[name="qyzt_switch"]').bootstrapSwitch({
+			　　　　onText : "启用",      // 设置ON文本
+			　　　　offText : "禁用",    // 设置OFF文本
+			　　　　onColor : "success",// 设置ON文本颜色(info/success/warning/danger/primary)
+			　　　　offColor : "danger",  // 设置OFF文本颜色 (info/success/warning/danger/primary)
+			　　　　size : "small",    // 设置控件大小,从小到大  (mini/small/normal/large)
+			　　　　onSwitchChange : function(event, state) {
+						let zgh = event.target.value;
+						$.ajax({
+							url: "/2020/10/25/adminuser/status",
+							type: "post",
+							data: {"zgh": zgh.toLocaleString(), "state": state},
+							success: function (res) {
+								$("#msg").append(pop_msg ( "info", "操作成功", 1500 ));
+								refresh_data();
+							},
+							error: function (res) {
+								console.log(res)
+								$("#msg").append(pop_msg ( "error", "操作失败", 1500 ));
+							}
+						})
+			　　　　}
+　　				})
+			}
 			})
-		$(".fixed-table-toolbar").append('<div class="float-right  btn-group"><button class="btn btn-info btn-sm" title="新增" data-toggle="modal" data-target="#addmodal"><i class="glyphicon glyphicon-plus"></i></button></div>&nbsp')
-		$(".fixed-table-toolbar").append('<div class="float-right  btn-group" onclick="refresh_data()"><button class="btn btn-success btn-sm" title="数据刷新"><i class="glyphicon glyphicon-refresh"></i></button></div>')
-		$("[data-toggle='tooltip']").tooltip();
+			$(".fixed-table-toolbar").append('<div class="float-right  btn-group"><button class="btn btn-info btn-sm" title="新增" data-toggle="modal" data-target="#addmodal"><i class="glyphicon glyphicon-plus"></i></button></div>&nbsp')
+			$(".fixed-table-toolbar").append('<div class="float-right  btn-group" onclick="refresh_data()"><button class="btn btn-success btn-sm" title="数据刷新"><i class="glyphicon glyphicon-refresh"></i></button></div>')
+			$("[data-toggle='tooltip']").tooltip();
 		})
 		function edit_user(obj, val) {
 		  let ob = obj.parentNode.parentNode.childNodes;
 		  $("#edit_modal_title").html("修改 <span style='color:red'>" + ob[3].innerText + "</span> 信息");
-		  $("#edit_zgh").val(ob[2].innerText);
-		  $("#edit_yhxm").val(ob[3].innerText);
-		  $("#edit_id").val(val);
-		  $("#edit_modal").modal('show');
+		  $("#edit_zgh").val( ob[2].innerText );
+		  $("#edit_yhxm").val( ob[3].innerText );
+		  $("#edit_id").val( val );
+		  $("#edit_modal").modal( 'show' );
 		}
 
 		function post_edit() {

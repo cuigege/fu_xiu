@@ -119,8 +119,8 @@
 				res = res.DATA;
 				if (res.length > 0) {
 					for( let i = 0 ; i < res.length; i++ ){
-								res[i].CZ = "<a onclick=\"show_detail(this, '"+ res[i].SFRZH + "\')\"><button type=\"button\" class=\"btn  btn-info\" >查看</button></a>\n";
-								res[i].CZ += "<a onclick=\"pass_apply(this, '"+ res[i].SFRZH + "\')\"><button type=\"button\" class=\"btn  btn-success\" >通过</button></a>\n";
+								// res[i].CZ = "<a onclick=\"show_detail(this, '"+ res[i].SFRZH + "\')\"><button type=\"button\" class=\"btn  btn-info\" >查看</button></a>\n";
+								res[i].CZ = "<a onclick=\"pass_apply(this, '"+ res[i].SFRZH + "\')\"><button type=\"button\" class=\"btn  btn-success\" >通过</button></a>\n";
 								res[i].CZ += "<a onclick=\"reject_apply(this, '"+ res[i].SFRZH + "\')\"><button type=\"button\" class=\"btn btn-danger\" >拒绝</button></a>";
 						}
 				}

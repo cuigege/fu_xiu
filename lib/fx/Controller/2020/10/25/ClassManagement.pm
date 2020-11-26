@@ -23,8 +23,9 @@ Catalyst Controller.
 
 sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
-
-    $c->response->body('Matched fx::Controller::2020::10::25::ClassManagement in 2020::10::25::ClassManagement.');
+    $c->stash({
+        template    => "20201019/classdivide.html",
+    });
 }
 
 

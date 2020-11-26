@@ -91,6 +91,11 @@ sub auto : Private {
     my $path = $c->req->action;                                 # 获取当前访问路径
     $path =~ /[^$c->{base_url}].*/;
     my $qx = ToolFunc::privilege( $&, $c->{ sessionid } );        #  有权限返回1 没有返回0
+    if ( $qx eq '-2' ) {
+        $c->{ msg } = "路径表被锁，请稍后再试：412"; # 412 路径表锁
+        $c->{ status_code } = 500;
+        $c->detach("error");
+    }
     if ($qx eq 0 || $qx eq -1) {
         my $code = set_privilege($username, $c); # 二次权限判断重新刷新权限缓存
         if ($code eq 1) {

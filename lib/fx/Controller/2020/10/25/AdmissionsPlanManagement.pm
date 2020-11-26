@@ -163,6 +163,11 @@ sub timeedit : Local {
         $c->res->body( '{"RTN_CODE": "00", "RTN_MSG": "调用方法不合法" }' );
     }
 }
+
+sub qualify : Local {
+    my ( $self, $c ) = @_;
+    $c->res->body("<h1 style='text-align:center;color:red'>该功能还在开发中, 请耐心等待</h1>");
+}
 =encoding utf8
 
 =head1 AUTHOR
