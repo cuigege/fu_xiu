@@ -30,8 +30,6 @@ sub auto : Private {
 
     my ( $self, $c ) = @_;
 
-
-
 }
 
 
@@ -43,7 +41,7 @@ sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
 
 
-    $c->stash->{template} = '20201115/base.html';
+    $c->stash->{template} = '20201115/base.tt2';
 }
 
 
@@ -64,6 +62,21 @@ sub error : Private {
         title    => $c->{ msg },
     );
 }
+
+=head2 information()
+
+提示信息页面
+
+=cut
+
+sub information : Local {
+    my ( $self, $c, $param ) = @_;
+    $c->stash->{info_msg} = $param;
+
+    $c->stash->{template} = '20201115/information.tt2';
+}
+
+
 
 =encoding utf8
 

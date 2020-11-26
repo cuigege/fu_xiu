@@ -258,7 +258,7 @@ sub default : Local {
     my ( $self, $c) = @_;
     $c->response->status( 404 );
 	$c->stash(
-        template    => '20201019/error-404.html',
+        template    => '20201019/error-404.tt2',
         title       => "页面不存在"
     );
 }
