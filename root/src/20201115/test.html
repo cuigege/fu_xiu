@@ -8,7 +8,7 @@
 <form action="" method="post">
     <!--  只允许上传 xlsx/xls 文件  -->
     <input type="file" id="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
-    <input type="text" name="txt" value="">
+    <input type="text" name="txt" id="username" value="">
     <button type="button" id="submit">提交</button>
 </form>
 
@@ -17,14 +17,30 @@
 <script>
     $(function () {
 
+
+        let file;
         // 构建 ajax 文件上传
         $('#submit').click(function (){
-            
+            let formData = new FormData();
+            formData.append("username", $('#username').val().trim());
+            formData.append('file',file);
+            console.log($('#username').val().trim())
+            let url = '/2020/11/15/main/testUploads';
+            $.ajax({
+                type: "post", //请求方式
+                dataType: 'json',
+                url: url, //请求接口
+                data: formData, //请求参数（这里将参数都保存在formData对象中）
+                processData: false, //因为data值是FormData对象，不需要对数据做处理。
+                contentType: false, //默认为true,不设置Content-type请求头
+                success: function(data) {
+                    console.log(data)
+                }
+            });
         })
         
         $('#file').change(function (e) {
-
-            let file = this.files[0];
+            file = this.files[0];
             // 可以根据 file.type 判断上传文件格式
             console.log(file);
 
