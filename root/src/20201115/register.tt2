@@ -32,9 +32,9 @@
 </head>
 <body>
 <div class="content">
-<header>
-      <div class="" style="text-align: center;height: 4rem;line-height: 4rem;font-size: 1rem;color: #33CCFF;">辅修报名</div>
-</header>
+    <header>
+        <div class="" style="text-align: center;height: 4rem;line-height: 4rem;font-size: 1rem;color: #33CCFF;">辅修报名</div>
+    </header>
 
     <!--  折叠信息  -->
     <div class="weui-cells__title less">学生信息</div>
@@ -84,12 +84,12 @@
         </div>
 
         [% IF bminfo != 'false' %]
-        <div class="weui-cell">
-            <div class="weui-cell__bd">
-                <p>联系电话</p>
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <p>联系电话</p>
+                </div>
+                <div class="weui-cell__ft sfzjh">[% bminfo.LXFS %]</div>
             </div>
-            <div class="weui-cell__ft sfzjh">[% bminfo.LXFS %]</div>
-        </div>
         [% END %]
         <div class="weui-cell">
             <div class="weui-cell__bd">
@@ -151,38 +151,39 @@
 
     [% IF bminfo == "false" %]
 
-    <div class="weui-cells__title">个人信息</div>
-    <div class="weui-cells ">
-        <div class="weui-cell">
-            <div class="weui-cell__bd">
-                <p>联系电话</p>
-            </div>
-            <div class="weui-cell__ft">
-                <input type="tel" class="weui-input" id="mobile" style="text-align: right;" placeholder="请输入联系电话">
-            </div>
-        </div>
-    </div>
-    <div class="weui-cells__title">辅修专业信息</div>
-    <div class="weui-cells ">
-        <div class="weui-cell">
-            <div class="weui-cell__bd">
-                <p>辅修学院</p>
-            </div>
-            <div class="weui-cell__ft">
-                <input type="text" class="weui-input" id="xy" style="text-align: right;" placeholder="请选择">
+        <div class="weui-cells__title">个人信息</div>
+        <div class="weui-cells ">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <p>联系电话</p>
+                </div>
+                <div class="weui-cell__ft">
+                    <input type="tel" class="weui-input" id="mobile" style="text-align: right;" placeholder="请输入联系电话">
+                </div>
             </div>
         </div>
-        <div class="weui-cell">
-            <div class="weui-cell__bd">
-                <p>辅修专业</p>
+        <div class="weui-cells__title">辅修专业信息</div>
+        <div class="weui-cells ">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <p>辅修学院</p>
+                </div>
+                <div class="weui-cell__ft">
+                    <input type="text" class="weui-input" id="xy" style="text-align: right;" placeholder="请选择">
+                </div>
             </div>
-            <div class="weui-cell__ft zy-input">
-                <input type="text" class="weui-input" id="zy" style="text-align: right;" placeholder="请选择">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <p>辅修专业</p>
+                </div>
+                <div class="weui-cell__ft zy-input">
+                    <input type="text" class="weui-input" id="zy" style="text-align: right;" placeholder="请选择">
+                </div>
             </div>
         </div>
-    </div>
-    <div style="height: 10rem;"></div>
-    <a href="javascript:;" class="weui-btn weui-btn_primary">确认</a>
+        <div class="weui-cells__tips zy-tips"></div>
+        <div style="height: 5rem;"></div>
+        <a href="javascript:;" class="weui-btn weui-btn_primary">确认</a>
     [% ELSE %]
         <div class="weui-cells__title">辅修专业信息</div>
         <div class="weui-cells ">
@@ -254,6 +255,7 @@
         let fxxyDmList = [];
         let fxxyInfoList = [];
         let fxzyList = [];
+        let selectedZY = null;
         // 遍历辅修专业 整理格式 获取学院代码
         function fxzyEach() {
             $.each(fxzyArrList,function (i,v) {
@@ -287,7 +289,7 @@
         }
         $("#xy").change(function (e) {
             let xydm = $(this).attr('data-values');
-            console.log(xydm);
+
             // 重新整理专业
             fxzyList = [];
             $.each(fxzyArrList,function (i,v) {
@@ -308,6 +310,32 @@
                 items: fxzyList
             });
         })
+
+
+        $(document).on('change','#zy',function (e) {
+
+            // 获取专业代码
+            let dm = $(this).attr('data-values');
+            let val = $(this).val();
+
+            if(dm && dm !== selectedZY){
+
+                // 查询已报名人数
+                var date = new Date();
+	            let year = date.getFullYear();
+	            console.log(dm)
+
+                $.get('/2020/10/25/api/getFXZYCount',{fxzydm:dm,fxnf:year},function (data) {
+                    console.log(data)
+                })
+
+
+                $('.zy-tips').html('');
+            }
+
+
+
+        });
 
         $('.weui-btn_primary').click(function () {
 
@@ -330,7 +358,7 @@
             }
 
             $.confirm("确定要提交辅修报名吗?", function() {
-              submitData()
+                submitData()
             });
         });
 

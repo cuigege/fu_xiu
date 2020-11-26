@@ -281,6 +281,16 @@
       "allow_method": ["GET"],
       "allow_field": ["zydm", "year"],
       "PrepareSQL": "select * from usr_wfw.T_FX_ZSJH where zydm=? and fxnf=?"
+    },
+    "getFXZYCount": {
+      "name": "获取辅修专业报名人数",
+      "driver": "oracle",
+      "connect_db": "wfw_wfw",
+      "table": "usr_wfw.T_FX_BM",
+      "type": "select",
+      "allow_method": ["GET"],
+      "allow_field": ["fxzydm", "fxnf"],
+      "PrepareSQL": "select count(*) as total from usr_wfw.T_FX_BM where FXZYDM=? and FXNF=?"
     }
   }
 }
