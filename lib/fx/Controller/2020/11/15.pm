@@ -7,6 +7,7 @@ use MY::ToolFunc;
 use utf8;
 use JSON;
 use Data::Dumper;
+use POSIX qw(strftime);
 our $syslog = Log::Mini->new(file => 'syserror.log', synced => 1, level => 'warn');
 BEGIN { extends 'Catalyst::Controller'; }
 
@@ -59,13 +60,26 @@ sub auto : Private {
 
     if($userInfo eq '[]') {
         # 未查询到学生数据
-        $c->{ msg } = "未查询到用户信息：512"; # 512 未查询到用户信息
+        $c->{ msg } = "未查询到用户信息"; # 512 未查询到用户信息
         $c->{ status_code } = 512;
         $c->detach("error");
         return 0;
     }
 
-    $c->{ student_userinfo } = from_json($userInfo)->[0]; # 学生信息
+    $c->{ student_userinfo } = from_json($userInfo,{allow_nonref=>1})->[0]; # 学生信息
+
+    # 只允许大二学生报名
+    $c->log->info(Dumper $c->{student_userinfo}->{RXNJ});
+    my $currentYear = strftime "%Y", localtime;  # 当前辅修年份
+
+    if ( $currentYear - $c->{ student_userinfo }->{ RXNJ } > 1 ) {
+
+        $c->{ msg } = "禁止非大二学生报名";
+        $c->{ status_code } = 512;
+        $c->detach("error");
+        return 0;
+
+    }
 
     return 1;
 }
@@ -90,14 +104,14 @@ sub index :Path :Args(0) {
 =cut
 sub error : Private {
     my ( $self, $c) = @_;
-    $c->{ status_code } ||= 200;
+
     $c->{ msg } ||= "一切正常, 正在努力工作";
-    $c->response->status( $c->{ status_code } );
 	$c->stash(
-        template => '20201019/error-500.html',
+        template => '20201115/msg.tt2',
         msg      => $c->{ msg },
         code     => $c->{ status_code },
         title    => $c->{ msg },
+        status_msg   => $c->{ status_msg },
     );
 }
 
