@@ -1,6 +1,7 @@
 package fx::Controller::2020::10::25::ClassManagement;
 use Moose;
 use namespace::autoclean;
+use JSON;
 
 BEGIN { extends 'Catalyst::Controller'; }
 
@@ -23,8 +24,12 @@ Catalyst Controller.
 
 sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
+    # 判断是普通管理员还是超级管理
+    my $sql = "select DWDM, t1.ZWMC DWMC, JSDM from usr_wfw.T_FX_GLY t left join usr_wfw.T_FX_XY t1 on t1.XYDM=t.DWDM  where ZHMC = \'$c->{username}\'";
+    my $jsdw = from_json( DB::get_json( $sql ) )->[0];     # 操作用户信息
     $c->stash({
-        template    => "20201019/classdivide.html",
+        template => "20201019/classdivide.html",
+        jsdw     => $jsdw
     });
 }
 

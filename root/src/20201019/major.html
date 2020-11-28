@@ -146,13 +146,90 @@
 	<script src="/static/js/tableExport.min.js"></script>
 	<script src="/static/js/bootstrap-table-export.min.js"></script>
 	<script type="application/javascript">
+	function edit_marjor(obj, zydm, xydm, xkmldm, zydldm) {
+	  let option = "";
+	  [% IF jsdw.JSDM == -1 %]
+	  // 学院
+	  $.get("/2020/10/25/api/collegeslist?search", function (res) {
+		res = JSON.parse(res).DATA;
+		for (let i = 0; i < res.length; i++) {
+			if ( res[i].XYDM == xydm ) {
+				option += "<option value='"+ res[i].XYDM +"' selected>" + res[i].ZWMC + "</option>"
+				continue;
+			}
+			option += "<option value='"+ res[i].XYDM +"'>" + res[i].ZWMC + "</option>"
+		}
+	  	$("#edit_xydm").html(option);
+	  });
+		[% ELSE %]
+		$("#edit_xydm").html("<option value='[% jsdw.DWDM %]'>[% jsdw.DWMC %]</option>");
+		[% END%]
+		//专业大类
+		$.get("/2020/10/25/api/bigcategory?search", function (res) {
+			res = JSON.parse(res).DATA;
+			let option = "";
+			for (let i = 0; i < res.length; i++) {
+				if (zydldm == res[i].ZYDLDM )
+					option += "<option value='" + res[i].ZYDLDM + "' selected>" + res[i].ZYDLMC + "</option>";
+				else
+					option += "<option value='" + res[i].ZYDLDM + "'>" + res[i].ZYDLMC + "</option>";
+			}
+			$("#edit_zydldm").html(option);
+		})
+		//学科门类
+		$.get("/2020/10/25/api/subjectcategory?search", function (res) {
+			res = JSON.parse(res).DATA;
+			let option = "";
+			for (let i = 0; i < res.length; i++) {
+				if (xkmldm == res[i].XKDM )
+					option += "<option value='" + res[i].XKDM + "' selected>" + res[i].XKMC + "</option>";
+				else
+					option += "<option value='" + res[i].XKDM + "'>" + res[i].XKMC + "</option>";
+			}
+			$("#edit_xkmldm").html(option);
+		})
+		  let ob = obj.parentNode.parentNode.childNodes;
+		  $("#edit_modal_title").text(ob[3].innerText);
+		  $("#edit_zydm").val(ob[1].innerText);
+		  $("#edit_zymc").val(ob[2].innerText);
+		  $("#edit_zyywm").val(ob[3].innerText);
+		  $("#edit_xkmldm").val(ob[5].innerText);
+		  $("#edit_zydldm").val(ob[6].innerText);
+		  $("#editmodal").modal('show');
+	}
+
+	function delete_major( zydm ) {
+	  $.ajax({
+			  url: "/2020/10/25/major/majordel",
+			  type: "post",
+			  data: {"zydm": zydm},
+			  success: function (res) {
+				$("#msg").append(pop_msg("info", "删除成功", 2000));
+				refresh_data();
+				$("#addmodal").modal('hide');
+			  },
+			  error: function (res) {
+			  	try {
+					res = JSON.parse(res.responseText);
+					$("#msg").append(pop_msg("info", "<br>删除失败," + res.RTN_MSG, 2000));
+				} catch (e) {
+					alert("无操作权限");
+				}
+			  }
+		  })
+	}
+
 	$(function() {
 		$('#table').bootstrapTable({
 			method: 'get',
 			locale:'zh-CN',	//中文支持,
 			search: true,
-			contentType: "application/x-www-form-urlencoded",	//必须要有！！！！
-			url:"/2020/10/25/api/majorlist",	//要请求数据的文件路径
+			contentType: "application/x-www-form-urlencoded",
+			[% IF jsdw.JSDM == -1%]
+			url:"/2020/10/25/api/majorlist",
+			[% ELSE %]
+			url:"/2020/10/25/api/majorlistsearchbyxydm?xydm=[% jsdw.DWDM %]",
+			[%END%]
 			// height:tableHeight(),	//高度调整
 			toolbar: '#toolbar',	//指定工具栏
 			striped: true, 	//是否显示行间隔色
@@ -226,15 +303,16 @@
 					//在ajax获取到数据，渲染表格之前，修改数据源
 					res = res.DATA;
 					for (let i = 0; i < res.length; i++) {
-						res[i].CZ = "<a onclick=\"edit_marjor(this, "+ res[i].ZYDM + ',' + res[i].XYDM + ',\'' + res[i].XKMLDM + '\',\'' + res[i].ZYDLDM + "\')\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"编辑\"><button type=\"button\" class=\"btn btn-sm btn-warning\" ><i class=\"glyphicon glyphicon-edit\" ></i></button></a>\n" +
-								"<a onclick=\"delete_major("+ res[i].ZYDM +")\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"删除\"><button type=\"button\" class=\"btn btn-sm btn-danger\"><i class=\"glyphicon glyphicon-trash\"></i></button></a>"
+						res[i].CZ = "<a onclick=\"edit_marjor(this, \'"+ res[i].ZYDM + '\',\'' + res[i].XYDM + '\',\'' + res[i].XKMLDM + '\',\'' + res[i].ZYDLDM + "\')\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"编辑\"><button type=\"button\" class=\"btn btn-sm btn-warning\" ><i class=\"glyphicon glyphicon-edit\" ></i></button></a>\n" +
+								"<a onclick=\"delete_major(\'"+ res[i].ZYDM +"\')\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"删除\"><button type=\"button\" class=\"btn btn-sm btn-danger\"><i class=\"glyphicon glyphicon-trash\"></i></button></a>"
 					}
 					return res;
 				},
 		})
 		$(".fixed-table-toolbar").append('<div class="float-right  btn-group"><button class="btn btn-info btn-sm" title="新增" data-toggle="modal" data-target="#addmodal"><i class="glyphicon glyphicon-plus"></i></button></div>&nbsp')
-		$(".fixed-table-toolbar").append('<div class="float-right  btn-group"><button class="btn btn-success btn-sm" title="数据同步"><i class="glyphicon glyphicon-refresh"></i></button></div>')
+		// $(".fixed-table-toolbar").append('<div class="float-right  btn-group"><button class="btn btn-success btn-sm" title="数据同步"><i class="glyphicon glyphicon-refresh"></i></button></div>')
 		$("[data-toggle='tooltip']").tooltip();
+		[% IF jsdw.JSDM == -1 %]
 		//学院
 		$.get("/2020/10/25/api/collegeslist?search", function (res) {
 			res = JSON.parse(res).DATA;
@@ -244,6 +322,9 @@
 			}
 			$("#xydm").html(option);
 		})
+		[% ELSE %]
+		$("#xydm").html("<option value='[% jsdw.DWDM %]'>[% jsdw.DWMC %]</option>");
+		[% END%]
 		//专业大类
 		$.get("/2020/10/25/api/bigcategory?search", function (res) {
 			res = JSON.parse(res).DATA;
@@ -263,55 +344,6 @@
 			$("#xkmldm").html(option);
 		})
 	})
-	
-	function edit_marjor(obj, zydm, xydm, xkmldm, zydldm) {
-	  let option = "";
-	  // 学院
-	  $.get("/2020/10/25/api/collegeslist?search", function (res) {
-		res = JSON.parse(res).DATA;
-		for (let i = 0; i < res.length; i++) {
-			if ( res[i].XYDM == xydm ) {
-				option += "<option value='"+ res[i].XYDM +"' selected>" + res[i].ZWMC + "</option>"
-				continue;
-			}
-			option += "<option value='"+ res[i].XYDM +"'>" + res[i].ZWMC + "</option>"
-		}
-	  	$("#edit_xydm").html(option);
-	  });
-		//专业大类
-		$.get("/2020/10/25/api/bigcategory?search", function (res) {
-			res = JSON.parse(res).DATA;
-			let option = "";
-			for (let i = 0; i < res.length; i++) {
-				if (zydldm == res[i].ZYDLDM )
-					option += "<option value='" + res[i].ZYDLDM + "' selected>" + res[i].ZYDLMC + "</option>";
-				else
-					option += "<option value='" + res[i].ZYDLDM + "'>" + res[i].ZYDLMC + "</option>";
-			}
-			$("#edit_zydldm").html(option);
-		})
-		//学科门类
-		$.get("/2020/10/25/api/subjectcategory?search", function (res) {
-			res = JSON.parse(res).DATA;
-			let option = "";
-						debugger
-			for (let i = 0; i < res.length; i++) {
-				if (xkmldm == res[i].XKDM )
-					option += "<option value='" + res[i].XKDM + "' selected>" + res[i].XKMC + "</option>";
-				else
-					option += "<option value='" + res[i].XKDM + "'>" + res[i].XKMC + "</option>";
-			}
-			$("#edit_xkmldm").html(option);
-		})
-	  let ob = obj.parentNode.parentNode.childNodes;
-	  $("#edit_modal_title").text(ob[2].innerText);
-	  $("#edit_zydm").val(ob[1].innerText);
-	  $("#edit_zymc").val(ob[2].innerText);
-	  $("#edit_zyywm").val(ob[3].innerText);
-	  $("#edit_xkmldm").val(ob[5].innerText);
-	  $("#edit_zydldm").val(ob[6].innerText);
-	  $("#editmodal").modal('show');
-	}
 	
 	function add_marjor(){
 		let zydm = $("#zydm").val();
@@ -334,10 +366,14 @@
 			refresh_data();
 			$("#addmodal").modal('hide');
 		  },
-		  error: function (xhr) {
-			xhr = JSON.parse(xhr.responseText);
-			console.log(xhr)
-			$("#msg").append(pop_msg("info", "<br>保存失败 " + xhr.RTN_MSG, 2000));
+		  error: function (res) {
+			try{
+				  res = JSON.parse(res.responseText);
+				  console.log(res)
+				  $("#msg").append(pop_msg("error", " <br>保存失败", 3000));
+				} catch (e) {
+					alert("无操作权限")
+			}
 		  }
 	  })
 	}
@@ -361,9 +397,13 @@
 								  refresh_data();
 							  },
 							  error: function (res) {
-								  res = JSON.parse(res.responseText);
-								  console.log(res)
-								  $("#msg").append(pop_msg("error", " <br>修改专业,可能" + res.RTN_MSG , 3000));
+								  try {
+									  res = JSON.parse(res.responseText);
+									  console.log(res)
+									  $("#msg").append(pop_msg("error", " <br>修改专业,可能" + res.RTN_MSG, 3000));
+								  } catch (e) {
+									  alert("无操作权限")
+								  }
 							  }
 						  })
 					  }
@@ -373,23 +413,6 @@
 					  confirmButtonText: '确认'
 				  }
 			)
-	}
-
-	function delete_major( zydm ) {
-	  $.ajax({
-			  url: "/2020/10/25/major/majordel",
-			  type: "post",
-			  data: {"zydm": zydm},
-			  success: function (res) {
-				$("#msg").append(pop_msg("info", "删除成功", 2000));
-				refresh_data();
-				$("#addmodal").modal('hide');
-			  },
-			  error: function (res) {
-				res = JSON.parse(res.responseText);
-				$("#msg").append(pop_msg("info", "<br>删除失败," + res.RTN_MSG, 2000));
-			  }
-		  })
 	}
 
 	$("#addmodal").on('hidden.bs.modal', function () {

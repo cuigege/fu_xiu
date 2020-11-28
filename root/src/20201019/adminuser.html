@@ -44,6 +44,10 @@
 								<input type="text" class="form-control" name="yhxm" id="yhxm" autocomplete="off">
 							</div>
 							<div class="input-group">
+								<span class="input-group-addon">所属单位</span>
+								<select type="text" class="form-control" name="dw" id="dw" ></select>
+							</div>
+							<div class="input-group">
 								<span class="input-group-addon">有效期开始时间</span>
 								<input type="datetime-local" class="form-control" name="yxqkssj" id="yxqkssj" autocomplete="off">
 							</div>
@@ -84,6 +88,10 @@
 							<div class="input-group">
 								<span class="input-group-addon">职工账号</span>
 								<input type="text" class="form-control" name="edit_zgh" id="edit_zgh" autocomplete="off">
+							</div>
+							<div class="input-group">
+								<span class="input-group-addon">所属单位</span>
+								<select type="text" class="form-control" name="edit_dw" id="edit_dw"></select>
 							</div>
 							<div class="input-group">
 								<span class="input-group-addon">有效期开始时间</span>
@@ -160,6 +168,10 @@
 					field:'YHXM',
 				},
 				{
+					title:'单位名称',
+					field:'DWMC',
+				},
+				{
 					title:'创建时间',
 					field:'ZCSJ',
 				},
@@ -180,7 +192,7 @@
 								//在ajax获取到数据，渲染表格之前，修改数据源
 					res = res.DATA;
 					for (let i = 0; i < res.length; i++) {
-						res[i].CZ = "<a onclick=\"edit_user(this, "+ res[i].GLYDM +")\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"编辑\"><button type=\"button\" class=\"btn btn-sm btn-warning\" ><i class=\"glyphicon glyphicon-edit\" ></i></button></a>\n" +
+						res[i].CZ = "<a onclick=\"edit_user(this, "+ res[i].GLYDM +"," + res[i].XYDM + ")\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"编辑\"><button type=\"button\" class=\"btn btn-sm btn-warning\" ><i class=\"glyphicon glyphicon-edit\" ></i></button></a>\n" +
 								"<a onclick=\"delete_user("+ res[i].GLYDM +")\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"删除\"><button type=\"button\" class=\"btn btn-sm btn-danger\"><i class=\"glyphicon glyphicon-trash\"></i></button></a>"
 						if ( res[i].QYZT == 1 )
 							res[i].QYZT = "<input type='checkbox' name='qyzt_switch' checked value='"+ res[i].ZHMC +"'>";
@@ -219,16 +231,39 @@
 			$(".fixed-table-toolbar").append('<div class="float-right  btn-group"><button class="btn btn-info btn-sm" title="新增" data-toggle="modal" data-target="#addmodal"><i class="glyphicon glyphicon-plus"></i></button></div>&nbsp')
 			$(".fixed-table-toolbar").append('<div class="float-right  btn-group" onclick="refresh_data()"><button class="btn btn-success btn-sm" title="数据刷新"><i class="glyphicon glyphicon-refresh"></i></button></div>')
 			$("[data-toggle='tooltip']").tooltip();
+			$.get("/2020/10/25/api/collegeslist?search", function (res) {
+			res = JSON.parse(res).DATA;
+				let option = "";
+				for (let i = 0; i < res.length; i++) {
+					option += "<option value='" + res[i].XYDM + "'>" + res[i].ZWMC + "</option>";
+				}
+				$("#dw").html(option);
+			})
 		})
-		function edit_user(obj, val) {
+		function edit_user(obj, val, dwdm) {
 		  let ob = obj.parentNode.parentNode.childNodes;
 		  $("#edit_modal_title").html("修改 <span style='color:red'>" + ob[3].innerText + "</span> 信息");
 		  $("#edit_zgh").val( ob[2].innerText );
 		  $("#edit_yhxm").val( ob[3].innerText );
 		  $("#edit_id").val( val );
-		  if ( ob[5].innerText !== "-") {
-		  	$("#edit_yxqkssj").val(ob[5].innerText.split(' - ')[0].replace(" ", "T"));
-			$("#edit_yxqjzsj").val(ob[5].innerText.split(' - ')[1].replace(" ", "T"));
+		  // 学院
+		  $.get("/2020/10/25/api/collegeslist?search", function (res) {
+			res = JSON.parse(res).DATA;
+			let option = "";
+			for (let i = 0; i < res.length; i++) {
+				if ( res[i].XYDM == dwdm ) {
+					option += "<option value='"+ res[i].XYDM +"' selected>" + res[i].ZWMC + "</option>"
+					continue;
+				}
+				option += "<option value='"+ res[i].XYDM +"'>" + res[i].ZWMC + "</option>"
+			}
+			$("#edit_dw").html(option);
+		  });
+		  if ( ob[6].innerText.split(' - ')[0] !== undefined) {
+		  	$("#edit_yxqkssj").val(ob[6].innerText.split(' - ')[0].replace(" ", "T"));
+		  }
+		  if ( ob[6].innerText.split(' - ')[1] !== undefined ) {
+			$("#edit_yxqjzsj").val(ob[6].innerText.split(' - ')[1].replace(" ", "T"));
 		  }
 		  else {
 		  	$("#edit_yxqkssj").val('');
@@ -243,12 +278,13 @@
 		  	let edit_zgh = $("#edit_zgh").val();
 		  	let edit_yxqkssj = $("#edit_yxqkssj").val().replace("T", " ");
 		  	let edit_yxqjzsj = $("#edit_yxqjzsj").val().replace("T", " ");
+		  	let edit_dwdm = $("#edit_dw").val();
 			confirm(null, "确认修改管理员<span style='color:red'>" + $("#edit_modal_title").text() + "</span> ?", function (isConfirm) {
 					  if (isConfirm) {
 						  $.ajax({
 							  url: "/2020/10/25/adminuser/useredit",
 							  type: "post",
-							  data: {"edit_glydm": edit_glydm, "edit_yhxm": edit_yhxm, "edit_zgh": edit_zgh, "edit_yxqkssj": edit_yxqkssj, "edit_yxqjzsj": edit_yxqjzsj},
+							  data: {"edit_glydm": edit_glydm, "edit_yhxm": edit_yhxm, "edit_zgh": edit_zgh, "edit_yxqkssj": edit_yxqkssj, "edit_yxqjzsj": edit_yxqjzsj, "edit_dw": edit_dwdm},
 							  success: function (res) {
 								  $("#msg").append(pop_msg("info", "修改成功"));
 								  $("#edit_modal").modal("hide");
@@ -328,13 +364,14 @@
 				  let zgh = $("#zgh").val();
 				  let yxqkssj = $("#yxqkssj").val().replace("T", " ");
 		  		  let yxqjzsj = $("#yxqjzsj").val().replace("T", " ");
+		  		  let dwdm = $("#dwdm").val();
 				  if (yhxm && zgh) {
 					  confirm(null, "确认添加添加管理员<span style='color:red'>" + yhxm + "</span>?", function (isConfirm) {
 								  if (isConfirm) {
 									  $.ajax({
 										  url: "/2020/10/25/adminuser/useradd",
 										  type: "post",
-										  data: {"yhxm": yhxm, "zgh": zgh, "yxqkssj": yxqkssj, "yuxqjzsj": yxqjzsj},
+										  data: {"yhxm": yhxm, "zgh": zgh, "yxqkssj": yxqkssj, "yuxqjzsj": yxqjzsj, "dwdm": dwdm},
 										  success: function (res) {
 											  $("#msg").append(pop_msg("info", "新增用户成功"));
 											  $("#addmodal").modal("hide");
@@ -361,11 +398,11 @@
 			  }
 
 		function refresh_data() {		// 刷新数据
-				let opt = {
-					url: "/2020/10/25/api/adminuserlist",
-					silent: true,
-				}
-				$("#user_table").bootstrapTable('refresh', opt);
-			};
+			let opt = {
+				url: "/2020/10/25/api/adminuserlist",
+				silent: true,
+			}
+			$("#user_table").bootstrapTable('refresh', opt);
+		};
 	</script>
 </html>

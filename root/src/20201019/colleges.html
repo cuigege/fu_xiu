@@ -210,7 +210,7 @@
 				},
 		})
 		$(".fixed-table-toolbar").append('<div class="float-right  btn-group"><button class="btn btn-info btn-sm" title="新增" data-toggle="modal" data-target="#addmodal"><i class="glyphicon glyphicon-plus"></i></button></div>&nbsp')
-		$(".fixed-table-toolbar").append('<div class="float-right  btn-group"><button class="btn btn-success btn-sm" title="数据同步"><i class="glyphicon glyphicon-refresh"></i></button></div>')
+		// $(".fixed-table-toolbar").append('<div class="float-right  btn-group"><button class="btn btn-success btn-sm" title="数据同步"><i class="glyphicon glyphicon-refresh"></i></button></div>')
 		$("[data-toggle='tooltip']").tooltip();
 	})
 	
@@ -245,9 +245,13 @@
 			$("#addmodal").modal('hide');
 		  },
 		  error: function (res) {
-			res = JSON.parse(res.responseText);
-			console.log(res)
-			$("#msg").append(pop_msg("info", "<br>保存失败 " + res.RTN_MSG, 2000));
+		  	try {
+				res = JSON.parse(res.responseText);
+				console.log(res)
+				$("#msg").append(pop_msg("info", "<br>保存失败 " + res.RTN_MSG, 2000));
+			} catch (e) {
+				alert("无操作权限")
+			}
 		  }
 	  })
 	}
@@ -270,9 +274,13 @@
 								  refresh_data();
 							  },
 							  error: function (res) {
-								  res = JSON.parse(res.responseText);
-								  console.log(res)
-								  $("#msg").append(pop_msg("error", " <br>修改用户失败,可能" + res.RTN_MSG , 3000));
+							  	try {
+									res = JSON.parse(res.responseText);
+									console.log(res)
+									$("#msg").append(pop_msg("error", " <br>修改用户失败,可能" + res.RTN_MSG, 3000));
+								} catch (e) {
+									alert("无操作权限")
+								}
 							  }
 						  })
 					  }
@@ -295,15 +303,18 @@
 				$("#addmodal").modal('hide');
 			  },
 			  error: function (res) {
-				res = JSON.parse(res.responseText);
-			  	console.log(res)
-				$("#msg").append(pop_msg("error", "<br>删除失败 " + res.RTN_MSG, 2000));
+			  	try {
+					res = JSON.parse(res.responseText);
+					console.log(res)
+					$("#msg").append(pop_msg("error", "<br>删除失败 " + res.RTN_MSG, 2000));
+				} catch (e) {
+					alert("无操作权限")
+				}
 			  }
 		  })
 	}
 
 	$("#addmodal").on('hidden.bs.modal', function () {
-		console.log($("#modal_title").innerHTML);
 	  $("#modal_title").text("新增学院信息");
 	  $("#xymc").val('');
 	  $("#xyywm").val('');
@@ -334,9 +345,9 @@
 			"\t</a>\n" +
 			"\t<strong>"+ tip_title + "</strong>"+ msg +"\n" +
 			"</div>"
-	setTimeout(function () {
-		$("#tip" + randid).remove();
-	}, time)
+		setTimeout(function () {
+			$("#tip" + randid).remove();
+		}, time)
 	return div;
 	}
 

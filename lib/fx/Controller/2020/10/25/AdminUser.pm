@@ -5,7 +5,6 @@ use JSON;
 use MY::DB;
 use POSIX qw(strftime);
 use utf8;
-use Data::Dumper;
 
 BEGIN { extends 'Catalyst::Controller'; }
 
@@ -41,8 +40,9 @@ sub useradd : Local {
         my $zgh = $c->req->parameters->{ zgh };
         my $yxqkssj = $c->req->parameters->{ yxqkssj };
         my $yxqjzsj = $c->req->parameters->{ yxqjzsj };
+        my $dwdm = $c->req->parameters->{ dw };
         my $datestring = strftime "%Y-%m-%d %H:%M", localtime;
-        my $sql = "insert into usr_wfw.T_FX_GLY(GLYDM, JSDM, YHXM, ZHMC, ZCSJ, YXQKSSJ, YXQJZSJ) values (usr_wfw.T_FX_GLY_GLYDM.nextval, \'$jsdm\', \'$yhxm\', \'$zgh\', \'$datestring\', \'$yxqkssj\', \'$yxqjzsj\')";
+        my $sql = "insert into usr_wfw.T_FX_GLY(GLYDM, JSDM, YHXM, ZHMC, ZCSJ, YXQKSSJ, YXQJZSJ, DWDM) values (usr_wfw.T_FX_GLY_GLYDM.nextval, \'$jsdm\', \'$yhxm\', \'$zgh\', \'$datestring\', \'$yxqkssj\', \'$yxqjzsj\', \'$dwdm\')";
         my $rtn = DB::execute( $sql );
         if ( $rtn ne 0 && $rtn ne -1 ) {
             $c->res->status(200);
@@ -70,8 +70,9 @@ sub useredit : Local {
         my $zgh = $c->req->parameters->{ edit_zgh };
         my $yxqkssj = $c->req->parameters->{ edit_yxqkssj };
         my $yxqjzsj = $c->req->parameters->{ edit_yxqjzsj };
+        my $dwdm = $c->req->parameters->{ edit_dw };
         my $datestring = strftime "%Y-%m-%d %H:%M", localtime;
-        my $sql = "update usr_wfw.T_FX_GLY set YHXM=\'$yhxm\', ZHMC=\'$zgh\', ZCSJ=\'$datestring\', YXQKSSJ=\'$yxqkssj\', YXQJZSJ=\'$yxqjzsj\' where glydm=\'$glydm\'";
+        my $sql = "update usr_wfw.T_FX_GLY set YHXM=\'$yhxm\', ZHMC=\'$zgh\', ZCSJ=\'$datestring\', YXQKSSJ=\'$yxqkssj\', YXQJZSJ=\'$yxqjzsj\', DWDM=\'$dwdm\' where glydm=\'$glydm\'";
         my $rtn = DB::execute( $sql );
         if ( $rtn ne 0 && $rtn ne -1 ) {
             $c->res->status(200);

@@ -65,6 +65,7 @@ sub auto : Private {
 
     # 获取用户名
     my $username =  "201721094059" || $c->user->username() || $c->req->cookies->{ sessionid }->{value}->[0];
+    # my $username =  "2020" || $c->user->username() || $c->req->cookies->{ sessionid }->{value}->[0];
 
     $c->{ sessionid } = $username;
     $c->{ username } = $username;
@@ -105,6 +106,21 @@ sub auto : Private {
                 $c->detach("error");
             }
         }    
+    }
+
+    # 判断用户有效期 和是否激活 获取用户有效期时间 截止时间 是否启用
+    my $sql = "select * from (
+                  select ZHMC ZGH, YHXM XM, QYZT, YXQKSSJ, YXQJZSJ
+                  from usr_wfw.T_FX_GLY
+                  union
+                  select ZGH, JSXM XM, QYZT, YXQKSSJ, YXQJZSJ
+                  from usr_wfw.T_FX_LS
+              ) t where ZGH='$username'";
+    my $res = from_json( DB::get_json( $sql ) )->[0];
+    if ( $res->{QYZT} eq 0 ) {
+        $c->{ msg } = "账户被禁用：413"; # 413账户被禁用
+        $c->{ status_code } = 403;
+        $c->detach("error");
     }
     return 1;
 }

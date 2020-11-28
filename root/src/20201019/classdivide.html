@@ -79,7 +79,11 @@
 			locale: 'zh-CN',	//中文支持,
 			search: true,
 			contentType: "application/x-www-form-urlencoded",	//必须要有！！！！
+			[% IF jsdw.JSDM == -1 %]
 			url: "/2020/10/25/api/minormajorlist?year=" + myDate.getFullYear(),	//要请求数据的文件路径
+			[% ELSE %]
+			url: "/2020/10/25/api/minormajorlistbyxydm?xydm=[% jsdw.DWDM %]&year=" + myDate.getFullYear(),	//要请求数据的文件路径
+			[% END %]
 			// height:tableHeight(),	//高度调整
 			toolbar: '#toolbar',	//指定工具栏
 			striped: true, 	//是否显示行间隔色
@@ -136,8 +140,8 @@
 				//在ajax获取到数据，渲染表格之前，修改数据源
 				res = res.DATA;
 				for (let i = 0; i < res.length; i++) {
-					res[i].CZ = "<a onclick=\"fx_pyfa_set(this, '" + res[i].ZYDM + "')\"><button type=\"button\" class=\"btn btn-success\" >分班设置</button></a>\n"
-					res[i].CZ += "<a onclick=\"fx_pyfa_set(this, '" + res[i].ZYDM + "')\"><button type=\"button\" class=\"btn btn-info\" >分班查看</button></a>\n"
+					res[i].CZ = "<a onclick=\"divide_class_set(this, '" + res[i].ZYDM + "')\"><button type=\"button\" class=\"btn btn-success\" >分班设置</button></a>\n"
+					res[i].CZ += "<a onclick=\"divide_class_show(this, '" + res[i].ZYDM + "')\"><button type=\"button\" class=\"btn btn-info\" >分班查看</button></a>\n"
 				}
 				return res;
 			},
@@ -171,9 +175,14 @@
 								  $("#fx_pyfa_set_modal").modal("hide");
 							  },
 							  error: function (res) {
+							  	try{
 								  res = JSON.parse(res.responseText);
 								  console.log(res)
 								  $("#msg").append(pop_msg("error", " <br>保存失败", 3000));
+								} catch (e) {
+									alert("无操作权限");
+								}
+
 							  }
 						  })
 					  }
@@ -184,7 +193,7 @@
 			  }
 			)
 	}
-	function fx_pyfa_set(obj, zydm) {
+	function divide_class_set(obj, zydm) {
 		let mydate = new Date();
 		$("#hide_zydm").val(zydm);
 		$.get("/2020/10/25/api/trainingprogram?zydm=" + zydm + "&year=" + mydate.getFullYear(), function (res) {

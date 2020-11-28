@@ -79,7 +79,11 @@
 			locale: 'zh-CN',	//中文支持,
 			search: true,
 			contentType: "application/x-www-form-urlencoded",	//必须要有！！！！
+			[% IF jsdw.JSDM == -1 %]
 			url: "/2020/10/25/api/minormajorlist?year=" + myDate.getFullYear(),	//要请求数据的文件路径
+			[% ELSE %]
+			url: "/2020/10/25/api/minormajorlistbyxydm?xydm=[% jsdw.DWDM %]&year=" + myDate.getFullYear(),	//要请求数据的文件路径
+			[% END %]
 			// height:tableHeight(),	//高度调整
 			toolbar: '#toolbar',	//指定工具栏
 			striped: true, 	//是否显示行间隔色
@@ -170,9 +174,13 @@
 								  $("#fx_pyfa_set_modal").modal("hide");
 							  },
 							  error: function (res) {
-								  res = JSON.parse(res.responseText);
-								  console.log(res)
-								  $("#msg").append(pop_msg("error", " <br>保存失败", 3000));
+								  try{
+									  res = JSON.parse(res.responseText);
+									  console.log(res)
+									  $("#msg").append(pop_msg("error", " <br>保存失败", 3000));
+								  } catch (e) {
+									  alert("无权限操作")
+								  }
 							  }
 						  })
 					  }
@@ -201,7 +209,7 @@
 			$("#jyyq").val(res.JYYQ);
 		})
 		let ob = obj.parentNode.parentNode.childNodes;
-		$("#fx_pyfa_set_modal_title").html("<span style='color: red'>" + ob[3].innerText + "--" + ob[1].innerText + " </span>培养方案");
+		$("#fx_pyfa_set_modal_title").html("<span style='color: red'>" + ob[3].innerText + "--" + ob[2].innerText + " </span>培养方案");
 		$("#fx_pyfa_set_modal").modal('show');	//辅修设置table
 	}
 	function pop_msg ( level, msg, time=1500 ) {

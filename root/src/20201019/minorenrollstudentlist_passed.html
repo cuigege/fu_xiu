@@ -37,7 +37,11 @@
 			method: 'get',
 			locale:'zh-CN',//中文支持,
 			contentType: "application/x-www-form-urlencoded",//必须要有！！！！
+			[% IF jsdw.JSDM == -1 %]
 			url:"/2020/10/25/api/enrollstudentpassed?year=" + myDate.getFullYear(),//要请求数据的文件路径
+			[% ELSE %]
+			url:"/2020/10/25/api/enrollstudentpassedsearchbyxydm?xydm=[% jsdw.DWDM %]&year=" + myDate.getFullYear(),//要请求数据的文件路径
+		  	[% END %]
 			// height:tableHeight(),//高度调整
 			search: true,
 			toolbar: '#toolbar',//指定工具栏
@@ -142,9 +146,13 @@
 								  refresh_data();
 							  },
 							  error: function (res) {
+								try{
 								  res = JSON.parse(res.responseText);
 								  console.log(res)
 								  $("#msg").append(pop_msg("error", " <br>操作失败", 3000));
+								} catch (e) {
+									alert("无操作权限")
+								}
 							  }
 						  })
 					  }

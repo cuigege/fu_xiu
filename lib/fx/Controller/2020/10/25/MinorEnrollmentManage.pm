@@ -27,8 +27,12 @@ Catalyst Controller.
 
 sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
+    # 判断是普通管理员还是超级管理
+    my $sql = "select DWDM, t1.ZWMC DWMC, JSDM from usr_wfw.T_FX_GLY t left join usr_wfw.T_FX_XY t1 on t1.XYDM=t.DWDM  where ZHMC = \'$c->{username}\'";
+    my $jsdw = from_json( DB::get_json( $sql ) )->[0];     # 操作用户信息
     $c->stash({
-        template    => "20201019/minorenrollstudentlist.html",
+        template => "20201019/minorenrollstudentlist.html",
+        jsdw     => $jsdw
     });
 }
 
@@ -83,8 +87,12 @@ sub review : Local {
 
 sub reviewpassed : Local {
     my ( $self, $c ) = @_;
+    # 判断是普通管理员还是超级管理
+    my $sql = "select DWDM, t1.ZWMC DWMC, JSDM from usr_wfw.T_FX_GLY t left join usr_wfw.T_FX_XY t1 on t1.XYDM=t.DWDM  where ZHMC = \'$c->{username}\'";
+    my $jsdw = from_json( DB::get_json( $sql ) )->[0];     # 操作用户信息
     $c->stash({
         template    => "20201019/minorenrollstudentlist_passed.html",
+        jsdw        => $jsdw
     });
 }
 
@@ -95,8 +103,12 @@ sub reviewpassed : Local {
 
 sub reviewreject : Local {
     my ( $self, $c ) = @_;
+    # 判断是普通管理员还是超级管理
+    my $sql = "select DWDM, t1.ZWMC DWMC, JSDM from usr_wfw.T_FX_GLY t left join usr_wfw.T_FX_XY t1 on t1.XYDM=t.DWDM  where ZHMC = \'$c->{username}\'";
+    my $jsdw = from_json( DB::get_json( $sql ) )->[0];     # 操作用户信息
     $c->stash({
-        template    => "20201019/minorenrollstudentlist_reject.html",
+        template => "20201019/minorenrollstudentlist_reject.html",
+        jsdw     => $jsdw
     });
 }
 

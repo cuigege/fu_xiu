@@ -106,7 +106,7 @@
 		  $("#xylxdh").val('');
 	  });
 	  function delete_role(val) {
-		  $("#msg").append(pop_msg("error", "操作失败"));
+		  $("#msg").append( pop_msg("error", "操作失败") );
 	  }
 	  function pop_msg ( level, msg, time=1500 ) {
 		  let alert_class = "";
@@ -145,9 +145,9 @@
 			striped: true, //是否显示行间隔色
 			dataField: "res",//bootstrap table 可以前端分页也可以后端分页，这里
 			pageNumber: 1, //初始化加载第一页，默认第一页
-			pagination:true,//是否分页
+			pagination:false,//是否分页
 			sidePagination:'client',//指定前端分页
-			pageSize:10,//单页记录数
+			// pageSize:10,//单页记录数
 			showColumns:true,
 			clickToSelect: true,//是否启用点击选中行
 			toolbarAlign:'right', //工具栏对齐方式

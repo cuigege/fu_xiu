@@ -37,8 +37,11 @@
 			method: 'get',
 			locale:'zh-CN',//中文支持,
 			contentType: "application/x-www-form-urlencoded",//必须要有！！！！
+			[% IF jsdw.JSDM == -1 %]
 			url:"/2020/10/25/api/enrollstudentreject?year=" + myDate.getFullYear(),//要请求数据的文件路径
-			// height:tableHeight(),//高度调整
+			[% ELSE %]
+			url:"/2020/10/25/api/enrollstudentrejectsearchbyxydm?xydm=[% jsdw.DWDM %]&year=" + myDate.getFullYear(),//要请求数据的文件路径
+		  	[% END %]
 			search: true,
 			toolbar: '#toolbar',//指定工具栏
 			striped: true, //是否显示行间隔色
@@ -135,9 +138,13 @@
 								  refresh_data();
 							  },
 							  error: function (res) {
+								try{
 								  res = JSON.parse(res.responseText);
 								  console.log(res)
 								  $("#msg").append(pop_msg("error", " <br>操作失败", 3000));
+								} catch (e) {
+									alert("无操作权限")
+								}
 							  }
 						  })
 					  }

@@ -391,9 +391,13 @@
 								  refresh_data();
 							  },
 							  error: function (res) {
-								  res = JSON.parse(res.responseText);
-								  console.log(res)
-								  $("#msg").append(pop_msg("error", " <br>修改失败", 3000));
+								  try {
+									  res = JSON.parse(res.responseText);
+									  console.log(res)
+									  $("#msg").append(pop_msg("error", " <br>修改失败", 3000));
+								  } catch (e) {
+									  alert("无操作权限")
+								  }
 							  }
 						  })
 					  }

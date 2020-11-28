@@ -21,6 +21,7 @@
 			<table class="table table-striped table-hover" id="table"></table>
 		</div>
 		<div id="msg" style="width: 350px; height: 100px;z-index: 9999; position: absolute; top: 10%;left: 40%; text-align: center"></div>
+		[% IF jsdw.JSDM == -1 %]
 		<!-- 辅修设置模态框 -->
 		<div class="modal fade" id="fx_set_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="#modal-dialog">
@@ -38,6 +39,7 @@
 				</div><!-- /.modal-content -->
 			</div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
+		[% END %]
 		<!--辅修查看模态框-->
 		<div class="modal fade" id="show_fxzy_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="#modal-dialog">
@@ -65,72 +67,176 @@
 	<script src="/static/js/bootstrap-switch.min.js"></script>
 	<script type="application/javascript">
 	$(function() {
-	$('#table').bootstrapTable({
-		method: 'get',
-		locale:'zh-CN',	//中文支持,
-		search: true,
-		contentType: "application/x-www-form-urlencoded",	//必须要有！！！！
-		url:"/2020/10/25/api/collegeslist",	//要请求数据的文件路径
-		// height:tableHeight(),	//高度调整
-		toolbar: '#toolbar',	//指定工具栏
-		striped: true, 	//是否显示行间隔色
-		dataField: "res",	//bootstrap table 可以前端分页也可以后端分页，这里
-		pageNumber: 1, 	//初始化加载第一页，默认第一页
-		pagination:true,	//是否分页
-		sidePagination:'client',	//指定前端分页
-		pageSize:10,	//单页记录数
-		showColumns: true,
-		clickToSelect: true,	//是否启用点击选中行
-		toolbarAlign: 'right', 	//工具栏对齐方式
-		buttonsAlign: 'right',	//按钮对齐方式
-		columns:[
-			{
-				title:'全选',
-				field:'select',
-				//复选框
-				checkbox:true,
-				width:25,
-				align:'center',
-				valign:'middle'
+		[% IF jsdw.JSDM == -1 %]
+		$('#table').bootstrapTable({
+			method: 'get',
+			locale:'zh-CN',	//中文支持,
+			search: true,
+			contentType: "application/x-www-form-urlencoded",	//必须要有！！！！
+			url:"/2020/10/25/api/collegeslist",	//要请求数据的文件路径
+			// height:tableHeight(),	//高度调整
+			toolbar: '#toolbar',	//指定工具栏
+			striped: true, 	//是否显示行间隔色
+			dataField: "res",	//bootstrap table 可以前端分页也可以后端分页，这里
+			pageNumber: 1, 	//初始化加载第一页，默认第一页
+			pagination:true,	//是否分页
+			sidePagination:'client',	//指定前端分页
+			pageSize:10,	//单页记录数
+			showColumns: true,
+			clickToSelect: true,	//是否启用点击选中行
+			toolbarAlign: 'right', 	//工具栏对齐方式
+			buttonsAlign: 'right',	//按钮对齐方式
+			columns:[
+				{
+					title:'全选',
+					field:'select',
+					//复选框
+					checkbox:true,
+					width:25,
+					align:'center',
+					valign:'middle'
+				},
+				{
+					//field: 'Number',//可不加
+					title: '序号',//标题  可不加
+					formatter: function (value, row, index) {
+						return index+1;
+					}
+				},
+				{
+					title:'学院代码',
+					field:'XYDM',
+				},
+				{
+					title:'学院名称',
+					field:'ZWMC',
+					visible:true
+				},
+				{
+					title:'学院英文名',
+					field:'YWMC',
+				},
+				{
+					title:'操作',
+					field:'CZ',
+				},
+			],
+			responseHandler:function(res){
+					//在ajax获取到数据，渲染表格之前，修改数据源
+					res = res.DATA;
+					for (let i = 0; i < res.length; i++) {
+						res[i].CZ = "<a onclick=\"college_fx_set(this, "+ res[i].XYDM +")\"><button type=\"button\" class=\"btn btn-info\" >辅修设置</button></a>\n" +
+								"<a onclick=\"college_fx_show(this,"+ res[i].XYDM +")\"><button type=\"button\" class=\"btn btn-default\">查看辅修</button></a>"
+					}
+					return res;
+				},
+		})
+		$("[data-toggle='tooltip']").tooltip();
+		[% ELSE %]
+		$('#table').bootstrapTable({
+			method: 'get',
+			locale:'zh-CN',	//中文支持,
+			search: true,
+			contentType: "application/x-www-form-urlencoded",	//必须要有！！！！
+			url:"/2020/10/25/api/collegemajorlist?xydm=[% jsdw.DWDM %]",	//要请求数据的文件路径
+			// height:tableHeight(),	// 高度调整
+			toolbar: '#toolbar',	// 指定工具栏
+			striped: true, 	// 是否显示行间隔色
+			dataField: "res",	// bootstrap table 可以前端分页也可以后端分页，这里
+			pageNumber: 1, 	// 初始化加载第一页，默认第一页
+			pagination: true,	// 是否分页
+			sidePagination:'client',	// 指定前端分页
+			pageSize:10,	// 单页记录数
+			showColumns: true,
+			clickToSelect: true,	//是否启用点击选中行
+			toolbarAlign: 'right', 	//工具栏对齐方式
+			buttonsAlign: 'right',	//按钮对齐方式
+			columns:[
+				{
+					title:'专业代码',
+					field:'ZYDM',
+				},
+				{
+					title:'中文名称',
+					field:'ZWMC',
+					visible:true
+				},
+				{
+					title:'英文名称',
+					field:'YWMC',
+				},
+				{
+					title:'操作',
+					field:'CZ',
+				},
+			],
+			responseHandler: function(res){
+					res = res.DATA;
+					let tr = '[';
+					$.ajaxSettings.async = false;
+					$.get("/2020/10/25/api/minormajorlistbyxy?search&xydm=[% jsdw.DWDM %]", function (res_data) {	// 辅修专业
+						res_data = JSON.parse(res_data).DATA;
+						if (res_data.length === 0) {
+							for (let i = 0; i < res.length; i++) {
+								res[i].CZ = "<input type='checkbox' name='set_fx'  value='" + res[i].ZYDM + "'>"
+							}
+						}
+						else {
+							for (let i = 0; i < res.length; i++) {
+								for (let j = 0; j < res_data.length; j++) {
+									if (res[i].ZYDM === res_data[j].ZYDM) {
+										res[i].CZ = "<input type='checkbox' name='set_fx'  value='" + res[i].ZYDM + "' checked>"
+									}
+								}
+								if ( res[i].CZ === undefined )
+									res[i].CZ = "<input type='checkbox' name='set_fx'  value='" + res[i].ZYDM + "'>"
+							}
+						}
+					})
+					$.ajaxSettings.async = true;
+					return res;
 			},
-			{
-				//field: 'Number',//可不加
-				title: '序号',//标题  可不加
-				formatter: function (value, row, index) {
-					return index+1;
+			onLoadSuccess: function(data){
+            	$('input[name="set_fx"]').bootstrapSwitch({
+			　　　　onText : "已设置",      // 设置ON文本
+			　　　　offText : "未设置",    // 设置OFF文本
+			　　　　onColor : "success",// 设置ON文本颜色(info/success/warning/danger/primary)
+			　　　　offColor : "info",  // 设置OFF文本颜色 (info/success/warning/danger/primary)
+			　　　　size : "small",    // 设置控件大小,从小到大  (mini/small/normal/large)
+			　　　　onSwitchChange : function(event, state) {
+					let status = 0;
+					if ( state ) {
+						status = 1;
+					}
+					let zydm = event.target.value;
+					$.ajax({
+						url: "/2020/10/25/minormajormanage/minormajorset",
+						type: "post",
+						data: {"zydm": zydm, "status": status},
+						success: function (res) {
+							$("#msg").append(pop_msg ( "info", "操作成功", 1500 ));
+						},
+						error: function (res) {
+							try {
+								let rtn_msg = JSON.parse(res.responseText);
+								$("#msg").append(pop_msg ( "error", "操作失败, " + rtn_msg.RTN_MSG, 1500 ));
+							} catch (e) {
+								alert("无操作权限")
+							}
+							refresh_data();
+							return false;
+						}
+					})
 				}
-			},
-			{
-				title:'学院代码',
-				field:'XYDM',
-			},
-			{
-				title:'学院名称',
-				field:'ZWMC',
-				visible:true
-			},
-			{
-				title:'学院英文名',
-				field:'YWMC',
-			},
-			{
-				title:'操作',
-				field:'CZ',
-			},
-		],
-		responseHandler:function(res){
-				//在ajax获取到数据，渲染表格之前，修改数据源
-				res = res.DATA;
-				for (let i = 0; i < res.length; i++) {
-					res[i].CZ = "<a onclick=\"college_fx_set(this, "+ res[i].XYDM +")\"><button type=\"button\" class=\"btn btn-info\" >辅修设置</button></a>\n" +
-							"<a onclick=\"college_fx_show(this,"+ res[i].XYDM +")\"><button type=\"button\" class=\"btn btn-default\">查看辅修</button></a>"
-				}
-				return res;
-			},
+　　			})
+		},
+			onSearch: function () {
+				refresh_data();
+			}
+		})
+		[% END %]
 	})
-	$("[data-toggle='tooltip']").tooltip();
-	})
-
+	[% IF jsdw.JSDM == -1 %]
 	function college_fx_set(obj, xydm) {
 		$('#fx_set_table').bootstrapTable('destroy');
 		$('#fx_set_table').bootstrapTable({
@@ -217,8 +323,12 @@
 							$("#msg").append(pop_msg ( "info", "操作成功", 1500 ));
 						},
 						error: function (res) {
-							let rtn_msg = JSON.parse(res.responseText);
-							$("#msg").append(pop_msg ( "error", "操作失败, " + rtn_msg.RTN_MSG, 1500 ));
+							try {
+								let rtn_msg = JSON.parse(res.responseText);
+								$("#msg").append(pop_msg ( "error", "操作失败, " + rtn_msg.RTN_MSG, 1500 ));
+							} catch (e) {
+								alert("无操作权限")
+							}
 							return false;
 						}
 					})
@@ -230,7 +340,7 @@
 			}
 		})
 		let ob = obj.parentNode.parentNode.childNodes;
-		$("#fx_set_modal_title").html("<span style='color: red'>" + ob[2].innerText + "</span>");
+		$("#fx_set_modal_title").html("<span style='color: red'>" + ob[3].innerText + "</span>");
 		$("#fx_set_modal").modal('show');	//辅修设置table
 	}
 	
@@ -285,7 +395,7 @@
 		$("#fx_show_modal_title").html("<span style='color: red'>" + ob[2].innerText + "</span>");
 		$("#show_fxzy_modal").modal('show');	//辅修设置table
 	}
-	
+	[% END %]
 	function pop_msg ( level, msg, time=1500 ) {
 	let alert_class = "";
 	let tip_title = "";
@@ -313,6 +423,7 @@
 	}, time)
 	return div;
 	}
+	[% IF jsdw.JSDM == -1 %]
 	function refresh_data() {		// 刷新数据
 		let opt = {
 			url: "/2020/10/25/api/collegeslist",
@@ -320,5 +431,14 @@
 		}
 		$("#table").bootstrapTable('refresh', opt);
 	};
+	[% ELSE %]
+	function refresh_data() {		// 刷新数据
+		let opt = {
+			url: "/2020/10/25/api/collegemajorlist?xydm=[% jsdw.DWDM %]",
+			silent: true,
+		}
+		$("#table").bootstrapTable('refresh', opt);
+	};
+	[% END %]
 	</script>
 </html>

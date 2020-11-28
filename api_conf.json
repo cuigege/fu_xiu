@@ -84,7 +84,7 @@
       "allow_field": [
         "search"
       ],
-      "PrepareSQL": "select t1.GLYDM, t1.YHXM, t1.ZCSJ, t1.ZHMC, t2.JSZWM, t1.QYZT, t1.YXQKSSJ, t1.YXQJZSJ  from USR_WFW.T_FX_GLY t1 left join USR_WFW.T_FX_JS t2 on t1.JSDM=t2.JSDM where t1.JSDM != '-1' "
+      "PrepareSQL": "select t3.*, t4.ZWMC DWMC from ( select t1.GLYDM, t1.YHXM, t1.ZCSJ, t1.ZHMC, t2.JSZWM, t1.QYZT, t1.YXQKSSJ, t1.YXQJZSJ, t1.DWDM from USR_WFW.T_FX_GLY t1 left join USR_WFW.T_FX_JS t2 on t1.JSDM = t2.JSDM where t1.JSDM != '-1' ) t3 left join usr_wfw.T_FX_XY t4 on t3.DWDM=t4.XYDM"
     },
     "teacheruserlist": {
       "name": "教师用户列表",
@@ -127,6 +127,21 @@
         "search"
       ],
       "PrepareSQL": "select t5.*, t6.XKMC XKMLMC from ( select t3.*, t4.ZYDLMC from (  select t1.*, t2.ZWMC XYZWM from usr_wfw.T_FX_ZY t1 left join usr_wfw.T_FX_XY t2 on t1.XYDM=t2.XYDM ) t3 left join usr_wfw.T_FX_ZYDL t4 on t4.ZYDLDM = t3.ZYDLDM ) t5 left join usr_wfw.T_FX_XKML t6 on t5.XKMLDM=t6.XKDM"
+    },
+    "majorlistsearchbyxydm": {
+      "name": "专业列表",
+      "driver": "oracle",
+      "connect_db": "wfw_usr",
+      "table": "usr_zsj.T_FX_ZY",
+      "type": "select",
+      "allow_method": [
+        "GET"
+      ],
+      "allow_field": [
+        "search",
+        "xydm"
+      ],
+      "PrepareSQL": "select t5.*, t6.XKMC XKMLMC from ( select t3.*, t4.ZYDLMC from (  select t1.*, t2.ZWMC XYZWM from usr_wfw.T_FX_ZY t1 left join usr_wfw.T_FX_XY t2 on t1.XYDM=t2.XYDM where t1.XYDM=? ) t3 left join usr_wfw.T_FX_ZYDL t4 on t4.ZYDLDM = t3.ZYDLDM ) t5 left join usr_wfw.T_FX_XKML t6 on t5.XKMLDM=t6.XKDM"
     },
     "collegemajorlist": {
       "name": "根据学院代码查专业",
@@ -172,6 +187,22 @@
         "year"
       ],
       "PrepareSQL": "select t1.*, substr(t1.SZSJ, 0, 4) FXNJ , t2.ZWMC XYMC from usr_wfw.T_FX_FXZY t1 left join usr_wfw.T_FX_XY t2 on t1.XYDM=t2.XYDM where to_char(sysdate, 'yyyy')=?"
+    },
+    "minormajorlistbyxydm": {
+      "name": "某年某学院辅修专业列表",
+      "driver": "oracle",
+      "connect_db": "wfw_usr",
+      "table": "usr_zsj.T_FX_FXZY",
+      "type": "select",
+      "allow_method": [
+        "GET"
+      ],
+      "allow_field": [
+        "search",
+        "year",
+        "xydm"
+      ],
+      "PrepareSQL": "select t1.*, substr(t1.SZSJ, 0, 4) FXNJ , t2.ZWMC XYMC from usr_wfw.T_FX_FXZY t1 left join usr_wfw.T_FX_XY t2 on t1.XYDM=t2.XYDM where to_char(sysdate, 'yyyy')=? and t1.xydm=?"
     },
     "trainingprogram": {
       "name": "某学年某专业的辅修培养方案",
@@ -230,7 +261,7 @@
       "type": "select",
       "allow_method": ["GET"],
       "allow_field": ["year"],
-      "PrepareSQL": "select FXNJ, BMKSSJ, BMJZSJ ,YJDJFKSSJ,YJDJFJZSJ, EJDJFKSSJ,EJDJFJZSJ, CJLRKSSJ,CJLRJZSJ,CJBGKSSJ,CJBGJZSJ from usr_wfw.T_FX_ZSJH_SJ where FXNJ = ?",
+      "PrepareSQL": "select FXNJ, BMKSSJ, BMJZSJ ,YJDJFKSSJ,YJDJFJZSJ, EJDJFKSSJ,EJDJFJZSJ, CJLRKSSJ,CJLRJZSJ,CJBGKSSJ,CJBGJZSJ from usr_wfw.T_FX_ZSJH_SJ where FXNJ = ?"
     },
     "getStudentInfo": {
       "name": "获取学生信息",
@@ -252,6 +283,16 @@
       "allow_field": ["search", "year"],
       "PrepareSQL": "select SFRZH, XM, XBMC, KSH, SFZH, MZ, ZZMM, LXFS, ZXXYMC, ZXZYMC, ZXZYDLMC, FXXYMC, FXZYMC, FXZYDLMC, FXZYXKMC from usr_wfw.T_FX_BM where SHZT = '0' and FXNF=?"
     },
+    "enrollstudentsearchbyxydm": {
+      "name": "某年某学院辅修报名未审核学生列表",
+      "driver": "oracle",
+      "connect_db": "wfw_usr",
+      "table": "usr_zsj.T_FX_BM",
+      "type": "select",
+      "allow_method": ["GET"],
+      "allow_field": ["search", "year", "xydm"],
+      "PrepareSQL": "select SFRZH, XM, XBMC, KSH, SFZH, MZ, ZZMM, LXFS, ZXXYMC, ZXZYMC, ZXZYDLMC, FXXYMC, FXZYMC, FXZYDLMC, FXZYXKMC from usr_wfw.T_FX_BM where SHZT = '0' and FXNF=? and FXXYDM=?"
+    },
     "enrollstudentpassed": {
       "name": "某年辅修报名已审核过学生列表",
       "driver": "oracle",
@@ -262,7 +303,27 @@
       "allow_field": ["search", "year"],
       "PrepareSQL": "select SFRZH, XM, XBMC, KSH, SFZH, MZ, LXFS, ZXXYMC, ZXZYMC, ZXZYDLMC, FXXYMC, FXZYMC, FXZYDLMC, FXZYXKMC from usr_wfw.T_FX_BM where SHZT = '1' and FXNF=?"
     },
+    "enrollstudentpassedsearchbyxydm": {
+      "name": "某年某学院辅修报名已审核过学生列表",
+      "driver": "oracle",
+      "connect_db": "wfw_usr",
+      "table": "usr_zsj.T_FX_BM",
+      "type": "select",
+      "allow_method": ["GET"],
+      "allow_field": ["search", "year", "xydm"],
+      "PrepareSQL": "select SFRZH, XM, XBMC, KSH, SFZH, MZ, LXFS, ZXXYMC, ZXZYMC, ZXZYDLMC, FXXYMC, FXZYMC, FXZYDLMC, FXZYXKMC from usr_wfw.T_FX_BM where SHZT = '1' and FXNF=? and FXXYDM=?"
+    },
     "enrollstudentreject": {
+      "name": "某年某学院辅修报名已拒绝学生列表",
+      "driver": "oracle",
+      "connect_db": "wfw_usr",
+      "table": "usr_zsj.T_FX_BM",
+      "type": "select",
+      "allow_method": ["GET"],
+      "allow_field": ["search", "year"],
+      "PrepareSQL": "select SFRZH, XM, XBMC, KSH, SFZH, MZ, LXFS, ZXXYMC, ZXZYMC, ZXZYDLMC, FXXYMC, FXZYMC, FXZYDLMC, FXZYXKMC from usr_wfw.T_FX_BM where SHZT = '-1' and FXNF=? and FXXYDM=?"
+    },
+    "enrollstudentrejectsearchbyxydm": {
       "name": "某年辅修报名已拒绝学生列表",
       "driver": "oracle",
       "connect_db": "wfw_usr",
