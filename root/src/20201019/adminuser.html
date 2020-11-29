@@ -115,6 +115,19 @@
 				</div><!-- /.modal-content -->
 			</div><!-- /.modal-dialog -->
 		</div>
+<!--		API独立权限授予-->
+		<div class="modal fade" id="api_privilege_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title text-center text-danger">操作权限授予</h4>
+					</div>
+					<div class="modal-body text-right">
+						<table class="table table-striped table-hover " id="api_privilege"></table>
+						<input hidden type="text" id="zhmc">
+					</div>
+				</div><!-- /.modal-content -->
+		</div>
 	</body>
 	<script src="/static/js/jquery-2.0.3.min.js"></script>
 	<script src="/static/js/bootstrap.min.js"></script>
@@ -192,8 +205,10 @@
 								//在ajax获取到数据，渲染表格之前，修改数据源
 					res = res.DATA;
 					for (let i = 0; i < res.length; i++) {
-						res[i].CZ = "<a onclick=\"edit_user(this, "+ res[i].GLYDM +"," + res[i].XYDM + ")\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"编辑\"><button type=\"button\" class=\"btn btn-sm btn-warning\" ><i class=\"glyphicon glyphicon-edit\" ></i></button></a>\n" +
-								"<a onclick=\"delete_user("+ res[i].GLYDM +")\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"删除\"><button type=\"button\" class=\"btn btn-sm btn-danger\"><i class=\"glyphicon glyphicon-trash\"></i></button></a>"
+						res[i].CZ = "<a onclick=\"api_privilege_grant("+ res[i].GLYDM +")\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"API权限\"><button type=\"button\" class=\"btn btn-sm btn-success\"><i class=\"glyphicon glyphicon-lock\"></i></button></a>\n"
+						res[i].CZ += "<a onclick=\"edit_user(this, "+ res[i].GLYDM +"," + res[i].XYDM + ")\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"编辑\"><button type=\"button\" class=\"btn btn-sm btn-warning\" ><i class=\"glyphicon glyphicon-edit\" ></i></button></a>\n" +
+								"<a onclick=\"delete_user("+ res[i].GLYDM +")\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"删除\"><button type=\"button\" class=\"btn btn-sm btn-danger\"><i class=\"glyphicon glyphicon-trash\"></i></button></a>\n"
+
 						if ( res[i].QYZT == 1 )
 							res[i].QYZT = "<input type='checkbox' name='qyzt_switch' checked value='"+ res[i].ZHMC +"'>";
 						else
@@ -404,5 +419,110 @@
 			}
 			$("#user_table").bootstrapTable('refresh', opt);
 		};
+		function refresh_privilege_data() {		// 刷新数据
+			let opt = {
+				url: "/2020/10/25/api/apipath",
+				silent: true,
+			}
+			$("#api_privilege").bootstrapTable('refresh', opt);
+		};
+		function api_privilege_grant( glydm ) {
+			$("#zhmc").val(glydm);
+			$('#api_privilege').bootstrapTable("destroy");
+			$('#api_privilege').bootstrapTable({
+			method: 'get',
+			locale:'zh-CN',//中文支持,
+			// search: true,
+			contentType: "application/x-www-form-urlencoded",//必须要有！！！！
+			url:"/2020/10/25/api/apipath",//要请求数据的文件路径
+			toolbar: '#toolbar',//指定工具栏
+			striped: true, //是否显示行间隔色
+			dataField: "res",//bootstrap table 可以前端分页也可以后端分页，这里
+			pageNumber: 1, //初始化加载第一页，默认第一页
+			pagination:false,//是否分页
+			sidePagination:'client',//指定前端分页
+			pageSize:10,//单页记录数
+			// showColumns:true,
+			clickToSelect: true,//是否启用点击选中行
+			toolbarAlign:'right', //工具栏对齐方式
+			buttonsAlign:'right',//按钮对齐方式
+			columns:[
+				{
+					title:'全选',
+					field:'select',
+					//复选框
+					checkbox:true,
+					width:25,
+					align:'center',
+					valign:'middle'
+				},
+				{
+					title:' 接口说明',
+					field:'ZWM',
+					visible:true
+				},
+				{
+					title:'所属功能',
+					field:'XMZWM',
+				},
+				{
+					title:'所属菜单',
+					field:'CDZWM',
+				},
+				{
+					title:'授权状态',
+					field:'SQZT',
+				},
+			],
+			responseHandler:function(res){
+								//在ajax获取到数据，渲染表格之前，修改数据源
+					res = res.DATA;
+    				$.ajaxSettings.async = false;
+					$.post("/2020/10/25/role/dlqx", {"type": 1, "zgh": glydm}, function ( dlqx ) {
+						console.log(dlqx)
+						dlqx = JSON.parse(dlqx).DATA;
+						for( let i = 0; i < res.length; i++ ) {
+							if ( dlqx.indexOf( parseInt(res[i].LJDM) ) > -1 )
+								res[i].SQZT = "<input type='checkbox' name='sqzt_switch' checked value='" + res[i].LJDM +"'>";
+							else
+								res[i].SQZT = "<input type='checkbox' name='sqzt_switch' value='" + res[i].LJDM +"'>";
+						}
+					});
+					$.ajaxSettings.async = true;
+					return res;
+				},
+			onAll: function () {
+				$('input[name="sqzt_switch"]').bootstrapSwitch({
+			　　　　onText : "已授权",      // 设置ON文本
+			　　　　offText : "未授权",    // 设置OFF文本
+			　　　　onColor : "success",// 设置ON文本颜色(info/success/warning/danger/primary)
+			　　　　offColor : "danger",  // 设置OFF文本颜色 (info/success/warning/danger/primary)
+			　　　　size : "small",    // 设置控件大小,从小到大  (mini/small/normal/large)
+			　　　　onSwitchChange : function() {
+						let qx_arr = [];
+						$('input[name="sqzt_switch"]').each(function (val, obj) {
+							if (obj.checked) {
+								qx_arr.push(obj.value)
+							}
+						})
+						$.ajax({
+							url: "/2020/10/25/role/dlqx_set",
+							type: "post",
+							data: {"zgh": $("#zhmc").val(), "qx_arr": qx_arr.toLocaleString(), "type": '1'},
+							success: function ( res ) {
+								$("#msg").append(pop_msg ( "info", "操作成功", 1500 ));
+								refresh_privilege_data();
+							},
+							error: function (res) {
+								console.log(res)
+								$("#msg").append(pop_msg ( "error", "操作失败", 1500 ));
+							}
+						})
+			　　　　}
+　　				})
+			}
+			})
+			$("#api_privilege_modal").modal("show");
+		}
 	</script>
 </html>

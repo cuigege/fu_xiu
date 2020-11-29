@@ -281,7 +281,7 @@
       "type": "select",
       "allow_method": ["GET"],
       "allow_field": ["search", "year"],
-      "PrepareSQL": "select SFRZH, XM, XBMC, KSH, SFZH, MZ, ZZMM, LXFS, ZXXYMC, ZXZYMC, ZXZYDLMC, FXXYMC, FXZYMC, FXZYDLMC, FXZYXKMC from usr_wfw.T_FX_BM where SHZT = '0' and FXNF=?"
+      "PrepareSQL": "select SFRZH, XM, XBMC, KSH, SFZH, MZ, ZZMM, LXFS, ZXXYMC, ZXZYMC, ZXZYDLMC, FXXYMC, FXZYMC, FXZYDLMC, FXZYXKMC, TJSJ from usr_wfw.T_FX_BM where SHZT = '0' and FXNF=?"
     },
     "enrollstudentsearchbyxydm": {
       "name": "某年某学院辅修报名未审核学生列表",
@@ -291,7 +291,7 @@
       "type": "select",
       "allow_method": ["GET"],
       "allow_field": ["search", "year", "xydm"],
-      "PrepareSQL": "select SFRZH, XM, XBMC, KSH, SFZH, MZ, ZZMM, LXFS, ZXXYMC, ZXZYMC, ZXZYDLMC, FXXYMC, FXZYMC, FXZYDLMC, FXZYXKMC from usr_wfw.T_FX_BM where SHZT = '0' and FXNF=? and FXXYDM=?"
+      "PrepareSQL": "select SFRZH, XM, XBMC, KSH, SFZH, MZ, ZZMM, LXFS, ZXXYMC, ZXZYMC, ZXZYDLMC, FXXYMC, FXZYMC, FXZYDLMC, FXZYXKMC, TJSJ from usr_wfw.T_FX_BM where SHZT = '0' and FXNF=? and FXXYDM=?"
     },
     "enrollstudentpassed": {
       "name": "某年辅修报名已审核过学生列表",
@@ -330,8 +330,8 @@
       "table": "usr_zsj.T_FX_BM",
       "type": "select",
       "allow_method": ["GET"],
-      "allow_field": ["search", "year"],
-      "PrepareSQL": "select SFRZH, XM, XBMC, KSH, SFZH, MZ, LXFS, ZXXYMC, ZXZYMC, ZXZYDLMC, FXXYMC, FXZYMC, FXZYDLMC, FXZYXKMC from usr_wfw.T_FX_BM where SHZT = '-1' and FXNF=?"
+      "allow_field": ["search", "year", "xydm"],
+      "PrepareSQL": "select SFRZH, XM, XBMC, KSH, SFZH, MZ, LXFS, ZXXYMC, ZXZYMC, ZXZYDLMC, FXXYMC, FXZYMC, FXZYDLMC, FXZYXKMC from usr_wfw.T_FX_BM where SHZT = '-1' and FXNF=? and FXXYDM=?"
     },
     "enrollplan": {
       "name": "某年某专业招生计划",
@@ -352,6 +352,16 @@
       "allow_method": ["GET"],
       "allow_field": ["fxzydm", "fxnf"],
       "PrepareSQL": "select count(*) as total from usr_wfw.T_FX_BM where FXZYDM=? and FXNF=?"
+    },
+    "apipath": {
+      "name": "api路径 用于操作授权",
+      "driver": "oracle",
+      "connect_db": "wfw_usr",
+      "table": "usr_zsj.T_FX_LJ",
+      "type": "select",
+      "allow_method": ["GET"],
+      "allow_field": [],
+      "PrepareSQL": "select t4.ZWM, t4.LJDM, t4.LJ, t5.CDZWM, t5.XMZWM from usr_wfw.T_FX_LJ t4, (select t3.*, concat(concat(t3.CDDM, '-'), to_char(LJDM)) key from (select t1.CDZWM, t2.ZWM XMZWM, t2.LJDM, t1.CDDM from usr_wfw.T_FX_XTCD t1, usr_wfw.T_FX_LJ t2 where t1.CDDM = t2.SSCDDM ) t3 ) t5 where t5.key=t4.SSCDDM and CDZWM!='设置' order by SSCDDM"
     }
   }
 }

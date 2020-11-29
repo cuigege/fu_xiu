@@ -64,8 +64,8 @@ sub auto : Private {
     $c->{ "self_config" } = ToolFunc::config_hash( $file );
 
     # 获取用户名
-    my $username =  "201721094059" || $c->user->username() || $c->req->cookies->{ sessionid }->{value}->[0];
-    # my $username =  "2020" || $c->user->username() || $c->req->cookies->{ sessionid }->{value}->[0];
+    # my $username =  "201721094059" || $c->user->username() || $c->req->cookies->{ sessionid }->{value}->[0];
+    my $username =  "2020" || $c->user->username() || $c->req->cookies->{ sessionid }->{value}->[0];
 
     $c->{ sessionid } = $username;
     $c->{ username } = $username;

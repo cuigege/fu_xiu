@@ -193,7 +193,11 @@
 	  function refresh_data() {		// 刷新数据
 		let myDate = new Date();
 		let opt = {
+			[% IF jsdw.JSDM == -1 %]
 			url: "/2020/10/25/api/enrollstudentpassed?year=" + myDate.getFullYear(),
+			[% ELSE %]
+			url: "/2020/10/25/api/enrollstudentpassedsearchbyxydm?xydm=[% jsdw.DWDM %]&year=" + myDate.getFullYear(),
+			[% END %]
 			silent: true,
 		}
 		$("#table").bootstrapTable('refresh', opt);

@@ -29,10 +29,9 @@ sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
     my $sql = "select t1.*, t2.YHXM from usr_wfw.T_FX_JS t1, usr_wfw.T_FX_GLY t2 where t1.CJYH=t2.ZHMC and t1.JSDM != 0 order by t1.JSDM";
     my $data = DB::get_json( $sql );
-    $c->log->info( $data );
     $c->stash({
         template => "20201019/role.html",
-        data     => from_json( $data ),
+        data     => from_json( $data , {allow_nonref=>1}),
     });
 }
 
@@ -70,6 +69,95 @@ sub privileges : Local {
     $res =~ s/,\}/\}/g;      # 去掉,}
     $c->res->headers->{ "Content-Type" } = "text/plain; charset=UTF-8";
     $c->res->body( $res );
+}
+
+
+=head1 dlqx
+
+    独立权限查询结构 仅仅超级管理员可以使用
+=cut
+
+sub dlqx : Local {
+    my ( $self, $c ) = @_;
+    if ( $c->req->{ method } eq "POST" ) {
+        # 执行权限更新操作 直接update qxdm字段
+        # 1 是普通管理员独立权限 2是老师
+        my $type = $c->req->parameters->{type};
+        my $zgh = $c->req->parameters->{zgh};
+        my $sql;
+        if ($type eq '1') {
+            $sql = "select DLQX from usr_wfw.T_FX_GLY where glydm=$zgh";
+        }
+        if ($type eq '2') {
+            $sql = "select DLQX from usr_wfw.T_FX_LS where zgh=\'$zgh\'";
+        }
+        my $res = DB::get_json($sql);
+        if ($res eq 0) {
+            $c->res->status(403);
+            $c->res->headers->{ "Content-Type" } = "application/json; charset=UTF-8;";
+            $c->res->body( '{"RTN_CODE": "00", "RTN_MSG": "查询失败" }' );
+        } else {
+            $c->res->status(200);
+            $c->res->headers->{ "Content-Type" } = "application/json; charset=UTF-8;";
+            $res = from_json( $res, {allow_nonref=>1} );
+            if ( scalar $res eq 0 ) {
+                $c->res->body( "{\"RTN_CODE\": \"00\", \"RTN_MSG\": \"查询成功\" , \"DATA\": [] }" );
+            }
+            else {
+                $c->res->body( "{\"RTN_CODE\": \"00\", \"RTN_MSG\": \"查询成功\" , \"DATA\":[ $res->[0]->{DLQX} ]}" );
+            }
+        }
+    }
+    else {
+        $c->res->status(403);
+        $c->res->headers->{ "Content-Type" } = "application/json; charset=UTF-8;";
+        $c->res->body( '{"RTN_CODE": "00", "RTN_MSG": "调用方法不合法" }' );
+    }
+}
+
+
+=head1 dlqx_set
+
+    独立api权限设置 只允许系统管理员调用
+=cut
+sub dlqx_set : Local {
+    my ( $self , $c ) = @_;
+    if ( $c->req->{ method } eq "POST" ) {
+        # 执行权限更新操作 直接update qxdm字段
+        # 1 是普通管理员独立权限 2是老师
+        my $type = $c->req->parameters->{type};
+        my $zgh = $c->req->parameters->{zgh};
+        my $qx_arr = $c->req->parameters->{qx_arr};
+        if ( $qx_arr eq '') {
+            $qx_arr = "6,9";
+        }
+        else {
+            $qx_arr .= ",6,9";
+        }
+        my $sql;
+        if ($type eq '1') {
+            $sql = "update usr_wfw.T_FX_GLY set DLQX=\'$qx_arr\' where glydm=$zgh";
+        }
+        if ($type eq '2') {
+            $sql = "update usr_wfw.T_FX_LS set DLQX= \'$qx_arr\' where zgh=\'$zgh\'";
+        }
+        my $res = DB::execute( $sql );
+        if ($res eq 0) {
+            $c->res->status(403);
+            $c->res->headers->{ "Content-Type" } = "application/json; charset=UTF-8;";
+            $c->res->body( '{"RTN_CODE": "00", "RTN_MSG": "操作失败" }' );
+        } else {
+            $c->res->status(200);
+            $c->res->headers->{ "Content-Type" } = "application/json; charset=UTF-8;";
+            $res = from_json( $res, {allow_nonref=>1} );
+                $c->res->body( "{\"RTN_CODE\": \"00\", \"RTN_MSG\": \"操作成\"}" );
+            }
+    }
+    else {
+        $c->res->status(403);
+        $c->res->headers->{ "Content-Type" } = "application/json; charset=UTF-8;";
+        $c->res->body( '{"RTN_CODE": "00", "RTN_MSG": "调用方法不合法" }' );
+    }
 }
 
 =encoding utf8

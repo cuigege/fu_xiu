@@ -51,7 +51,6 @@ sub review : Local {
         my $year = strftime("%Y", localtime);
         my $currentdate = strftime("%F %H:%M:%S", localtime);
         my $sql = "update usr_wfw.T_FX_BM set shzt=\'$shzt\', shyj=\'$shyj\', shr=\'$username\' where sfrzh=\'$sfrzh\' and fxnf=\'$year\'";
-        $c->log->info($sql);
         my $rtn = DB::execute( $sql );
         if ( $shzt eq 1 ) {
             $sql = "select * from usr_wfw.T_FX_BM where SFRZH=\'$sfrzh\' and fxnf=$year";
@@ -61,7 +60,7 @@ sub review : Local {
         }
         elsif ( $shzt eq 0 ) {
             $sql = "delete from usr_wfw.T_FX_XSXX where  SFRZH=\'$sfrzh\' and fxnf=$year";
-            $rtn = DB::execute( $sql );
+            DB::execute( $sql );
         }
         if ( $rtn ne 0 && $rtn ne -1 ) {
             $c->res->status(200);
