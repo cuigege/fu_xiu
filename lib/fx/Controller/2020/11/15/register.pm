@@ -27,7 +27,7 @@ sub auto : Private {
     my ($self,$c)=@_;
 
     # 查询学生的专业信息
-    my $zyInfo = from_json(DB::get_json("select * from usr_wfw.T_FX_XSZY where XH=$c->{student_userinfo}->{XH}"))->[0];
+    my $zyInfo = from_json(DB::get_json("select * from usr_wfw.T_FX_XSZY where XH=$c->{student_userinfo}->{XH}"),{allow_nonref=>1})->[0];
 
     my $zxzy = "未知";
     my $zxzydl = "未知";
@@ -69,8 +69,8 @@ sub index :Path :Args(0) {
         $c->log->info(Dumper $studentInfo);
 
         # 提取辅修专业大类名称和学科名称
-        my $fxzydlInfo = from_json(DB::get_json("select * from usr_wfw.T_FX_ZYDL where ZYDLDM=\'$params->{ FXZYDLDM }\'"))->[0];
-        my $fxzyxkInfo = from_json(DB::get_json("select * from usr_wfw.T_FX_XKML where XKDM=\'$params->{FXZYXKDM}\'"))->[0];
+        my $fxzydlInfo = from_json(DB::get_json("select * from usr_wfw.T_FX_ZYDL where ZYDLDM=\'$params->{ FXZYDLDM }\'"),{allow_nonref=>1})->[0];
+        my $fxzyxkInfo = from_json(DB::get_json("select * from usr_wfw.T_FX_XKML where XKDM=\'$params->{FXZYXKDM}\'"),{allow_nonref=>1})->[0];
         # 查询报名表是否有信息
         my $bmInfo = DB::get_json("select * from usr_wfw.T_FX_BM where SFRZH=$c->{ username }");
         if($bmInfo eq '[]'){
@@ -98,19 +98,19 @@ sub index :Path :Args(0) {
     $c->stash->{ bminfo } = 'false';
     $c->stash->{ fxzy_list } = '[]';
     if( $bmInfo ne '[]' ){
-        $c->stash->{ bminfo } = from_json($bmInfo)->[0];
+        $c->stash->{ bminfo } = from_json($bmInfo,{allow_nonref=>1})->[0];
         $c->stash->{template} = '20201115/register.tt2';
     }
     else {
 
         # 查询报名起止时间
 
-        my $zsjhDate = from_json(DB::get_json("select * from usr_wfw.T_FX_ZSJH_SJ where FXNJ=$currentYear"))->[0];
+        my $zsjhDate = from_json(DB::get_json("select * from usr_wfw.T_FX_ZSJH_SJ where FXNJ=$currentYear"),{allow_nonref=>1})->[0];
 
         my $zxzydl = $c->{ student_userinfo }->{ ZXZYDL };
 
         # 查询当前专业大类代码
-        my $zydlInfo = from_json(DB::get_json("select * from usr_wfw.T_FX_ZYDL where ZYDLMC like \'%$zxzydl%\'"))->[0];
+        my $zydlInfo = from_json(DB::get_json("select * from usr_wfw.T_FX_ZYDL where ZYDLMC like \'%$zxzydl%\'"),{allow_nonref=>1})->[0];
 
         # 查询辅修专业 剔除当前学生的专业大类所属的专业
         my $fxzyList = DB::get_json("select * from usr_wfw.T_FX_FXZY where ZYDLDM not in (\'$zydlInfo->{ZYDLDM}\')");
@@ -124,33 +124,22 @@ sub index :Path :Args(0) {
             $c->stash->{template} = '20201115/register.tt2';
         }
         elsif ( $bmkssj > time() ) {
-            $c->detach('2020::11::15::main','information',['报名开始时间:'.$zsjhDate->{ BMKSSJ }.'<br>报名截止时间:'.$zsjhDate->{ BMJZSJ }]);
+            $c->{ msg } = "报名时间未开始<br>开始时间:".$zsjhDate->{ BMKSSJ }."<br>结束时间:".$zsjhDate->{ BMJZSJ }; # 512 未查询到用户信息
+            $c->{ status_code } = 100;
+            $c->{ status_msg } = 'waiting';
+            $c->detach('2020::11::15',"error");
+            return 0;
         }
         elsif( $bmjzsj < time() ) {
-            $c->detach('2020::11::15::main','information',['报名开始时间:'.$zsjhDate->{ BMKSSJ }.'<br>报名截止时间:'.$zsjhDate->{ BMJZSJ }]);
+            $c->{ msg } = "报名时间已结束<br>开始时间:".$zsjhDate->{ BMKSSJ }."<br>结束时间:".$zsjhDate->{ BMJZSJ }; # 512 未查询到用户信息
+            $c->{ status_code } = 100;
+            $c->{ status_msg } = 'waiting';
+            $c->detach('2020::11::15',"error");
         }
     }
 
     return 1;
 }
-
-
-
-=head2 perfect()
-
- 完善学生信息
-
-=cut
-
-sub perfect : Local {
-    my ( $self, $c ) = @_;
-
-
-
-
-    $c->stash->{template} = '20201115/perfect.tt2';
-}
-
 
 
 =encoding utf8

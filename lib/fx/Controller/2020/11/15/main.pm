@@ -22,16 +22,6 @@ Catalyst Controller.
 =cut
 
 
-=head2 heading
-
-=cut
-
-sub auto : Private {
-
-    my ( $self, $c ) = @_;
-
-}
-
 
 =head2 index
 
@@ -40,40 +30,7 @@ sub auto : Private {
 sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
 
-
     $c->stash->{template} = '20201115/base.tt2';
-}
-
-
-=head1 error
-
-    error函数 全局error页面跳转位置，可以定制错误信息
-    附带信息写入$c，来进行传输
-=cut
-sub error : Private {
-    my ( $self, $c) = @_;
-    $c->{ status_code } ||= 200;
-    $c->{ msg } ||= "一切正常, 正在努力工作";
-    $c->response->status( $c->{ status_code } );
-	$c->stash(
-        template => '20201019/error-500.html',
-        msg      => $c->{ msg },
-        code     => $c->{ status_code },
-        title    => $c->{ msg },
-    );
-}
-
-=head2 information()
-
-提示信息页面
-
-=cut
-
-sub information : Local {
-    my ( $self, $c, $param ) = @_;
-    $c->stash->{info_msg} = $param;
-
-    $c->stash->{template} = '20201115/information.tt2';
 }
 
 =head2 heading

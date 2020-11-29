@@ -216,30 +216,7 @@
                     [% END %]
                 </div>
             </div>
-            <div class="weui-cell">
-                <div class="weui-cell__bd">
-                    <p>一阶段缴费</p>
-                </div>
-                <div class="weui-cell__ft" style="font-weight: bold;">
-                    [% IF bminfo.JFZT1 == '0' %]
-                        <span style="color: #9C4B3D;">未缴费</span>
-                    [% ELSIF bminfo.SHZT == '1' %]
-                        <span style="color:#00be67;">已缴费</span>
-                    [% END %]
-                </div>
-            </div>
-            <div class="weui-cell">
-                <div class="weui-cell__bd">
-                    <p>二阶段缴费</p>
-                </div>
-                <div class="weui-cell__ft" style="font-weight: bold;">
-                    [% IF bminfo.JFZT2 == '0' %]
-                        <span style="color: #9C4B3D;">未缴费</span>
-                    [% ELSIF bminfo.SHZ2 == '1' %]
-                        <span style="color:#00be67;">已缴费</span>
-                    [% END %]
-                </div>
-            </div>
+
         </div>
     [% END %]
 
