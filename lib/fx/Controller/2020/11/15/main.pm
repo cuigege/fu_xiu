@@ -30,7 +30,7 @@ Catalyst Controller.
 sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
 
-    $c->stash->{template} = '20201115/base.html';
+    $c->stash->{template} = '20201115/base.tt2';
 }
 
 =head2 heading
@@ -51,7 +51,7 @@ sub testUploads : Local {
         return 0;
     }
 
-    $c->stash->{template} = '20201115/test.html';
+    $c->stash->{template} = '20201115/test.tt2';
 }
 
 

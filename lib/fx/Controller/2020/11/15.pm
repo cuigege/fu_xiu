@@ -107,7 +107,7 @@ sub error : Private {
 
     $c->{ msg } ||= "一切正常, 正在努力工作";
 	$c->stash(
-        template => '20201115/msg.html',
+        template => '20201115/msg.tt2',
         msg      => $c->{ msg },
         code     => $c->{ status_code },
         title    => $c->{ msg },
