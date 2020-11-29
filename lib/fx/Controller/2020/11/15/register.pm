@@ -96,26 +96,33 @@ sub index :Path :Args(0) {
     my $bmInfo = DB::get_json("select * from usr_wfw.T_FX_BM where SFRZH=$c->{ username } and FXNF=$currentYear");
 
     $c->stash->{ bminfo } = 'false';
-    $c->stash->{ fxzy_list } = '[]';
+
+    my $zxzydl = $c->{ student_userinfo }->{ ZXZYDL };
+
+    # 查询当前专业大类代码
+    my $zydlInfo = from_json(DB::get_json("select * from usr_wfw.T_FX_ZYDL where ZYDLMC like \'%$zxzydl%\'"),{allow_nonref=>1})->[0];
+
+    if (!defined $zydlInfo) {
+
+        $c->{ msg } = "未查询到主修专业";
+        $c->{ status_code } = 100;
+        $c->{ status_msg } = 'waiting';
+        $c->detach('2020::11::15',"error");
+        return 0;
+    }
+
+    # 查询辅修专业 剔除当前学生的专业大类所属的专业
+    my $fxzyList = DB::get_json("select * from usr_wfw.T_FX_FXZY where ZYDLDM not in (\'$zydlInfo->{ZYDLDM}\')");
+
+    $c->stash->{ fxzy_list } = $fxzyList;
+
     if( $bmInfo ne '[]' ){
         $c->stash->{ bminfo } = from_json($bmInfo,{allow_nonref=>1})->[0];
         $c->stash->{template} = '20201115/register.tt2';
     }
     else {
-
         # 查询报名起止时间
-
         my $zsjhDate = from_json(DB::get_json("select * from usr_wfw.T_FX_ZSJH_SJ where FXNJ=$currentYear"),{allow_nonref=>1})->[0];
-
-        my $zxzydl = $c->{ student_userinfo }->{ ZXZYDL };
-
-        # 查询当前专业大类代码
-        my $zydlInfo = from_json(DB::get_json("select * from usr_wfw.T_FX_ZYDL where ZYDLMC like \'%$zxzydl%\'"),{allow_nonref=>1})->[0];
-
-        # 查询辅修专业 剔除当前学生的专业大类所属的专业
-        my $fxzyList = DB::get_json("select * from usr_wfw.T_FX_FXZY where ZYDLDM not in (\'$zydlInfo->{ZYDLDM}\')");
-
-        $c->stash->{ fxzy_list } = $fxzyList;
 
         # 判断当前时间是否在计划内
         my $bmkssj = str2time($zsjhDate->{ BMKSSJ });
