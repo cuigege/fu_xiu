@@ -7,19 +7,18 @@
 		<meta name="description" content="中南民族大学辅修后台" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<!-- basic styles -->
-		<link href="/static/css/bootstrap.min.css" rel="stylesheet" />
-		<link rel="stylesheet" href="/static/css/fontawesome.min.css" />
-		<link rel="stylesheet" href="/static/css/ace.min.css" />
-		<link rel="stylesheet" href="/static/css/ace-rtl.min.css" />
-		<link rel="stylesheet" href="/static/css/ace-skins.min.css" />
-		<script src="/static/js/ace-extra.min.js"></script>
+		<link href="/static/css/2020/12/25/bootstrap.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="/static/css/2020/12/25/fontawesome.min.css" />
+		<link rel="stylesheet" href="/static/css/2020/12/25/ace.min.css" />
+		<link rel="stylesheet" href="/static/css/2020/12/25/ace-skins.min.css" />
+		<script src="/static/js/2020/12/25/ace-extra.min.js"></script>
 		<style type="text/css">
 			.ace-settings-container{
 				top: 0;
 			}
 		</style>
 	</head>
-	<body>
+	<body class="skin-3">
 		<div class="navbar navbar-default" id="navbar">
 			<script type="text/javascript">
 				try{ace.settings.check('navbar' , 'fixed')}catch(e){}
@@ -39,7 +38,7 @@
 					<ul class="nav ace-nav">
 						<li class="light-blue">
 							<div style="cursor: pointer; color: whitesmoke" data-toggle="dropdown" href="javascript:void(0)" class="dropdown-toggle">
-								<img class="nav-user-photo" src="/static/avatars/user.png" alt="Jason's Photo" />
+								<img class="nav-user-photo" src="/static/images/2020/12/25/user.png" alt="Jason's Photo" />
 								<span class="user-info">
 									<small>欢迎光临</small>
 									[% c.data.YHXM %]
@@ -168,16 +167,6 @@
 						</div>
 
 						<div>
-							<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-breadcrumbs" />
-							<label class="lbl" for="ace-settings-breadcrumbs">固定面包屑</label>
-						</div>
-
-						<div>
-							<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-rtl" />
-							<label class="lbl" for="ace-settings-rtl">切换到左边</label>
-						</div>
-
-						<div>
 							<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-add-container" />
 							<label class="lbl" for="ace-settings-add-container">
 								切换窄屏
@@ -193,43 +182,13 @@
 			</a>
 		</div><!-- /.main-container -->
 </body>
-	<!--[if IE]>
-	<script src="/static/js/jquery-2.0.3.min.js"></script>
-	<![endif]-->
+	<script src="/static/js/2020/12/25/jquery.min.js"></script>
 	<script type="text/javascript">
-		window.jQuery || document.write("<script src='/static/js/jquery-2.0.3.min.js'>"+"<"+"script>");
+		if("ontouchend" in document) document.write("<script src='/static/js/2020/12/25/jquery.mobile.custom.min.js'>"+"<"+"script>");
 	</script>
-	<!-- <![endif]-->
-	<!--[if IE]>
-<script type="text/javascript">
-window.jQuery || document.write("<script src='/static/js/jquery-1.10.2.min.js'>"+"<"+"script>");
-</script>
-<![endif]-->
-	<script type="text/javascript">
-		if("ontouchend" in document) document.write("<script src='/static/js/jquery.mobile.custom.min.js'>"+"<"+"script>");
-	</script>
-	<script src="/static/js/bootstrap.min.js"></script>
-	<script src="/static/js/typeahead-bs2.min.js"></script>
-	<!-- page specific plugin scripts -->
-	<!--[if lte IE 8]>
-	  <script src="assets/js/excanvas.min.js"></script>
-	<![endif]-->
-	<script src="/static/js/jquery-ui-1.10.3.custom.min.js"></script>
-	<script src="/static/js/jquery.ui.touch-punch.min.js"></script>
-	<script src="/static/js/jquery.slimscroll.min.js"></script>
-	<script src="/static/js/jquery.easy-pie-chart.min.js"></script>
-	<script src="/static/js/jquery.sparkline.min.js"></script>
-	<script src="/static/js/flot/jquery.flot.min.js"></script>
-	<script src="/static/js/flot/jquery.flot.pie.min.js"></script>
-	<script src="/static/js/flot/jquery.flot.resize.min.js"></script>
-
-	<!-- ace scripts -->
-
-	<script src="/static/js/ace-elements.min.js"></script>
-	<script src="/static/js/ace.min.js"></script>
-
-	<!-- inline scripts related to this page -->
-
+	<script src="/static/js/2020/12/25/bootstrap.min.js"></script>
+	<script src="/static/js/2020/12/25/ace-elements.min.js"></script>
+	<script src="/static/js/2020/12/25/ace.min.js"></script>
 	<script type="text/javascript">
 		jQuery(function($) {
 			$("iframe").css("height", document.documentElement.clientHeight - $("#breadcrumbs").height() - $("#navbar").height())	//设置iframe高度

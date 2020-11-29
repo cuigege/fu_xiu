@@ -2,9 +2,9 @@
 	<head>
 		<meta charset="UTF-8">
 <!--		表格拖动插件 -->
-		<link href="/static/css/bootstrap-table.min.css" rel="stylesheet">
-		<link href="/static/css/jquery.resizableColumns.css" rel="stylesheet">
-		<link href="/static/css/BeAlert.css" rel="stylesheet">
+		<link href="/static/css/2020/12/25/bootstrap-table.min.css" rel="stylesheet">
+		<link href="/static/css/2020/12/25/jquery.resizableColumns.css" rel="stylesheet">
+		<link href="/static/css/2020/12/25/BeAlert.css" rel="stylesheet">
 		<style type="text/css">
 			td, th{
 				text-align: center;
@@ -142,15 +142,15 @@
 			</div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
 	</body>
-	<script src="/static/js/jquery-2.0.3.min.js"></script>
-	<script src="/static/js/bootstrap.min.js"></script>
-	<script src="/static/js/jquery.resizableColumns.min.js"></script>
-	<script src="/static/js/bootstrap-table.min.js"></script>
-	<script src="/static/js/bootstrap-table-resizable.min.js"></script>
-	<script src="/static/js/bootstrap-table-locale-all.min.js"></script>
-	<script src="/static/js/BeAlert.js"></script>
-	<script src="/static/js/tableExport.min.js"></script>
-	<script src="/static/js/bootstrap-table-export.min.js"></script>
+	<script src="/static/js/2020/12/25/jquery.min.js"></script>
+	<script src="/static/js/2020/12/25/bootstrap.min.js"></script>
+	<script src="/static/js/2020/12/25/jquery.resizableColumns.min.js"></script>
+	<script src="/static/js/2020/12/25/bootstrap-table.min.js"></script>
+	<script src="/static/js/2020/12/25/bootstrap-table-resizable.min.js"></script>
+	<script src="/static/js/2020/12/25/bootstrap-table-locale-all.min.js"></script>
+	<script src="/static/js/2020/12/25/BeAlert.js"></script>
+	<script src="/static/js/2020/12/25/tableExport.min.js"></script>
+	<script src="/static/js/2020/12/25/bootstrap-table-export.min.js"></script>
 	<script type="application/javascript">
 	function edit_marjor(obj, zydm, xydm, xkmldm, zydldm) {
 	  let option = "";

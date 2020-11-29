@@ -4,7 +4,7 @@
     margin: 0;
     padding: 0;
     z-index: 9999;
-    background: url("../images/overlay.png");
+    background: url("../images/2020/12/25/overlay.png");
     left: 0;
     right: 0;
     top: 0;
@@ -31,23 +31,23 @@
     margin: 10px auto;
 }
 .BeAlert_box .BeAlert_image.warning {
-    background: url("../images/warning.png");
+    background: url("../images/2020/12/25/warning.png");
     background-size: 60px;
 }
 .BeAlert_box .BeAlert_image.error {
-    background: url("../images/error.jpg");
+    background: url("../images/2020/12/25/error.jpg");
     background-size: 60px;
 }
 .BeAlert_box .BeAlert_image.info {
-    background: url("../images/info.png");
+    background: url("../images/2020/12/25/info.png");
     background-size: 60px;
 }
 .BeAlert_box .BeAlert_image.question {
-    background: url("../images/question.jpg");
+    background: url("../images/2020/12/25/question.jpg");
     background-size: 60px;
 }
 .BeAlert_box .BeAlert_image.success {
-    background: url("../images/success.png");
+    background: url("../images/2020/12/25/success.png");
     background-size: 60px;
 }
 .BeAlert_box .BeAlert_title {
