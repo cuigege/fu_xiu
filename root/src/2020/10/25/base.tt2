@@ -6,36 +6,20 @@
 		<meta name="keywords" content="中南民族大学辅修后台"/>
 		<meta name="description" content="中南民族大学辅修后台" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
 		<!-- basic styles -->
 		<link href="/static/css/bootstrap.min.css" rel="stylesheet" />
 		<link rel="stylesheet" href="/static/css/fontawesome.min.css" />
-
-		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
-		<!-- ace styles -->
 		<link rel="stylesheet" href="/static/css/ace.min.css" />
 		<link rel="stylesheet" href="/static/css/ace-rtl.min.css" />
 		<link rel="stylesheet" href="/static/css/ace-skins.min.css" />
-		<!--[if lte IE 8]>
-		  <link rel="stylesheet" href="assets/css/ace-ie.min.css" />
-		<![endif]-->
-		<!-- inline styles related to this page -->
-		<!-- ace settings handler -->
 		<script src="/static/js/ace-extra.min.js"></script>
-		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-		<!--[if lt IE 9]>
-		<script src="assets/js/html5shiv.js"></script>
-		<script src="assets/js/respond.min.js"></script>
-		<![endif]-->
 		<style type="text/css">
 			.ace-settings-container{
 				top: 0;
 			}
 		</style>
 	</head>
-
 	<body>
-
 		<div class="navbar navbar-default" id="navbar">
 			<script type="text/javascript">
 				try{ace.settings.check('navbar' , 'fixed')}catch(e){}
@@ -204,7 +188,7 @@
 				</div><!-- /#ace-settings-container -->
 			</div><!-- /.main-container-inner -->
 
-			<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+			<a href="#ace-settings-container" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
 				<i class="glyphicon glyphicon-chevron-up icon-only bigger-110"></i>
 			</a>
 		</div><!-- /.main-container -->
@@ -212,7 +196,6 @@
 	<!--[if IE]>
 	<script src="/static/js/jquery-2.0.3.min.js"></script>
 	<![endif]-->
-
 	<script type="text/javascript">
 		window.jQuery || document.write("<script src='/static/js/jquery-2.0.3.min.js'>"+"<"+"script>");
 	</script>

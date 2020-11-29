@@ -11,14 +11,14 @@ __PACKAGE__->config({
 	ENCODING => 'UTF-8',
     PRE_PROCESS  => 'config/main',
     WRAPPER      => 'site/wrapper',
-    ERROR        => 'error.tt2',
+    ERROR        => 'error.html',
     TIMER        => 0,
     render_die   => 1,
 });
 
 =head1 NAME
 
-fx::View::HTML - Catalyst TT Twitter Bootstrap View
+fx::View::html - Catalyst TT Twitter Bootstrap View
 
 =head1 SYNOPSIS
 

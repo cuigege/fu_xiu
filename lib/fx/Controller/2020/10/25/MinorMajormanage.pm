@@ -27,9 +27,9 @@ sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
     # 判断是普通管理员还是超级管理
     my $sql = "select DWDM, t1.ZWMC DWMC, JSDM from usr_wfw.T_FX_GLY t left join usr_wfw.T_FX_XY t1 on t1.XYDM=t.DWDM  where ZHMC = \'$c->{username}\'";
-    my $jsdw = from_json( DB::get_json( $sql ) )->[0];     # 操作用户信息
+    my $jsdw = from_json( DB::get_json( $sql ), {allow_nonref=>1} )->[0];     # 操作用户信息
     $c->stash(
-       template => '20201019/minormajormanage.html',
+       template => '2020/10/25/minormajormanage.tt2',
        jsdw     => $jsdw
     );
 }
@@ -72,7 +72,7 @@ sub minormajorset : Local {
         my $datestring = strftime "%Y-%m-%d %H:%M", localtime;
         $sql = "select * from usr_wfw.T_FX_ZY where ZYDM = '$zydm'";
         my $res = DB::get_json( $sql );
-        $res = from_json($res)->[0];
+        $res = from_json($res, {allow_nonref=>1})->[0];
         $sql = "insert into usr_wfw.T_FX_FXZY(ZWMC, YWMC, ZYDM, XYDM, XKMLDM, ZYDLDM, SZSJ, FXNF) values (\'$res->{ZWMC}\', \'$res->{YWMC}\', \'$res->{ZYDM}\', \'$res->{XYDM}\', \'$res->{XKMLDM}\',\'$res->{ZYDLDM}\', \'$datestring\', \'$year\')";
         $rtn = DB::execute( $sql );
         if ( $rtn ne 0 && $rtn ne -1 ) {

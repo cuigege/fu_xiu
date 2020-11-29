@@ -29,9 +29,9 @@ sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
     # 判断是普通管理员还是超级管理
     my $sql = "select DWDM, t1.ZWMC DWMC, JSDM from usr_wfw.T_FX_GLY t left join usr_wfw.T_FX_XY t1 on t1.XYDM=t.DWDM  where ZHMC = \'$c->{username}\'";
-    my $jsdw = from_json( DB::get_json( $sql ) )->[0];     # 操作用户信息
+    my $jsdw = from_json( DB::get_json( $sql ), {allow_nonref=>1} )->[0];     # 操作用户信息
     $c->stash({
-        template => "20201019/minorenrollstudentlist.html",
+        template => "2020/10/25/minorenrollstudentlist.tt2",
         jsdw     => $jsdw
     });
 }
@@ -54,7 +54,7 @@ sub review : Local {
         my $rtn = DB::execute( $sql );
         if ( $shzt eq 1 ) {
             $sql = "select * from usr_wfw.T_FX_BM where SFRZH=\'$sfrzh\' and fxnf=$year";
-            my $res = from_json( DB::get_json( $sql ) )->[0];
+            my $res = from_json( DB::get_json( $sql ), {allow_nonref=>1} )->[0];
             $sql = "insert into usr_wfw.T_FX_XSXX(SFRZH, TJSJ, FXNF, FXZYDM ) values (\'$sfrzh\', \'$currentdate\', \'$res->{FXNF}\', \'$res->{FXZYDM}\')";
             $rtn = DB::execute( $sql );
         }
@@ -88,9 +88,9 @@ sub reviewpassed : Local {
     my ( $self, $c ) = @_;
     # 判断是普通管理员还是超级管理
     my $sql = "select DWDM, t1.ZWMC DWMC, JSDM from usr_wfw.T_FX_GLY t left join usr_wfw.T_FX_XY t1 on t1.XYDM=t.DWDM  where ZHMC = \'$c->{username}\'";
-    my $jsdw = from_json( DB::get_json( $sql ) )->[0];     # 操作用户信息
+    my $jsdw = from_json( DB::get_json( $sql ), {allow_nonref=>1} )->[0];     # 操作用户信息
     $c->stash({
-        template    => "20201019/minorenrollstudentlist_passed.html",
+        template    => "2020/10/25/minorenrollstudentlist_passed.tt2",
         jsdw        => $jsdw
     });
 }
@@ -104,9 +104,9 @@ sub reviewreject : Local {
     my ( $self, $c ) = @_;
     # 判断是普通管理员还是超级管理
     my $sql = "select DWDM, t1.ZWMC DWMC, JSDM from usr_wfw.T_FX_GLY t left join usr_wfw.T_FX_XY t1 on t1.XYDM=t.DWDM  where ZHMC = \'$c->{username}\'";
-    my $jsdw = from_json( DB::get_json( $sql ) )->[0];     # 操作用户信息
+    my $jsdw = from_json( DB::get_json( $sql ), {allow_nonref=>1} )->[0];     # 操作用户信息
     $c->stash({
-        template => "20201019/minorenrollstudentlist_reject.html",
+        template => "2020/10/25/minorenrollstudentlist_reject.tt2",
         jsdw     => $jsdw
     });
 }

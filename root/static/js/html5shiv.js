@@ -7,7 +7,7 @@
   var version = '3.6.2';
 
   /** Preset options */
-  var options = window.html5 || {};
+  var options = window.HTML5 || {};
 
   /** Used to skip problem elements */
   var reSkip = /^<|^(?:button|map|select|textarea|object|iframe|option|optgroup)$/i;
@@ -15,11 +15,11 @@
   /** Not all elements can be cloned in IE **/
   var saveClones = /^(?:a|b|code|div|fieldset|h1|h2|h3|h4|h5|h6|i|label|li|ol|p|q|span|strong|style|table|tbody|td|th|tr|ul)$/i;
 
-  /** Detect whether the browser supports default html5 styles */
-  var supportsHtml5Styles;
+  /** Detect whether the browser supports default HTML5 styles */
+  var supportsHTML5Styles;
 
   /** Name of the expando, to work with multiple documents or to re-shiv one document */
-  var expando = '_html5shiv';
+  var expando = '_HTML5shiv';
 
   /** The id for the the documents expando */
   var expanID = 0;
@@ -33,9 +33,9 @@
   (function() {
     try {
         var a = document.createElement('a');
-        a.innerHTML = '<xyz></xyz>';
+        a.innerhtml = '<xyz></xyz>';
         //if the hidden property is implemented we can assume, that the browser supports basic HTML5 Styles
-        supportsHtml5Styles = ('hidden' in a);
+        supportsHTML5Styles = ('hidden' in a);
 
         supportsUnknownElements = a.childNodes.length == 1 || (function() {
           // assign a false positive if unable to shiv
@@ -49,7 +49,7 @@
         }());
     } catch(e) {
       // assign a false positive if detection fails => unable to shiv
-      supportsHtml5Styles = true;
+      supportsHTML5Styles = true;
       supportsUnknownElements = true;
     }
 
@@ -68,17 +68,17 @@
     var p = ownerDocument.createElement('p'),
         parent = ownerDocument.getElementsByTagName('head')[0] || ownerDocument.documentElement;
 
-    p.innerHTML = 'x<style>' + cssText + '</style>';
+    p.innerhtml = 'x<style>' + cssText + '</style>';
     return parent.insertBefore(p.lastChild, parent.firstChild);
   }
 
   /**
-   * Returns the value of `html5.elements` as an array.
+   * Returns the value of `HTML5.elements` as an array.
    * @private
    * @returns {Array} An array of shived element node names.
    */
   function getElements() {
-    var elements = html5.elements;
+    var elements = HTML5.elements;
     return typeof elements == 'string' ? elements.split(' ') : elements;
   }
 
@@ -101,7 +101,7 @@
 
   /**
    * returns a shived element for the given nodeName and document
-   * @memberOf html5
+   * @memberOf HTML5
    * @param {String} nodeName name of the element
    * @param {Document} ownerDocument The context document.
    * @returns {Object} The shived element.
@@ -138,7 +138,7 @@
 
   /**
    * returns a shived DocumentFragment for the given document
-   * @memberOf html5
+   * @memberOf HTML5
    * @param {Document} ownerDocument The context document.
    * @returns {Object} The shived DocumentFragment.
    */
@@ -177,7 +177,7 @@
 
     ownerDocument.createElement = function(nodeName) {
       //abort shiv
-      if (!html5.shivMethods) {
+      if (!HTML5.shivMethods) {
           return data.createElem(nodeName);
       }
       return createElement(nodeName, ownerDocument, data);
@@ -193,14 +193,14 @@
           return 'c("' + nodeName + '")';
         }) +
       ');return n}'
-    )(html5, data.frag);
+    )(HTML5, data.frag);
   }
 
   /*--------------------------------------------------------------------------*/
 
   /**
    * Shivs the given document.
-   * @memberOf html5
+   * @memberOf HTML5
    * @param {Document} ownerDocument The document to shiv.
    * @returns {Document} The shived document.
    */
@@ -210,7 +210,7 @@
     }
     var data = getExpandoData(ownerDocument);
 
-    if (html5.shivCSS && !supportsHtml5Styles && !data.hasCSS) {
+    if (HTML5.shivCSS && !supportsHTML5Styles && !data.hasCSS) {
       data.hasCSS = !!addStyleSheet(ownerDocument,
         // corrects block display not defined in IE6/7/8/9
         'article,aside,dialog,figcaption,figure,footer,header,hgroup,main,nav,section{display:block}' +
@@ -229,38 +229,38 @@
   /*--------------------------------------------------------------------------*/
 
   /**
-   * The `html5` object is exposed so that more elements can be shived and
+   * The `HTML5` object is exposed so that more elements can be shived and
    * existing shiving can be detected on iframes.
    * @type Object
    * @example
    *
    * // options can be changed before the script is included
-   * html5 = { 'elements': 'mark section', 'shivCSS': false, 'shivMethods': false };
+   * HTML5 = { 'elements': 'mark section', 'shivCSS': false, 'shivMethods': false };
    */
-  var html5 = {
+  var HTML5 = {
 
     /**
      * An array or space separated string of node names of the elements to shiv.
-     * @memberOf html5
+     * @memberOf HTML5
      * @type Array|String
      */
     'elements': options.elements || 'abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video',
 
     /**
-     * current version of html5shiv
+     * current version of HTML5shiv
      */
     'version': version,
 
     /**
      * A flag to indicate that the HTML5 style sheet should be inserted.
-     * @memberOf html5
+     * @memberOf HTML5
      * @type Boolean
      */
     'shivCSS': (options.shivCSS !== false),
 
     /**
      * Is equal to true if a browser supports creating unknown/HTML5 elements
-     * @memberOf html5
+     * @memberOf HTML5
      * @type boolean
      */
     'supportsUnknownElements': supportsUnknownElements,
@@ -268,19 +268,19 @@
     /**
      * A flag to indicate that the document's `createElement` and `createDocumentFragment`
      * methods should be overwritten.
-     * @memberOf html5
+     * @memberOf HTML5
      * @type Boolean
      */
     'shivMethods': (options.shivMethods !== false),
 
     /**
-     * A string to describe the type of `html5` object ("default" or "default print").
-     * @memberOf html5
+     * A string to describe the type of `HTML5` object ("default" or "default print").
+     * @memberOf HTML5
      * @type String
      */
     'type': 'default',
 
-    // shivs the document according to the specified `html5` object options
+    // shivs the document according to the specified `HTML5` object options
     'shivDocument': shivDocument,
 
     //creates a shived element
@@ -292,8 +292,8 @@
 
   /*--------------------------------------------------------------------------*/
 
-  // expose html5
-  window.html5 = html5;
+  // expose HTML5
+  window.HTML5 = HTML5;
 
   // shiv the document
   shivDocument(document);

@@ -17,7 +17,7 @@
 /* 
     User Style:
     Change the following styles to modify the appearance of Colorbox.  They are
-    ordered & tabbed in a way that represents the nesting of the generated HTML.
+    ordered & tabbed in a way that represents the nesting of the generated html.
 */
 #cboxOverlay{background:url(images/overlay.png) repeat 0 0;}
 #colorbox{outline:0;}

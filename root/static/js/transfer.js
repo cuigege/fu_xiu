@@ -338,7 +338,7 @@ var Transfer = (function ($) {
          * 将选中项添加至右侧
          */
         $(addSelected).on("click", function () {
-            var listHtmlStr = "";
+            var listhtmlStr = "";
             var selectedItemNum = 0;
             // 分组
             if ($(transferId).find(tabContentFirst).css("display") != "none") {
@@ -351,7 +351,7 @@ var Transfer = (function ($) {
                         var val = $(transferId).find(groupCheckboxName).eq(i).text();
                         var value = $(transferId).find(groupCheckboxItem).eq(i).val();
                         $(transferId).find(transferDoubleGroupListLiUlLi).eq(i).css('display', 'none');
-                        listHtmlStr = listHtmlStr + '<li class="transfer-double-selected-list-li transfer-double-selected-list-li-' + currentTimeStr + ' .clearfix">' +
+                        listhtmlStr = listhtmlStr + '<li class="transfer-double-selected-list-li transfer-double-selected-list-li-' + currentTimeStr + ' .clearfix">' +
                             '<div class="checkbox-group">' +
                             '<input type="checkbox" value="' + value + '" class="checkbox-normal checkbox-selected-item-' + currentTimeStr + '" id="group_' + groupIdIndex + '_selectedCheckbox_' + idIndex + '_' + currentTimeStr + '">' +
                             '<label class="checkbox-selected-name-' + currentTimeStr + '" for="group_' + groupIdIndex + '_selectedCheckbox_' + idIndex + '_' + currentTimeStr + '">' + val + '</label>' +
@@ -388,7 +388,7 @@ var Transfer = (function ($) {
                         var val = $(transferId).find(checkboxName).eq(i).text();
                         var value = $(transferId).find(checkboxItem).eq(i).val();
                         $(transferId).find(transferDoubleListLi).eq(i).css('display', 'none');
-                        listHtmlStr = listHtmlStr + '<li class="transfer-double-selected-list-li  transfer-double-selected-list-li-' + currentTimeStr + ' .clearfix">' +
+                        listhtmlStr = listhtmlStr + '<li class="transfer-double-selected-list-li  transfer-double-selected-list-li-' + currentTimeStr + ' .clearfix">' +
                             '<div class="checkbox-group">' +
                             '<input type="checkbox" value="' + value + '" class="checkbox-normal checkbox-selected-item-' + currentTimeStr + '" id="selectedCheckbox_' + idIndex + '_' + currentTimeStr + '">' +
                             '<label class="checkbox-selected-name-' + currentTimeStr + '" for="selectedCheckbox_' + idIndex + '_' + currentTimeStr + '">' + val + '</label>' +
@@ -414,7 +414,7 @@ var Transfer = (function ($) {
             }
             $(addSelected).removeClass("btn-arrow-active");
             $(transferId).find(transferDoubleSelectedListUl).empty();
-            $(transferId).find(transferDoubleSelectedListUl).append(listHtmlStr);
+            $(transferId).find(transferDoubleSelectedListUl).append(listhtmlStr);
             // 数据变化触发回调
             callable.call(this, getSelected(), getSelectedName());
         });
@@ -586,9 +586,9 @@ var Transfer = (function ($) {
      * @returns {string}
      */
     function generateLeftList(currentTimeStr, data, itemName, valueName) {
-        var listHtmlStr = "";
+        var listhtmlStr = "";
         for (var i = 0; i < data.length; i++) {
-            listHtmlStr = listHtmlStr +
+            listhtmlStr = listhtmlStr +
                 '<li class="transfer-double-list-li transfer-double-list-li-' + currentTimeStr + '">' +
                 '<div class="checkbox-group">' +
                 '<input type="checkbox" value="' + data[i][valueName] + '" class="checkbox-normal checkbox-item-' + currentTimeStr + '" id="itemCheckbox_' + i + '_' + currentTimeStr + '">' +
@@ -596,7 +596,7 @@ var Transfer = (function ($) {
                 '</div>' +
                 '</li>'
         }
-        return listHtmlStr;
+        return listhtmlStr;
     }
 
     /**
@@ -606,31 +606,31 @@ var Transfer = (function ($) {
      * @returns {string}
      */
     function generateLeftGroupList(currentTimeStr, data, itemName, groupListName, groupItemName, valueName) {
-        var listHtmlStr = "";
+        var listhtmlStr = "";
         for (var i = 0; i < data.length; i++) {
-            listHtmlStr = listHtmlStr +
+            listhtmlStr = listhtmlStr +
                 '<li class="transfer-double-group-list-li transfer-double-group-list-li-' + currentTimeStr + '">'
                 + '<div class="checkbox-group">' +
                 '<input type="checkbox" class="checkbox-normal group-select-all-' + currentTimeStr + '" id="group_' + i + '_' + currentTimeStr + '">' +
                 '<label for="group_' + i + '_' + currentTimeStr + '" class="group-name-' + currentTimeStr + '">' + data[i][groupItemName] + '</label>' +
                 '</div>';
             if (data[i][groupListName].length > 0) {
-                listHtmlStr = listHtmlStr + '<ul class="transfer-double-group-list-li-ul transfer-double-group-list-li-ul-' + currentTimeStr + '">'
+                listhtmlStr = listhtmlStr + '<ul class="transfer-double-group-list-li-ul transfer-double-group-list-li-ul-' + currentTimeStr + '">'
                 for (var j = 0; j < data[i][groupListName].length; j++) {
-                    listHtmlStr = listHtmlStr + '<li class="transfer-double-group-list-li-ul-li transfer-double-group-list-li-ul-li-' + currentTimeStr + '">' +
+                    listhtmlStr = listhtmlStr + '<li class="transfer-double-group-list-li-ul-li transfer-double-group-list-li-ul-li-' + currentTimeStr + '">' +
                         '<div class="checkbox-group">' +
                         '<input type="checkbox" value="' + data[i][groupListName][j][valueName] + '" class="checkbox-normal group-checkbox-item-' + currentTimeStr + ' belongs-group-' + i + '-' + currentTimeStr + '" id="group_' + i + '_checkbox_' + j + '_' + currentTimeStr + '">' +
                         '<label for="group_' + i + '_checkbox_' + j + '_' + currentTimeStr + '" class="group-checkbox-name-' + currentTimeStr + '">' + data[i][groupListName][j][itemName] + '</label>' +
                         '</div>' +
                         '</li>';
                 }
-                listHtmlStr = listHtmlStr + '</ul>'
+                listhtmlStr = listhtmlStr + '</ul>'
             } else {
-                listHtmlStr = listHtmlStr + '</li>';
+                listhtmlStr = listhtmlStr + '</li>';
             }
-            listHtmlStr = listHtmlStr + '</li>';
+            listhtmlStr = listhtmlStr + '</li>';
         }
-        return listHtmlStr;
+        return listhtmlStr;
     }
 
     /**

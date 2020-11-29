@@ -26,7 +26,7 @@ Catalyst Controller.
 sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
     $c->stash({
-        template => "20201019/teacheruser.html",
+        template => "2020/10/25/teacheruser.tt2",
     });
 }
 

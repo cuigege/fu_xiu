@@ -314,17 +314,17 @@
       "PrepareSQL": "select SFRZH, XM, XBMC, KSH, SFZH, MZ, LXFS, ZXXYMC, ZXZYMC, ZXZYDLMC, FXXYMC, FXZYMC, FXZYDLMC, FXZYXKMC from usr_wfw.T_FX_BM where SHZT = '1' and FXNF=? and FXXYDM=?"
     },
     "enrollstudentreject": {
-      "name": "某年某学院辅修报名已拒绝学生列表",
+      "name": "某年辅修报名已拒绝学生列表",
       "driver": "oracle",
       "connect_db": "wfw_usr",
       "table": "usr_zsj.T_FX_BM",
       "type": "select",
       "allow_method": ["GET"],
       "allow_field": ["search", "year"],
-      "PrepareSQL": "select SFRZH, XM, XBMC, KSH, SFZH, MZ, LXFS, ZXXYMC, ZXZYMC, ZXZYDLMC, FXXYMC, FXZYMC, FXZYDLMC, FXZYXKMC from usr_wfw.T_FX_BM where SHZT = '-1' and FXNF=? and FXXYDM=?"
+      "PrepareSQL": "select SFRZH, XM, XBMC, KSH, SFZH, MZ, LXFS, ZXXYMC, ZXZYMC, ZXZYDLMC, FXXYMC, FXZYMC, FXZYDLMC, FXZYXKMC from usr_wfw.T_FX_BM where SHZT = '-1' and FXNF=?"
     },
     "enrollstudentrejectsearchbyxydm": {
-      "name": "某年辅修报名已拒绝学生列表",
+      "name": "某年某学院辅修报名已拒绝学生列表",
       "driver": "oracle",
       "connect_db": "wfw_usr",
       "table": "usr_zsj.T_FX_BM",

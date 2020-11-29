@@ -30,7 +30,7 @@ sub index :Path :Args(0) {
     my $sql = "select t1.*, t2.YHXM from usr_wfw.T_FX_JS t1, usr_wfw.T_FX_GLY t2 where t1.CJYH=t2.ZHMC and t1.JSDM != 0 order by t1.JSDM";
     my $data = DB::get_json( $sql );
     $c->stash({
-        template => "20201019/role.html",
+        template => "2020/10/25/role.tt2",
         data     => from_json( $data , {allow_nonref=>1}),
     });
 }

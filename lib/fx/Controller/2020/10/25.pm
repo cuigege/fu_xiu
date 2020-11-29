@@ -64,8 +64,8 @@ sub auto : Private {
     $c->{ "self_config" } = ToolFunc::config_hash( $file );
 
     # 获取用户名
-    # my $username =  "201721094059" || $c->user->username() || $c->req->cookies->{ sessionid }->{value}->[0];
-    my $username =  "2020" || $c->user->username() || $c->req->cookies->{ sessionid }->{value}->[0];
+    my $username =  "201721094059" || $c->user->username() || $c->req->cookies->{ sessionid }->{value}->[0];
+    # my $username =  "2020" || $c->user->username() || $c->req->cookies->{ sessionid }->{value}->[0];
 
     $c->{ sessionid } = $username;
     $c->{ username } = $username;
@@ -116,7 +116,7 @@ sub auto : Private {
                   select ZGH, JSXM XM, QYZT, YXQKSSJ, YXQJZSJ
                   from usr_wfw.T_FX_LS
               ) t where ZGH='$username'";
-    my $res = from_json( DB::get_json( $sql ) )->[0];
+    my $res = from_json( DB::get_json( $sql ), {allow_nonref=>1} )->[0];
     if ( $res->{QYZT} eq 0 ) {
         $c->{ msg } = "账户被禁用：413"; # 413账户被禁用
         $c->{ status_code } = 403;
@@ -151,7 +151,7 @@ sub index :Path :Args(0) {
         return 1;
 	}
     else {
-        $res = from_json( $res )->[0];
+        $res = from_json( $res, {allow_nonref=>1})->[0];
         $c->{data} = $res;                                                              # 写入模版
         my $sql = "select * from (
                     select JSQX from usr_wfw.T_FX_JS where JSDM in (select JSDM from usr_wfw.T_FX_GLY where ZHMC = '$c->{ username }')
@@ -169,7 +169,7 @@ sub index :Path :Args(0) {
                     ( select * from usr_wfw.T_FX_LJ where LJDM in ($qxdm) ) t1,
                     usr_wfw.T_FX_XTCD t2 where t1.SSCDDM=t2.CDDM order by t2.TJPX asc ,t1.TJPX asc
                 );
-        my $links = from_json( DB::get_json( $sql ) );
+        my $links = from_json( DB::get_json( $sql ), {allow_nonref=>1} );
         # 获取主目录;
         $sql = qq(select CDZWM, TB from (
                     select distinct * from (
@@ -203,7 +203,7 @@ sub index :Path :Args(0) {
 	    );
     }
 	$c->stash(
-		template    => '20201019/base.html',
+		template    => '2020/10/25/base.tt2',
 	);
 }
 
@@ -227,7 +227,7 @@ sub set_privilege {
     foreach my $val ( @$res ) {
         push(@$qxarr, split( /\s*,\s*/, $val ));
     }
-    my $rtn = ToolFunc::set_session_cover_pre($username, to_json( $qxarr ));
+    my $rtn = ToolFunc::set_session_cover_pre($username, to_json( $qxarr, {allow_nonref=>1} ));
     if ( $rtn eq 0 ) {   # session设置失败
         $c->{ msg } = "Redis工作异常: 514";
         $c->{ status_code } = 500;
@@ -278,7 +278,7 @@ sub default : Local {
     my ( $self, $c) = @_;
     $c->response->status( 404 );
 	$c->stash(
-        template    => '20201019/error-404.tt2',
+        template    => '2020/10/25/error-404.tt2',
         title       => "页面不存在"
     );
 }
@@ -294,7 +294,7 @@ sub error : Private {
     $c->{ msg } ||= "一切正常, 正在努力工作";
     $c->response->status( $c->{ status_code } );
 	$c->stash(
-        template => '20201019/error-500.html',
+        template => '2020/10/25/error-500.tt2',
         msg      => $c->{ msg },
         code     => $c->{ status_code },
         title    => $c->{ msg },
@@ -310,7 +310,6 @@ sub error : Private {
 
 sub end : ActionClass('RenderView') {
     my ($self, $c) = @_;
-    # $c->res->cookies->{ sessionid } = { value => $c->{ sessionid } };       # 设置cookies
     DB::close();
 }
 =encoding utf8

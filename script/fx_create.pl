@@ -25,7 +25,7 @@ fx_create.pl [options] model|view|controller name [helper] [options]
    fx_create.pl controller My::Controller
    fx_create.pl --mechanize controller My::Controller
    fx_create.pl view My::View
-   fx_create.pl view HTML TT
+   fx_create.pl view html TT
    fx_create.pl model My::Model
    fx_create.pl model SomeDB DBIC::Schema MyApp::Schema create=dynamic\
    dbi:SQLite:/tmp/my.db

@@ -27,9 +27,9 @@ sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
     # 判断是普通管理员还是超级管理
     my $sql = "select DWDM, t1.ZWMC DWMC, JSDM from usr_wfw.T_FX_GLY t left join usr_wfw.T_FX_XY t1 on t1.XYDM=t.DWDM  where ZHMC = \'$c->{username}\'";
-    my $jsdw = from_json( DB::get_json( $sql ) )->[0];     # 操作用户信息
+    my $jsdw = from_json( DB::get_json( $sql ), {allow_nonref=>1} )->[0];     # 操作用户信息
     $c->stash(
-        template => "20201019/major.html",
+        template => "2020/10/25/major.tt2",
         jsdw     => $jsdw
     );
 }
@@ -128,7 +128,7 @@ sub majordel : Local {
 sub bigcategory : Local {
     my ( $self, $c ) = @_;
     $c->stash({
-        template    =>  "20201019/bigcategory.html"
+        template    =>  "2020/10/25/bigcategory.tt2"
     })
 }
 
@@ -140,7 +140,7 @@ sub bigcategory : Local {
 sub subjectcategory : Local {
     my ( $self, $c ) = @_;
     $c->stash({
-        template    =>  "20201019/subjectcategory.html"
+        template    =>  "2020/10/25/subjectcategory.tt2"
     })
 }
 

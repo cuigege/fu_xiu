@@ -99,7 +99,7 @@ sub index :Path :Args(0) {
     $c->stash->{ fxzy_list } = '[]';
     if( $bmInfo ne '[]' ){
         $c->stash->{ bminfo } = from_json($bmInfo,{allow_nonref=>1})->[0];
-        $c->stash->{template} = '20201115/register.tt2';
+        $c->stash->{template} = '20201115/register.html';
     }
     else {
 
@@ -121,7 +121,7 @@ sub index :Path :Args(0) {
         my $bmkssj = str2time($zsjhDate->{ BMKSSJ });
         my $bmjzsj = str2time($zsjhDate->{ BMJZSJ });
         if( $bmkssj < time() && time() < $bmjzsj  ) {
-            $c->stash->{template} = '20201115/register.tt2';
+            $c->stash->{template} = '20201115/register.html';
         }
         elsif ( $bmkssj > time() ) {
             $c->{ msg } = "报名时间未开始<br>开始时间:".$zsjhDate->{ BMKSSJ }."<br>结束时间:".$zsjhDate->{ BMJZSJ }; # 512 未查询到用户信息

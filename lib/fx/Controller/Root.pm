@@ -53,7 +53,7 @@ sub default :Path {
     my ( $self, $c ) = @_;
     $c->response->status(404);
 	$c->stash(
-			template => '20201019/error-404.tt2',
+			template => '2020/10/25/error-404.tt2',
 	);
 }
 

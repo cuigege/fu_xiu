@@ -43,7 +43,7 @@
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 
 		<!--[if lt IE 9]>
-		<script src="assets/js/html5shiv.js"></script>
+		<script src="assets/js/HTML5shiv.js"></script>
 		<script src="assets/js/respond.min.js"></script>
 		<![endif]-->
 	</head>
@@ -1036,7 +1036,7 @@
 			$('.wysiwyg-editor')
 			.on('mousedown', function(e) {
 				var target = $(e.target);
-				if( e.target instanceof HTMLImageElement ) {
+				if( e.target instanceof htmlImageElement ) {
 					if( !target.data('resizable') ) {
 						target.resizable({
 							aspectRatio: e.target.width / e.target.height,
@@ -1052,7 +1052,7 @@
 				}
 			})
 			.on('click', function(e) {
-				if( lastResizableImg != null && !(e.target instanceof HTMLImageElement) ) {
+				if( lastResizableImg != null && !(e.target instanceof htmlImageElement) ) {
 					destroyResizable();
 				}
 			})

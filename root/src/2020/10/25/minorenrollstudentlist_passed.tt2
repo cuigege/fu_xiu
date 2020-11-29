@@ -13,6 +13,18 @@
 			.input-group{
 				padding-bottom: 5px;
 			}
+			.dropdown-item{
+				display: block;
+				width: 100%;
+				padding: .25rem 1.5rem;
+				clear: both;
+				font-weight: 400;
+				color: #212529;
+				text-align: inherit;
+				white-space: nowrap;
+				background-color: transparent;
+				border: 0;
+			}
 		</style>
 	</head>
 	<body>
@@ -38,10 +50,11 @@
 			locale:'zh-CN',//中文支持,
 			contentType: "application/x-www-form-urlencoded",//必须要有！！！！
 			[% IF jsdw.JSDM == -1 %]
-			url:"/2020/10/25/api/enrollstudentreject?year=" + myDate.getFullYear(),//要请求数据的文件路径
+			url:"/2020/10/25/api/enrollstudentpassed?year=" + myDate.getFullYear(),//要请求数据的文件路径
 			[% ELSE %]
-			url:"/2020/10/25/api/enrollstudentrejectsearchbyxydm?xydm=[% jsdw.DWDM %]&year=" + myDate.getFullYear(),//要请求数据的文件路径
+			url:"/2020/10/25/api/enrollstudentpassedsearchbyxydm?xydm=[% jsdw.DWDM %]&year=" + myDate.getFullYear(),//要请求数据的文件路径
 		  	[% END %]
+			// height:tableHeight(),//高度调整
 			search: true,
 			toolbar: '#toolbar',//指定工具栏
 			striped: true, //是否显示行间隔色
@@ -63,6 +76,13 @@
 					width:25,
 					align:'center',
 					valign:'middle'
+				},
+				{
+					//field: 'Number',//可不加
+					title: '序号',//标题  可不加
+					formatter: function (value, row, index) {
+						return index+1;
+					}
 				},
 				{
 					title:'学号',
@@ -127,7 +147,7 @@
 	  })
 
 	  function reset_shzt(obj, sfrzh) {
-		confirm(null, "确认重置?", function ( isConfirm ) {
+		confirm(null, "确认重置?", function (isConfirm) {
 					  if ( isConfirm ) {
 						  $.ajax({
 							  url: "/2020/10/25/minorenrollmentmanage/review",
@@ -186,10 +206,10 @@
 		let myDate = new Date();
 		let opt = {
 			[% IF jsdw.JSDM == -1 %]
-			url: "/2020/10/25/api/enrollstudentreject?year=" + myDate.getFullYear(),
+			url: "/2020/10/25/api/enrollstudentpassed?year=" + myDate.getFullYear(),
 			[% ELSE %]
-			url:"/2020/10/25/api/enrollstudentrejectsearchbyxydm?xydm=[% jsdw.DWDM %]&year=" + myDate.getFullYear(),//要请求数据的文件路径
-		  	[% END %]
+			url: "/2020/10/25/api/enrollstudentpassedsearchbyxydm?xydm=[% jsdw.DWDM %]&year=" + myDate.getFullYear(),
+			[% END %]
 			silent: true,
 		}
 		$("#table").bootstrapTable('refresh', opt);

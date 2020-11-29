@@ -34,7 +34,7 @@ sub index :Path :Args(0) {
 		# print Dumper ($res);
 	}
 	$c->stash(
-		template => '20201019/base.html',
+		template => '2020/10/25/base.tt2',
 	);
 }
 =encoding utf8

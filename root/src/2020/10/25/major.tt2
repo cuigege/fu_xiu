@@ -12,6 +12,18 @@
 			.input-group{
 				padding-bottom: 5px;
 			}
+			.dropdown-item{
+				display: block;
+				width: 100%;
+				padding: .25rem 1.5rem;
+				clear: both;
+				font-weight: 400;
+				color: #212529;
+				text-align: inherit;
+				white-space: nowrap;
+				background-color: transparent;
+				border: 0;
+			}
 		</style>
 	</head>
 	<body>
@@ -49,21 +61,15 @@
 							</div>
 							<div class="input-group">
 								<span class="input-group-addon">学院</span>
-								<select type="text" class="form-control" name="xydm" id="xydm">
-
-								</select>
+								<select type="text" class="form-control" name="xydm" id="xydm"></select>
 							</div>
 							<div class="input-group">
 								<span class="input-group-addon">学科门类</span>
-								<select type="text" class="form-control" name="xkmldm" id="xkmldm">
-									<option value="1">计算机</option>
-								</select>
+								<select type="text" class="form-control" name="xkmldm" id="xkmldm"></select>
 							</div>
 							<div class="input-group">
 								<span class="input-group-addon">专业大类</span>
-								<select type="text" class="form-control" name="zydldm" id="zydldm">
-									<option value="1">理工科</option>
-								</select>
+								<select type="text" class="form-control" name="zydldm" id="zydldm"></select>
 							</div>
 						</form>
 					</div>
