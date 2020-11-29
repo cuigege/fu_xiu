@@ -1,0 +1,98 @@
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <!--		表格拖动插件 -->
+    <link href="/static/css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="/static/css/jquery.resizableColumns.css" rel="stylesheet">
+    <link href="/static/css/BeAlert.css" rel="stylesheet">
+    <style type="text/css">
+        td, th{
+            text-align: center;
+        }
+        .input-group{
+            padding-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div style="padding: 80px;">
+
+    <form method="post" action="">
+
+        <div class="form-group">
+            <label for="exampleInputFile">选择文件</label>
+            <input type="file" id="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
+            <p class="help-block">请选择上传文件,目前仅支持 `xls`和`xlsx` 格式的表格文件.</p>
+        </div>
+
+        <div class="form-group">
+            <label for="exampleInputEmail1">下载模板文件</label>
+            <br>
+            <a href="" class="btn btn-primary">下载模板</a>
+            <p class="help-block">请按照模板文件格式放入数据,并确保数据完整性. <span style="color: red;">确保文件内无公式等内容</span></p>
+        </div>
+
+        <button type="button" id="submit" class="btn btn-default">确认提交数据</button>
+    </form>
+
+
+</div>
+
+</body>
+<script src="/static/js/jquery-2.0.3.min.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/jquery.resizableColumns.min.js"></script>
+<script src="/static/js/bootstrap-table.min.js"></script>
+<script src="/static/js/bootstrap-table-resizable.min.js"></script>
+<script src="/static/js/bootstrap-table-locale-all.min.js"></script>
+<script src="/static/js/BeAlert.js"></script>
+<script type="application/javascript">
+    $(function () {
+
+
+        let file;
+        // 构建 ajax 文件上传
+        $('#submit').click(function (){
+            let formData = new FormData();
+            let token = '';
+            formData.append("token",token );
+            formData.append('file',file);
+            if(!file){
+                alert('请选择文件');
+                return false;
+            }
+            let url = '/2020/10/25/allow/import';
+            $.ajax({
+                type: "post", //请求方式
+                dataType: 'json',
+                url: url, //请求接口
+                data: formData, //请求参数（这里将参数都保存在formData对象中）
+                processData: false, //因为data值是FormData对象，不需要对数据做处理。
+                contentType: false, //默认为true,不设置Content-type请求头
+                success: function(data) {
+                    console.log(data)
+                    if(data.code === 1){
+
+                        let r = confirm("导入成功")
+
+                        if(r){
+                            location.reload();
+                        }
+                    }
+                }
+            });
+        })
+
+        $('#file').change(function (e) {
+            file = this.files[0];
+            // 可以根据 file.type 判断上传文件格式
+            console.log(file);
+
+
+        })
+
+
+    })
+</script>
+</html>

@@ -362,6 +362,16 @@
       "allow_method": ["GET"],
       "allow_field": [],
       "PrepareSQL": "select t4.ZWM, t4.LJDM, t4.LJ, t5.CDZWM, t5.XMZWM from usr_wfw.T_FX_LJ t4, (select t3.*, concat(concat(t3.CDDM, '-'), to_char(LJDM)) key from (select t1.CDZWM, t2.ZWM XMZWM, t2.LJDM, t1.CDDM from usr_wfw.T_FX_XTCD t1, usr_wfw.T_FX_LJ t2 where t1.CDDM = t2.SSCDDM ) t3 ) t5 where t5.key=t4.SSCDDM and CDZWM!='设置' order by SSCDDM"
+    },
+    "getStudentList": {
+      "name": "获取学生主修专业列表",
+      "driver": "oracle",
+      "connect_db": "wfw_wfw",
+      "table": "usr_wfw.T_FX_XSZY",
+      "type": "select",
+      "allow_method": ["GET"],
+      "allow_field": ["search"],
+      "PrepareSQL": "select * from usr_wfw.T_FX_XSZY"
     }
   }
 }
