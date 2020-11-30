@@ -111,6 +111,11 @@ sub index :Path :Args(0) {
         return 0;
     }
 
+    # 查询学院信息
+    my $xyList = DB::get_json("select * from usr_wfw.T_FX_XY order by XYDM asc");
+
+    $c->stash->{ xy_list } = $xyList;
+
     # 查询辅修专业 剔除当前学生的专业大类所属的专业
     my $fxzyList = DB::get_json("select * from usr_wfw.T_FX_FXZY where ZYDLDM not in (\'$zydlInfo->{ZYDLDM}\')");
 
@@ -148,6 +153,28 @@ sub index :Path :Args(0) {
     return 1;
 }
 
+=head2 getFXZYCount()
+
+    查询选择的专业报名人数
+
+=cut
+
+sub getFXZYCount : Local {
+
+    my ( $self, $c ) = @_;
+
+    my $params = $c->req->parameters;
+
+    my $sql = "select count(*) as total from usr_wfw.T_FX_BM where FXZYDM=\'$params->{ fxzydm }\' and FXNF= $params->{ fxnf }";
+
+    my $res = DB::get_json($sql);
+
+    $c->res->body($res);
+}
+
+
+
+=cut
 
 =encoding utf8
 

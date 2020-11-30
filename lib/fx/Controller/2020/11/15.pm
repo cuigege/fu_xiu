@@ -69,10 +69,9 @@ sub auto : Private {
     $c->{ student_userinfo } = from_json($userInfo,{allow_nonref=>1})->[0]; # 学生信息
 
     # 只允许大二学生报名
-    $c->log->info(Dumper $c->{student_userinfo}->{RXNJ});
     my $currentYear = strftime "%Y", localtime;  # 当前辅修年份
 
-    if ( $currentYear - $c->{ student_userinfo }->{ RXNJ } > 1 ) {
+    if ( $currentYear - $c->{ student_userinfo }->{ XZNJ } > 1 ) {
 
         $c->{ msg } = "禁止非大二学生报名";
         $c->{ status_code } = 512;
@@ -124,7 +123,6 @@ sub error : Private {
 
 sub end : ActionClass('RenderView') {
     my ($self, $c) = @_;
-    # $c->res->cookies->{ sessionid } = { value => $c->{ sessionid } };       # 设置cookies
     DB::close();
 }
 
