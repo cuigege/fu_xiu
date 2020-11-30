@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
     <!--忽略页面中的数字识别为电话，忽略email识别-->
     <meta name="format-detection" content="telphone=no, email=no"/>
-    <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.3/style/weui.min.css">
-    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.1/css/2020/12/25/jquery-weui.min.css">
+<link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.3/style/weui.min.css">
+<link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.1/css/jquery-weui.min.css">
 
     <style>
         .content{
@@ -52,7 +52,7 @@
             <div class="weui-cell__ft xh">[% c.student_userinfo.XH %]</div>
         </div>
         <div class="">
-            <div id="show-more" style="text-align: center;border-top: solid 1px #eee;"><i class="glyphicon glyphicon-menu-down"></i></div>
+            <div id="show-more" style="text-align: center;border-top: solid 1px #eee;">︾</div>
         </div>
     </div>
 
@@ -145,7 +145,7 @@
             <div class="weui-cell__ft zy">[% c.student_userinfo.ZXZY %]</div>
         </div>
         <div class="">
-            <div id="show-less" style="text-align: center;border-top: solid 1px #eee;"><i class="glyphicon glyphicon-menu-up"></i></div>
+            <div id="show-less" style="text-align: center;border-top: solid 1px #eee;">︽</div>
         </div>
     </div>
 
@@ -224,7 +224,7 @@
 </div>
 <!-- body 最后 -->
 <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
-<script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/2020/12/25/jquery-weui.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
 <script>
 
     $(function () {

@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
     <!--忽略页面中的数字识别为电话，忽略email识别-->
     <meta name="format-detection" content="telphone=no, email=no"/>
-    <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.3/style/weui.min.css">
-    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.1/css/2020/12/25/jquery-weui.min.css">
+<link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.3/style/weui.min.css">
+<link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.1/css/jquery-weui.min.css">
     <style>
         ul,li{
             list-style: none;
@@ -95,9 +95,9 @@
 <div class="search-box">
     <div class="search-div" style="line-height: 2.5;padding-left: .3rem;">学年学期</div>
     <div class="search-div" style="padding-left: .1rem;flex: 4;">
-        <input type="text" style="width: 35%" id="xn" placeholder="请选择学年" value="2020-2021学年">
-        <input type="text" style="width: 31%" id="xq" placeholder="请选择学期" value="第一学期">
-        <input type="text" style="width: 31%" id="week" placeholder="请选择周次" value="第1周">
+        <input type="text" style="width: 55%" id="xn" placeholder="请选择学年" value="2020-2021学年">
+        <input type="text" style="width: 41%" id="xq" placeholder="请选择学期" value="第一学期">
+        <!--<input type="text" style="width: 31%" id="week" placeholder="请选择周次" value="第1周">-->
     </div>
     <div class="search-div" style="padding-right: .3rem">
         <button class="search-btn">搜索</button>
@@ -167,9 +167,8 @@
 </div>
 
 
-
 <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
-<script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/2020/12/25/jquery-weui.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
 <script>
     $(function () {
         $("#xn").picker({
