@@ -19,8 +19,7 @@
   <!-- Optional theme -->
   <link rel="stylesheet" href="/static/css/2020/12/25/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 [% END %]
-    <link href="/static/css/2020/12/25/all.min.css" rel="stylesheet">
-    <link href="/static/css/2020/12/25/fontawesome.min.css" rel="stylesheet">
+
  </head>
  <body>
 [% content %]

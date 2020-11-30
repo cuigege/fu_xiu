@@ -6,6 +6,8 @@
 		<link href="/static/css/2020/12/25/jquery.resizableColumns.css" rel="stylesheet">
 		<link href="/static/css/2020/12/25/bootstrap-switch.min.css" rel="stylesheet">
 		<link href="/static/css/2020/12/25/BeAlert.css" rel="stylesheet">
+		<link href="/static/css/2020/12/25/all.min.css" rel="stylesheet">
+    	<link href="/static/css/2020/12/25/fontawesome.min.css" rel="stylesheet">
 		<style type="text/css">
 			td, th{
 				text-align: center;

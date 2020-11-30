@@ -1,156 +1,158 @@
 <html lang="zh">
-	<head>
-		<meta charset="UTF-8">
-<!--		表格拖动插件 -->
-		<link href="/static/css/2020/12/25/bootstrap-table.min.css" rel="stylesheet">
-		<link href="/static/css/2020/12/25/jquery.resizableColumns.css" rel="stylesheet">
-		<link href="/static/css/2020/12/25/BeAlert.css" rel="stylesheet">
-		<link href="/static/css/2020/12/25/bootstrap-switch.min.css" rel="stylesheet">
-		<style type="text/css">
-			td, th{
-				text-align: center;
-			}
-			.input-group{
-				padding-bottom: 5px;
-			}
-			.dropdown-item{
-				display: block;
-				width: 100%;
-				padding: .25rem 1.5rem;
-				clear: both;
-				font-weight: 400;
-				color: #212529;
-				text-align: inherit;
-				white-space: nowrap;
-				background-color: transparent;
-				border: 0;
-			}
-		</style>
-	</head>
-	<body>
-		<div class="col-md-12 text-right">
-			<table class="table table-striped table-hover" id="user_table">
-			</table>
-		</div>
-		<div id="msg" style="width: 250px; height: 100px;z-index: 8888; position: absolute; top: 10%;left: 40%; text-align: center"></div>
-		<!-- add模态框（Modal） -->
-		<div class="modal fade" id="addmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-			<div class="#modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal"
-								aria-hidden="true">×
-						</button>
-						<h4 class="modal-title" id="modal_title">
-							新增用户
-						</h4>
+<head>
+	<meta charset="UTF-8">
+	<!--		表格拖动插件 -->
+	<link href="/static/css/2020/12/25/bootstrap-table.min.css" rel="stylesheet">
+	<link href="/static/css/2020/12/25/jquery.resizableColumns.css" rel="stylesheet">
+	<link href="/static/css/2020/12/25/BeAlert.css" rel="stylesheet">
+	<link href="/static/css/2020/12/25/bootstrap-switch.min.css" rel="stylesheet">
+	<link href="/static/css/2020/12/25/all.min.css" rel="stylesheet">
+	<link href="/static/css/2020/12/25/fontawesome.min.css" rel="stylesheet">
+	<style type="text/css">
+		td, th{
+			text-align: center;
+		}
+		.input-group{
+			padding-bottom: 5px;
+		}
+		.dropdown-item{
+			display: block;
+			width: 100%;
+			padding: .25rem 1.5rem;
+			clear: both;
+			font-weight: 400;
+			color: #212529;
+			text-align: inherit;
+			white-space: nowrap;
+			background-color: transparent;
+			border: 0;
+		}
+	</style>
+</head>
+<body>
+<div class="col-md-12 text-right">
+	<table class="table table-striped table-hover" id="user_table">
+	</table>
+</div>
+<div id="msg" style="width: 250px; height: 100px;z-index: 8888; position: absolute; top: 10%;left: 40%; text-align: center"></div>
+<!-- add模态框（Modal） -->
+<div class="modal fade" id="addmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="#modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">×
+				</button>
+				<h4 class="modal-title" id="modal_title">
+					新增用户
+				</h4>
+			</div>
+			<div class="modal-body">
+				<form class="bs-example bs-example-form" role="form">
+					<div class="input-group">
+						<span class="input-group-addon">职工账号</span>
+						<input type="text" class="form-control" name="zgh" id="zgh" autocomplete="off">
 					</div>
-					<div class="modal-body">
-						<form class="bs-example bs-example-form" role="form">
-							<div class="input-group">
-								<span class="input-group-addon">职工账号</span>
-								<input type="text" class="form-control" name="zgh" id="zgh" autocomplete="off">
-							</div>
-							<div class="input-group">
-								<span class="input-group-addon">用户姓名</span>
-								<input type="text" class="form-control" name="yhxm" id="yhxm" autocomplete="off">
-							</div>
-							<div class="input-group">
-								<span class="input-group-addon">所属单位</span>
-								<select type="text" class="form-control" name="dw" id="dw" ></select>
-							</div>
-							<div class="input-group">
-								<span class="input-group-addon">有效期开始时间</span>
-								<input type="datetime-local" class="form-control" name="yxqkssj" id="yxqkssj" autocomplete="off">
-							</div>
-							<div class="input-group">
-								<span class="input-group-addon">有效期截止时间</span>
-								<input type="datetime-local" class="form-control" name="yxqjzsj" id="yxqjzsj" autocomplete="off">
-							</div>
-						</form>
+					<div class="input-group">
+						<span class="input-group-addon">用户姓名</span>
+						<input type="text" class="form-control" name="yhxm" id="yhxm" autocomplete="off">
 					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default"
-								data-dismiss="modal">关闭
-						</button>
-						<button type="button" class="btn btn-primary" onclick="add_user()">
-							提交保存
-						</button>
+					<div class="input-group">
+						<span class="input-group-addon">所属单位</span>
+						<select type="text" class="form-control" name="dw" id="dw" ></select>
 					</div>
-				</div><!-- /.modal-content -->
-			</div><!-- /.modal-dialog -->
-		</div><!-- /.modal -->
+					<div class="input-group">
+						<span class="input-group-addon">有效期开始时间</span>
+						<input type="datetime-local" class="form-control" name="yxqkssj" id="yxqkssj" autocomplete="off">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">有效期截止时间</span>
+						<input type="datetime-local" class="form-control" name="yxqjzsj" id="yxqjzsj" autocomplete="off">
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default"
+						data-dismiss="modal">关闭
+				</button>
+				<button type="button" class="btn btn-primary" onclick="add_user()">
+					提交保存
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <!--	 修改编辑模态框-->
-	<div class="modal fade" id="edit_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-			<div class="#modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal"
-								aria-hidden="true">×
-						</button>
-						<h4 class="modal-title" id="edit_modal_title">
-						</h4>
+<div class="modal fade" id="edit_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="#modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">×
+				</button>
+				<h4 class="modal-title" id="edit_modal_title">
+				</h4>
+			</div>
+			<div class="modal-body">
+				<form class="bs-example bs-example-form" role="form">
+					<div class="input-group">
+						<span class="input-group-addon">用户姓名</span>
+						<input type="text" class="form-control" name="edit_yhxm" id="edit_yhxm" autocomplete="off">
 					</div>
-					<div class="modal-body">
-						<form class="bs-example bs-example-form" role="form">
-							<div class="input-group">
-								<span class="input-group-addon">用户姓名</span>
-								<input type="text" class="form-control" name="edit_yhxm" id="edit_yhxm" autocomplete="off">
-							</div>
-							<div class="input-group">
-								<span class="input-group-addon">职工账号</span>
-								<input type="text" class="form-control" name="edit_zgh" id="edit_zgh" autocomplete="off">
-							</div>
-							<div class="input-group">
-								<span class="input-group-addon">所属单位</span>
-								<select type="text" class="form-control" name="edit_dw" id="edit_dw"></select>
-							</div>
-							<div class="input-group">
-								<span class="input-group-addon">有效期开始时间</span>
-								<input type="datetime-local" class="form-control" name="edit_yxqkssj" id="edit_yxqkssj" autocomplete="off">
-							</div>
-							<div class="input-group">
-								<span class="input-group-addon">有效期截止时间</span>
-								<input type="datetime-local" class="form-control" name="edit_yxqjzsj" id="edit_yxqjzsj" autocomplete="off">
-							</div>
-							<input id="edit_id" hidden>
-						</form>
+					<div class="input-group">
+						<span class="input-group-addon">职工账号</span>
+						<input type="text" class="form-control" name="edit_zgh" id="edit_zgh" autocomplete="off">
 					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default"
-								data-dismiss="modal">关闭
-						</button>
-						<button type="button" class="btn btn-primary" onclick="post_edit()">
-							提交修改
-						</button>
+					<div class="input-group">
+						<span class="input-group-addon">所属单位</span>
+						<select type="text" class="form-control" name="edit_dw" id="edit_dw"></select>
 					</div>
-				</div><!-- /.modal-content -->
-			</div><!-- /.modal-dialog -->
-		</div>
+					<div class="input-group">
+						<span class="input-group-addon">有效期开始时间</span>
+						<input type="datetime-local" class="form-control" name="edit_yxqkssj" id="edit_yxqkssj" autocomplete="off">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">有效期截止时间</span>
+						<input type="datetime-local" class="form-control" name="edit_yxqjzsj" id="edit_yxqjzsj" autocomplete="off">
+					</div>
+					<input id="edit_id" hidden>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default"
+						data-dismiss="modal">关闭
+				</button>
+				<button type="button" class="btn btn-primary" onclick="post_edit()">
+					提交修改
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div>
 <!--		API独立权限授予-->
-		<div class="modal fade" id="api_privilege_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title text-center text-danger">操作权限授予</h4>
-					</div>
-					<div class="modal-body text-right">
-						<table class="table table-striped table-hover " id="api_privilege"></table>
-						<input hidden type="text" id="zhmc">
-					</div>
-				</div><!-- /.modal-content -->
+<div class="modal fade" id="api_privilege_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h4 class="modal-title text-center text-danger">操作权限授予</h4>
 		</div>
-	</body>
-	<script src="/static/js/2020/12/25/jquery.min.js"></script>
-	<script src="/static/js/2020/12/25/bootstrap.min.js"></script>
-	<script src="/static/js/2020/12/25/BeAlert.js"></script>
-	<script src="/static/js/2020/12/25/jquery.resizableColumns.min.js"></script>
-	<script src="/static/js/2020/12/25/bootstrap-table.min.js"></script>
-	<script src="/static/js/2020/12/25/bootstrap-table-resizable.min.js"></script>
-	<script src="/static/js/2020/12/25/bootstrap-table-locale-all.min.js"></script>
-	<script src="/static/js/2020/12/25/bootstrap-switch.min.js"></script>
-	<script type="application/javascript">
-		$(function() {
+		<div class="modal-body text-right">
+			<table class="table table-striped table-hover " id="api_privilege"></table>
+			<input hidden type="text" id="zhmc">
+		</div>
+	</div><!-- /.modal-content -->
+</div>
+</body>
+<script src="/static/js/2020/12/25/jquery.min.js"></script>
+<script src="/static/js/2020/12/25/bootstrap.min.js"></script>
+<script src="/static/js/2020/12/25/BeAlert.js"></script>
+<script src="/static/js/2020/12/25/jquery.resizableColumns.min.js"></script>
+<script src="/static/js/2020/12/25/bootstrap-table.min.js"></script>
+<script src="/static/js/2020/12/25/bootstrap-table-resizable.min.js"></script>
+<script src="/static/js/2020/12/25/bootstrap-table-locale-all.min.js"></script>
+<script src="/static/js/2020/12/25/bootstrap-switch.min.js"></script>
+<script type="application/javascript">
+	$(function() {
 		$('#user_table').bootstrapTable({
 			method: 'get',
 			locale:'zh-CN',//中文支持,
@@ -214,29 +216,29 @@
 				},
 			],
 			responseHandler:function(res){
-								//在ajax获取到数据，渲染表格之前，修改数据源
-					res = res.DATA;
-					for (let i = 0; i < res.length; i++) {
-						res[i].CZ = "<a onclick=\"api_privilege_grant("+ res[i].GLYDM +")\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"API权限\"><button type=\"button\" class=\"btn btn-sm btn-success\"><i class=\"glyphicon glyphicon-lock\"></i></button></a>\n"
-						res[i].CZ += "<a onclick=\"edit_user(this, "+ res[i].GLYDM +"," + res[i].XYDM + ")\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"编辑\"><button type=\"button\" class=\"btn btn-sm btn-warning\" ><i class=\"glyphicon glyphicon-edit\" ></i></button></a>\n" +
-								"<a onclick=\"delete_user("+ res[i].GLYDM +")\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"删除\"><button type=\"button\" class=\"btn btn-sm btn-danger\"><i class=\"glyphicon glyphicon-trash\"></i></button></a>\n"
+				//在ajax获取到数据，渲染表格之前，修改数据源
+				res = res.DATA;
+				for (let i = 0; i < res.length; i++) {
+					res[i].CZ = "<a onclick=\"api_privilege_grant("+ res[i].GLYDM +")\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"API权限\"><button type=\"button\" class=\"btn btn-sm btn-success\"><i class=\"glyphicon glyphicon-lock\"></i></button></a>\n"
+					res[i].CZ += "<a onclick=\"edit_user(this, "+ res[i].GLYDM +"," + res[i].XYDM + ")\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"编辑\"><button type=\"button\" class=\"btn btn-sm btn-warning\" ><i class=\"glyphicon glyphicon-edit\" ></i></button></a>\n" +
+							"<a onclick=\"delete_user("+ res[i].GLYDM +")\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"删除\"><button type=\"button\" class=\"btn btn-sm btn-danger\"><i class=\"glyphicon glyphicon-trash\"></i></button></a>\n"
 
-						if ( res[i].QYZT == 1 )
-							res[i].QYZT = "<input type='checkbox' name='qyzt_switch' checked value='"+ res[i].ZHMC +"'>";
-						else
-							res[i].QYZT = "<input type='checkbox' name='qyzt_switch' value='"+ res[i].ZHMC +"'>";
-						res[i].YXQ = res[i].YXQKSSJ + " - " + res[i].YXQJZSJ;
-					}
-					return res;
-				},
+					if ( res[i].QYZT == 1 )
+						res[i].QYZT = "<input type='checkbox' name='qyzt_switch' checked value='"+ res[i].ZHMC +"'>";
+					else
+						res[i].QYZT = "<input type='checkbox' name='qyzt_switch' value='"+ res[i].ZHMC +"'>";
+					res[i].YXQ = res[i].YXQKSSJ + " - " + res[i].YXQJZSJ;
+				}
+				return res;
+			},
 			onAll: function () {
 				$('input[name="qyzt_switch"]').bootstrapSwitch({
-			　　　　onText : "启用",      // 设置ON文本
-			　　　　offText : "禁用",    // 设置OFF文本
-			　　　　onColor : "success",// 设置ON文本颜色(info/success/warning/danger/primary)
-			　　　　offColor : "danger",  // 设置OFF文本颜色 (info/success/warning/danger/primary)
-			　　　　size : "small",    // 设置控件大小,从小到大  (mini/small/normal/large)
-			　　　　onSwitchChange : function(event, state) {
+					onText : "启用",      // 设置ON文本
+					offText : "禁用",    // 设置OFF文本
+					onColor : "success",// 设置ON文本颜色(info/success/warning/danger/primary)
+					offColor : "danger",  // 设置OFF文本颜色 (info/success/warning/danger/primary)
+					size : "small",    // 设置控件大小,从小到大  (mini/small/normal/large)
+					onSwitchChange : function(event, state) {
 						let zgh = event.target.value;
 						$.ajax({
 							url: "/2020/10/25/adminuser/status",
@@ -251,30 +253,30 @@
 								$("#msg").append(pop_msg ( "error", "操作失败", 1500 ));
 							}
 						})
-			　　　　}
-　　				})
+					}
+				})
 			}
-			})
-			$(".fixed-table-toolbar").append('<div class="float-right  btn-group"><button class="btn btn-info btn-sm" title="新增" data-toggle="modal" data-target="#addmodal"><i class="glyphicon glyphicon-plus"></i></button></div>&nbsp')
-			$(".fixed-table-toolbar").append('<div class="float-right  btn-group" onclick="refresh_data()"><button class="btn btn-success btn-sm" title="数据刷新"><i class="glyphicon glyphicon-refresh"></i></button></div>')
-			$("[data-toggle='tooltip']").tooltip();
-			$.get("/2020/10/25/api/collegeslist?search", function (res) {
-			res = JSON.parse(res).DATA;
-				let option = "";
-				for (let i = 0; i < res.length; i++) {
-					option += "<option value='" + res[i].XYDM + "'>" + res[i].ZWMC + "</option>";
-				}
-				$("#dw").html(option);
-			})
 		})
-		function edit_user(obj, val, dwdm) {
-		  let ob = obj.parentNode.parentNode.childNodes;
-		  $("#edit_modal_title").html("修改 <span style='color:red'>" + ob[3].innerText + "</span> 信息");
-		  $("#edit_zgh").val( ob[2].innerText );
-		  $("#edit_yhxm").val( ob[3].innerText );
-		  $("#edit_id").val( val );
-		  // 学院
-		  $.get("/2020/10/25/api/collegeslist?search", function (res) {
+		$(".fixed-table-toolbar").append('<div class="float-right  btn-group"><button class="btn btn-info btn-sm" title="新增" data-toggle="modal" data-target="#addmodal"><i class="glyphicon glyphicon-plus"></i></button></div>&nbsp')
+		$(".fixed-table-toolbar").append('<div class="float-right  btn-group" onclick="refresh_data()"><button class="btn btn-success btn-sm" title="数据刷新"><i class="glyphicon glyphicon-refresh"></i></button></div>')
+		$("[data-toggle='tooltip']").tooltip();
+		$.get("/2020/10/25/api/collegeslist?search", function (res) {
+			res = JSON.parse(res).DATA;
+			let option = "";
+			for (let i = 0; i < res.length; i++) {
+				option += "<option value='" + res[i].XYDM + "'>" + res[i].ZWMC + "</option>";
+			}
+			$("#dw").html(option);
+		})
+	})
+	function edit_user(obj, val, dwdm) {
+		let ob = obj.parentNode.parentNode.childNodes;
+		$("#edit_modal_title").html("修改 <span style='color:red'>" + ob[3].innerText + "</span> 信息");
+		$("#edit_zgh").val( ob[2].innerText );
+		$("#edit_yhxm").val( ob[3].innerText );
+		$("#edit_id").val( val );
+		// 学院
+		$.get("/2020/10/25/api/collegeslist?search", function (res) {
 			res = JSON.parse(res).DATA;
 			let option = "";
 			for (let i = 0; i < res.length; i++) {
@@ -285,80 +287,80 @@
 				option += "<option value='"+ res[i].XYDM +"'>" + res[i].ZWMC + "</option>"
 			}
 			$("#edit_dw").html(option);
-		  });
-		  if ( ob[6].innerText.split(' - ')[0] !== undefined) {
-		  	$("#edit_yxqkssj").val(ob[6].innerText.split(' - ')[0].replace(" ", "T"));
-		  }
-		  if ( ob[6].innerText.split(' - ')[1] !== undefined ) {
+		});
+		if ( ob[6].innerText.split(' - ')[0] !== undefined) {
+			$("#edit_yxqkssj").val(ob[6].innerText.split(' - ')[0].replace(" ", "T"));
+		}
+		if ( ob[6].innerText.split(' - ')[1] !== undefined ) {
 			$("#edit_yxqjzsj").val(ob[6].innerText.split(' - ')[1].replace(" ", "T"));
-		  }
-		  else {
-		  	$("#edit_yxqkssj").val('');
+		}
+		else {
+			$("#edit_yxqkssj").val('');
 			$("#edit_yxqjzsj").val('');
-		  }
-		  $("#edit_modal").modal( 'show' );
 		}
+		$("#edit_modal").modal( 'show' );
+	}
 
-		function post_edit() {
-			let edit_glydm = $("#edit_id").val();
-			let edit_yhxm = $("#edit_yhxm").val();
-		  	let edit_zgh = $("#edit_zgh").val();
-		  	let edit_yxqkssj = $("#edit_yxqkssj").val().replace("T", " ");
-		  	let edit_yxqjzsj = $("#edit_yxqjzsj").val().replace("T", " ");
-		  	let edit_dwdm = $("#edit_dw").val();
-			confirm(null, "确认修改管理员<span style='color:red'>" + $("#edit_modal_title").text() + "</span> ?", function (isConfirm) {
-					  if (isConfirm) {
-						  $.ajax({
-							  url: "/2020/10/25/adminuser/useredit",
-							  type: "post",
-							  data: {"edit_glydm": edit_glydm, "edit_yhxm": edit_yhxm, "edit_zgh": edit_zgh, "edit_yxqkssj": edit_yxqkssj, "edit_yxqjzsj": edit_yxqjzsj, "edit_dw": edit_dwdm},
-							  success: function (res) {
-								  $("#msg").append(pop_msg("info", "修改成功"));
-								  $("#edit_modal").modal("hide");
-								  refresh_data();
-							  },
-							  error: function (res) {
-								  res = JSON.parse(res.responseText);
-								  console.log(res)
-								  $("#msg").append(pop_msg("error", " <br>修改用户失败,可能" + res.RTN_MSG , 3000));
-							  }
-						  })
-					  }
-				  },
-			  {
-					  type: 'question',
-					  confirmButtonText: '确认'
-				  }
-			)
-		}
+	function post_edit() {
+		let edit_glydm = $("#edit_id").val();
+		let edit_yhxm = $("#edit_yhxm").val();
+		let edit_zgh = $("#edit_zgh").val();
+		let edit_yxqkssj = $("#edit_yxqkssj").val().replace("T", " ");
+		let edit_yxqjzsj = $("#edit_yxqjzsj").val().replace("T", " ");
+		let edit_dwdm = $("#edit_dw").val();
+		confirm(null, "确认修改管理员<span style='color:red'>" + $("#edit_modal_title").text() + "</span> ?", function (isConfirm) {
+					if (isConfirm) {
+						$.ajax({
+							url: "/2020/10/25/adminuser/useredit",
+							type: "post",
+							data: {"edit_glydm": edit_glydm, "edit_yhxm": edit_yhxm, "edit_zgh": edit_zgh, "edit_yxqkssj": edit_yxqkssj, "edit_yxqjzsj": edit_yxqjzsj, "edit_dw": edit_dwdm},
+							success: function (res) {
+								$("#msg").append(pop_msg("info", "修改成功"));
+								$("#edit_modal").modal("hide");
+								refresh_data();
+							},
+							error: function (res) {
+								res = JSON.parse(res.responseText);
+								console.log(res)
+								$("#msg").append(pop_msg("error", " <br>修改用户失败,可能" + res.RTN_MSG , 3000));
+							}
+						})
+					}
+				},
+				{
+					type: 'question',
+					confirmButtonText: '确认'
+				}
+		)
+	}
 
-		function delete_user(val) {
-		  confirm(null, "确认删除", function (isConfirm) {
-						  if (isConfirm) {
-							  $.ajax({
-								  url: "/2020/10/25/adminuser/userdel",
-								  type: "post",
-								  data: {"glydm": val},
-								  success: function (res) {
-									  $("#msg").append(pop_msg("info", "删除成功"));
-									  refresh_data();
-								  },
-								  error: function (res) {
-									  res = JSON.parse(res.responseText);
-									  console.log(res)
-									  $("#msg").append(pop_msg("error", " <br>删除失败,可能" + res.RTN_MSG , 3000));
-								  }
-							  })
-						  }
-					  },
-				  {
-						  type: 'warning',
-						  confirmButtonText: '确认'
-					  }
-		  )
-		}
+	function delete_user(val) {
+		confirm(null, "确认删除", function (isConfirm) {
+					if (isConfirm) {
+						$.ajax({
+							url: "/2020/10/25/adminuser/userdel",
+							type: "post",
+							data: {"glydm": val},
+							success: function (res) {
+								$("#msg").append(pop_msg("info", "删除成功"));
+								refresh_data();
+							},
+							error: function (res) {
+								res = JSON.parse(res.responseText);
+								console.log(res)
+								$("#msg").append(pop_msg("error", " <br>删除失败,可能" + res.RTN_MSG , 3000));
+							}
+						})
+					}
+				},
+				{
+					type: 'warning',
+					confirmButtonText: '确认'
+				}
+		)
+	}
 
-		function pop_msg ( level, msg, time=1500 ) {
+	function pop_msg ( level, msg, time=1500 ) {
 		let alert_class = "";
 		let tip_title = "";
 		if (level === 'info') {
@@ -384,64 +386,64 @@
 			$("#tip" + randid).remove();
 		}, time)
 		return div;
+	}
+
+	function add_user() {
+		let yhxm = $("#yhxm").val();
+		let zgh = $("#zgh").val();
+		let yxqkssj = $("#yxqkssj").val().replace("T", " ");
+		let yxqjzsj = $("#yxqjzsj").val().replace("T", " ");
+		let dwdm = $("#dwdm").val();
+		if (yhxm && zgh) {
+			confirm(null, "确认添加添加管理员<span style='color:red'>" + yhxm + "</span>?", function (isConfirm) {
+						if (isConfirm) {
+							$.ajax({
+								url: "/2020/10/25/adminuser/useradd",
+								type: "post",
+								data: {"yhxm": yhxm, "zgh": zgh, "yxqkssj": yxqkssj, "yuxqjzsj": yxqjzsj, "dwdm": dwdm},
+								success: function (res) {
+									$("#msg").append(pop_msg("info", "新增用户成功"));
+									$("#addmodal").modal("hide");
+									refresh_data();
+								},
+								error: function (res) {
+									res = JSON.parse(res.responseText);
+									console.log(res)
+									$("#msg").append(pop_msg("error", " <br>新增用户失败,可能" + res.RTN_MSG , 3000));
+								}
+							})
+						}
+					},
+					{
+						type: 'warning',
+						confirmButtonText: '确认'
+					}
+			)
 		}
+		else
+		{
+			$("#msg").append(pop_msg("warn", "用户信息填写不完整"));
+		}
+	}
 
-		function add_user() {
-				  let yhxm = $("#yhxm").val();
-				  let zgh = $("#zgh").val();
-				  let yxqkssj = $("#yxqkssj").val().replace("T", " ");
-		  		  let yxqjzsj = $("#yxqjzsj").val().replace("T", " ");
-		  		  let dwdm = $("#dwdm").val();
-				  if (yhxm && zgh) {
-					  confirm(null, "确认添加添加管理员<span style='color:red'>" + yhxm + "</span>?", function (isConfirm) {
-								  if (isConfirm) {
-									  $.ajax({
-										  url: "/2020/10/25/adminuser/useradd",
-										  type: "post",
-										  data: {"yhxm": yhxm, "zgh": zgh, "yxqkssj": yxqkssj, "yuxqjzsj": yxqjzsj, "dwdm": dwdm},
-										  success: function (res) {
-											  $("#msg").append(pop_msg("info", "新增用户成功"));
-											  $("#addmodal").modal("hide");
-											  refresh_data();
-										  },
-										  error: function (res) {
-											  res = JSON.parse(res.responseText);
-											  console.log(res)
-											  $("#msg").append(pop_msg("error", " <br>新增用户失败,可能" + res.RTN_MSG , 3000));
-										  }
-									  })
-								  }
-							  },
-						  {
-								  type: 'warning',
-								  confirmButtonText: '确认'
-							  }
-					  )
-				  }
-				  else
-					  {
-						  $("#msg").append(pop_msg("warn", "用户信息填写不完整"));
-					  }
-			  }
-
-		function refresh_data() {		// 刷新数据
-			let opt = {
-				url: "/2020/10/25/api/adminuserlist",
-				silent: true,
-			}
-			$("#user_table").bootstrapTable('refresh', opt);
-		};
-		function refresh_privilege_data() {		// 刷新数据
-			let opt = {
-				url: "/2020/10/25/api/apipath",
-				silent: true,
-			}
-			$("#api_privilege").bootstrapTable('refresh', opt);
-		};
-		function api_privilege_grant( glydm ) {
-			$("#zhmc").val(glydm);
-			$('#api_privilege').bootstrapTable("destroy");
-			$('#api_privilege').bootstrapTable({
+	function refresh_data() {		// 刷新数据
+		let opt = {
+			url: "/2020/10/25/api/adminuserlist",
+			silent: true,
+		}
+		$("#user_table").bootstrapTable('refresh', opt);
+	};
+	function refresh_privilege_data() {		// 刷新数据
+		let opt = {
+			url: "/2020/10/25/api/apipath",
+			silent: true,
+		}
+		$("#api_privilege").bootstrapTable('refresh', opt);
+	};
+	function api_privilege_grant( glydm ) {
+		$("#zhmc").val(glydm);
+		$('#api_privilege').bootstrapTable("destroy");
+		$('#api_privilege').bootstrapTable({
 			method: 'get',
 			locale:'zh-CN',//中文支持,
 			// search: true,
@@ -487,30 +489,30 @@
 				},
 			],
 			responseHandler:function(res){
-								//在ajax获取到数据，渲染表格之前，修改数据源
-					res = res.DATA;
-    				$.ajaxSettings.async = false;
-					$.post("/2020/10/25/role/dlqx", {"type": 1, "zgh": glydm}, function ( dlqx ) {
-						console.log(dlqx)
-						dlqx = JSON.parse(dlqx).DATA;
-						for( let i = 0; i < res.length; i++ ) {
-							if ( dlqx.indexOf( parseInt(res[i].LJDM) ) > -1 )
-								res[i].SQZT = "<input type='checkbox' name='sqzt_switch' checked value='" + res[i].LJDM +"'>";
-							else
-								res[i].SQZT = "<input type='checkbox' name='sqzt_switch' value='" + res[i].LJDM +"'>";
-						}
-					});
-					$.ajaxSettings.async = true;
-					return res;
-				},
+				//在ajax获取到数据，渲染表格之前，修改数据源
+				res = res.DATA;
+				$.ajaxSettings.async = false;
+				$.post("/2020/10/25/role/dlqx", {"type": 1, "zgh": glydm}, function ( dlqx ) {
+					console.log(dlqx)
+					dlqx = JSON.parse(dlqx).DATA;
+					for( let i = 0; i < res.length; i++ ) {
+						if ( dlqx.indexOf( parseInt(res[i].LJDM) ) > -1 )
+							res[i].SQZT = "<input type='checkbox' name='sqzt_switch' checked value='" + res[i].LJDM +"'>";
+						else
+							res[i].SQZT = "<input type='checkbox' name='sqzt_switch' value='" + res[i].LJDM +"'>";
+					}
+				});
+				$.ajaxSettings.async = true;
+				return res;
+			},
 			onAll: function () {
 				$('input[name="sqzt_switch"]').bootstrapSwitch({
-			　　　　onText : "已授权",      // 设置ON文本
-			　　　　offText : "未授权",    // 设置OFF文本
-			　　　　onColor : "success",// 设置ON文本颜色(info/success/warning/danger/primary)
-			　　　　offColor : "danger",  // 设置OFF文本颜色 (info/success/warning/danger/primary)
-			　　　　size : "small",    // 设置控件大小,从小到大  (mini/small/normal/large)
-			　　　　onSwitchChange : function() {
+					onText : "已授权",      // 设置ON文本
+					offText : "未授权",    // 设置OFF文本
+					onColor : "success",// 设置ON文本颜色(info/success/warning/danger/primary)
+					offColor : "danger",  // 设置OFF文本颜色 (info/success/warning/danger/primary)
+					size : "small",    // 设置控件大小,从小到大  (mini/small/normal/large)
+					onSwitchChange : function() {
 						let qx_arr = [];
 						$('input[name="sqzt_switch"]').each(function (val, obj) {
 							if (obj.checked) {
@@ -530,11 +532,11 @@
 								$("#msg").append(pop_msg ( "error", "操作失败", 1500 ));
 							}
 						})
-			　　　　}
-　　				})
+					}
+				})
 			}
-			})
-			$("#api_privilege_modal").modal("show");
-		}
-	</script>
+		})
+		$("#api_privilege_modal").modal("show");
+	}
+</script>
 </html>
