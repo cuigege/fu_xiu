@@ -372,6 +372,16 @@
       "allow_method": ["GET"],
       "allow_field": ["search"],
       "PrepareSQL": "select * from usr_wfw.T_FX_XSZY"
+    },
+    "getStudentStatusList": {
+      "name": "获取学生辅修专业学籍列表",
+      "driver": "oracle",
+      "connect_db": "wfw_wfw",
+      "table": "usr_wfw.T_FX_XSXX",
+      "type": "select",
+      "allow_method": ["GET"],
+      "allow_field": ["search"],
+      "PrepareSQL": "select t.SFRZH, bm.XM,bm.FXXYMC,bm.FXZYDLMC,bm.FXZYMC,t.FXNF, (case t.JFZT1 when '0' then '未缴费' when '1' then '已缴费' end) JFZT1, (case t.JFZT2 when '0' then '未缴费' when '1' then '已缴费' end) JFZT2 from usr_wfw.T_FX_XSXX t left join usr_wfw.T_FX_BM bm on bm.SFRZH=t.SFRZH"
     }
   }
 }

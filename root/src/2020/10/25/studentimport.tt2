@@ -43,7 +43,7 @@
         <div class="form-group">
             <label for="exampleInputEmail1">下载模板文件</label>
             <br>
-            <a href="" class="btn btn-primary">下载模板</a>
+            <a href="/static/template/学生专业导入模板.xlsx" class="btn btn-primary">下载模板</a>
             <p class="help-block">请按照模板文件格式放入数据,并确保数据完整性. <span style="color: red;">确保文件内无公式等内容</span></p>
         </div>
 
